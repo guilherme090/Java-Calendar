@@ -1,4 +1,6 @@
-package prog5;
+package appointments;
+
+import db.Gui;
 
 /******************************************************************************/
 /* Guilherme Virgilio P. O. Simoes                                            */
@@ -294,7 +296,7 @@ public class Appointment {
 /* Returns:     void                                                          */
 /******************************************************************************/    
 
-    void print (){
+    public void print (){
         //Print calendar name
         theGUI.printToGui(RESULTS, calendarName + "\n");
         //Print some space to indent
@@ -318,7 +320,7 @@ public class Appointment {
     }
     
     
-    String collectPrint (){
+    public String collectPrint (){
         String toBeReturned = ""; //collect data and return
         //Print calendar name
         toBeReturned += calendarName + "\n";

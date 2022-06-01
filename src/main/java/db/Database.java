@@ -1,4 +1,4 @@
-package prog5;
+package db;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,6 +8,13 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
+
+import appointments.Appointment;
+import appointments.AppointmentNode;
+import calendars.Calendar;
+import calendars.CalendarTree;
+import calendars.CalendarTreeNode;
+import db.Gui;
 
 
 /******************************************************************************/
@@ -302,7 +309,7 @@ DESCRIPTION:    user wants to look for a description among the appointments
 /* Returns: boolean:    found value?                                          */
 /******************************************************************************/        
     boolean traverseTime(String subDate, int subTimeInt){
-        return traverseTime(calendarSet.root, subDate, subTimeInt);
+        return traverseTime(calendarSet.getRoot(), subDate, subTimeInt);
     } 
     boolean traverseTime(CalendarTreeNode current, String subDate, 
             int subTimeInt){
@@ -331,7 +338,7 @@ DESCRIPTION:    user wants to look for a description among the appointments
 /* Returns: boolean:    found value?                                          */
 /******************************************************************************/        
     boolean traverseDescription(String lookedFor){
-        return traverseDescription (calendarSet.root, lookedFor);
+        return traverseDescription (calendarSet.getRoot(), lookedFor);
     }
     boolean traverseDescription(CalendarTreeNode current, String lookedFor){
         if (current == null) return false;
@@ -647,7 +654,7 @@ void delCalendar(String chosenCalendar){
                     + " all contents to the database? Y = yes, N = no");
         }
         if(answer.toLowerCase().compareTo("y") == 0)
-            writeToDisk(calendarSet.root);
+            writeToDisk(calendarSet.getRoot());
         else
             JOptionPane.showMessageDialog(null,"Database not modified.");
     }
@@ -689,7 +696,7 @@ void delCalendar(String chosenCalendar){
             bWritter.newLine(); // move to the next line
             // Form lines with the calendar contents. Do this for all the 
             // appointments
-            AppointmentNode auxApp = currentCal.head; //index to the list
+            AppointmentNode auxApp = currentCal.getHead(); //index to the list
             while (auxApp != null){     // look at the whole list
                 currentLine = auxApp.getDatum().getDate() + "/" +
                 auxApp.getDatum().getStartTime() + "/" +
@@ -726,7 +733,7 @@ void delCalendar(String chosenCalendar){
                     + "reload the database? Y = yes, N = no");
         }
         if(answer.toLowerCase().compareTo("y") == 0)
-            readFromDisk(calendarSet.root);
+            readFromDisk(calendarSet.getRoot());
         else
             JOptionPane.showMessageDialog(null,"Database not reloaded.");
     }

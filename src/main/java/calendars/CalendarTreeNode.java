@@ -1,4 +1,5 @@
-package prog5;
+package calendars;
+
 /******************************************************************************/
 /* Guilherme Virgilio P. O. Simoes                                            */
 /* Login ID: pici7127                                                         */

@@ -1,4 +1,4 @@
-package prog5;
+package calendars;
 /******************************************************************************/
 /* Guilherme Virgilio P. O. Simoes                                            */
 /* Login ID: pici7127                                                         */
@@ -9,12 +9,16 @@ package prog5;
 
 import java.util.NoSuchElementException;
 
+// import calendars.Calendar;
+// import calendars.CalendarTreeNode;
+import db.Gui;
+
 public class CalendarTree {
     private static final int MESSAGE = 0, RESULTS = 1;
     // MESSAGE: reference to the GUI's message board
     // RESULTS: reference to the GUI's results board
         
-    CalendarTreeNode root;  //first node of the tree
+    private CalendarTreeNode root;  //first node of the tree
     Gui theGUI;
 
 /******************************************************************************/
@@ -143,7 +147,7 @@ public class CalendarTree {
 /*  CalendarTreeNode root:  the tree's root (helper method only)              */     
 /* Returns: void                                                              */
 /******************************************************************************/ 
-    void add (Calendar item){
+    public void add (Calendar item){
         root = add(item, root);
     }
     
@@ -227,5 +231,17 @@ public class CalendarTree {
             current.getDatum().printCalendar();     //N
             theGUI.bufferToGui(RESULTS);
             print(current.getRight());              //R 
-    }   
+    } 
+    
+/******************************************************************************/
+/* Method: getRoot                                                            */
+/* Purpose: Returns the root tree node                                        */
+/* Parameters:                                                                */
+/*  void                                                                      */ 
+/* Returns: CalendarTreeNode root                                             */
+/******************************************************************************/    
+
+    public CalendarTreeNode getRoot() {
+    	return root;
+    }
 }

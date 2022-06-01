@@ -1,5 +1,5 @@
 
-package prog5;
+package db;
 
 /******************************************************************************/
 /* Guilherme Virgilio P. O. Simoes                                            */
@@ -10,6 +10,9 @@ package prog5;
 /******************************************************************************/
 
 import javax.swing.JFrame;
+
+import db.Database;
+import db.Gui;
 
 public class Prog5 {
 //List of available commands. The following are the user's options in the menu

@@ -1,4 +1,4 @@
-package prog5;
+package appointments;
 /******************************************************************************/
 /* Guilherme Virgilio P. O. Simoes                                            */
 /* Login ID: pici7127                                                         */

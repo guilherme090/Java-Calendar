@@ -1,4 +1,10 @@
-package prog5;
+package calendars;
+
+import appointments.Appointment;
+import appointments.AppointmentNode;
+import calendars.Calendar;
+import db.Gui;
+
 /******************************************************************************/
 /* Guilherme Virgilio P. O. Simoes                                            */
 /* Login ID: pici7127                                                         */
@@ -12,7 +18,7 @@ public class Calendar implements Comparable <Calendar>{
     private String fileName = ""; //contains the path to the calendar's file
     private String calendarName = ""; //First line in the file
     private Gui theGUI;
-    AppointmentNode head; //First appointment node of the list
+    private AppointmentNode head; //First appointment node of the list
 
     private static final int MESSAGE = 0, RESULTS = 1;
     // MESSAGE: reference to the GUI's message board
@@ -81,7 +87,7 @@ public class Calendar implements Comparable <Calendar>{
 /* Returns: void                                                              */
 /******************************************************************************/ 
     
-    void add(AppointmentNode item){
+    public void add(AppointmentNode item){
 	AppointmentNode previous = null; //stores the previous item to check for
                                          //empty lists
         AppointmentNode current = head; //starts counting from the head
@@ -244,7 +250,7 @@ public int printBasedOnDescription(String description){
 /* Returns: int   Number of matches                                           */
 /******************************************************************************/
     
-    int lookForTime (String date, int time){
+    public int lookForTime (String date, int time){
         int count = 0;    //number of matches
         AppointmentNode auxApp = head; //created as index to loop 
                                        //through the list
@@ -305,6 +311,10 @@ public int printBasedOnDescription(String description){
     public String getCalendarName (){
         return calendarName;
     }
+    
+    public AppointmentNode getHead() {
+    	return head;
+    }    
 
 /******************************************************************************/
 /* Method: set<FEATURE>                                                       */

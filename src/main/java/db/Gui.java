@@ -1,5 +1,5 @@
 
-package prog5;
+package db;
 
 /******************************************************************************/
 /* Guilherme Virgilio P. O. Simoes                                            */
@@ -11,6 +11,11 @@ package prog5;
 /******************************************************************************/
 
 import javax.swing.*;
+
+//import prog5.ButtonHandler;
+//import db.Database;
+//import prog5.OptionHandler;
+
 import java.awt.*;
 import java.awt.event.*;
 
