@@ -1,0 +1,1 @@
+java -jar "D:\prj\Computing and Algorithms II\Projects\Prog5\dist\bin\Prog5.jar" CampeonatoMineiro.txt
