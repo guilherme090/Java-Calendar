@@ -19,10 +19,6 @@ public class Calendar implements Comparable <Calendar>{
     private String calendarName = ""; //First line in the file
     private Gui theGUI;
     private AppointmentNode head; //First appointment node of the list
-
-    private static final int MESSAGE = 0, RESULTS = 1;
-    // MESSAGE: reference to the GUI's message board
-    // RESULTS: reference to the GUI's results board
     
 /******************************************************************************/
 /* Method: isEmpty                                                            */

@@ -37,10 +37,6 @@ public class Gui extends JFrame{
     LOAD_DATABASE:  user wants to restore all the contents saved in the disk
     */
     
-    private static final int MESSAGE = 0, RESULTS = 1;
-    // MESSAGE: reference to the GUI's message board
-    // RESULTS: reference to the GUI's results board
-    
     private final int INPUT_OPTIONS = 18; // number of input options available
     private final int OUTPUT_OPTIONS = 2; // number of output options available
     
@@ -416,8 +412,8 @@ public class Gui extends JFrame{
         public void actionPerformed( ActionEvent aEvent )
         {
             if (aEvent.getSource( ) == go){
-                clearGui(MESSAGE);
-                clearGui(RESULTS);
+                clearGui(MessageBoardOptions.MESSAGE.getOption());
+                clearGui(MessageBoardOptions.RESULTS.getOption());
                 switch (currentSelection){
                 case (EVERYTHING):{
                     agenda.wholeDatabase(currentSelection, "");
@@ -501,9 +497,9 @@ public class Gui extends JFrame{
 /* Returns: void                                                              */
 /******************************************************************************/    
     public void printToGui (int boardID, String text){
-        if(boardID == MESSAGE)
+        if(boardID == MessageBoardOptions.MESSAGE.getOption())
             mBuffer += text;
-        else if (boardID == RESULTS)
+        else if (boardID == MessageBoardOptions.RESULTS.getOption())
             rBuffer += text;
     }
     
@@ -517,9 +513,9 @@ public class Gui extends JFrame{
 /* Returns: void                                                              */
 /******************************************************************************/    
     public void bufferToGui (int boardID){
-        if(boardID == MESSAGE)
+        if(boardID == MessageBoardOptions.MESSAGE.getOption())
             messageBoard.setText(mBuffer);
-        else if (boardID == RESULTS)
+        else if (boardID == MessageBoardOptions.RESULTS.getOption())
             resultsBoard.setText(rBuffer);
     }    
     
@@ -533,11 +529,11 @@ public class Gui extends JFrame{
 /* Returns: void                                                              */
 /******************************************************************************/    
     public void clearGui (int boardID){
-        if(boardID == MESSAGE){
+        if(boardID == MessageBoardOptions.MESSAGE.getOption()){
             messageBoard.setText("Welcome to the CS-102 Calendar Program.\n");
             mBuffer = "";
         }
-        else if (boardID == RESULTS){
+        else if (boardID == MessageBoardOptions.RESULTS.getOption()){
             resultsBoard.setText("Results:\n");
             rBuffer = "";
         }    

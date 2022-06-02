@@ -1,6 +1,7 @@
 package appointments;
 
 import db.Gui;
+import db.MessageBoardOptions;
 
 /******************************************************************************/
 /* Guilherme Virgilio P. O. Simoes                                            */
@@ -11,11 +12,7 @@ import db.Gui;
 /* (one appointment per instance)                                             */
 /******************************************************************************/
 
-public class Appointment {
-    private static final int MESSAGE = 0, RESULTS = 1;
-    // MESSAGE: reference to the GUI's message board
-    // RESULTS: reference to the GUI's results board
-    
+public class Appointment {    
     private String calendarName = null; //will contain the calendar it refers to
     private String date;        //YYYYMMDD day format for the appointments
     private String startTime;   //when the appointment begins
@@ -67,10 +64,10 @@ public class Appointment {
                 
         }
         catch (NumberFormatException exc){
-            theGUI.printToGui(MESSAGE, newDate + " is not a valid format for "
+            theGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), newDate + " is not a valid format for "
                     + "dates. "
                     + "It was not set.");
-            theGUI.bufferToGui(MESSAGE);
+            theGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());
             return (false); //added so that the program can continue without
             //breaking
             //System.exit(3);
@@ -167,9 +164,9 @@ public class Appointment {
             }
         }
         catch (NumberFormatException exc){
-            theGUI.printToGui(MESSAGE, startTime + "/" + endTime + " is not a "
+            theGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), startTime + "/" + endTime + " is not a "
                     + "valid format for times.");
-            theGUI.bufferToGui(MESSAGE);
+            theGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());
                 return (false); //added so that the program will not crash
                 //will not include the invalid time either
                 //System.exit(4);            
@@ -298,25 +295,25 @@ public class Appointment {
 
     public void print (){
         //Print calendar name
-        theGUI.printToGui(RESULTS, calendarName + "\n");
+        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), calendarName + "\n");
         //Print some space to indent
-        theGUI.printToGui(RESULTS, "   ");
+        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), "   ");
         //Print year
-        theGUI.printToGui(RESULTS, year + "-");
+        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), year + "-");
         //Print month
-        theGUI.printToGui(RESULTS, month + "-");
+        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), month + "-");
         //Print day
-        theGUI.printToGui(RESULTS, day + " ");
+        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), day + " ");
 
         //Print times
         //Print start time
-        theGUI.printToGui(RESULTS, "(" + startTime);
-        theGUI.printToGui(RESULTS, "-");
+        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), "(" + startTime);
+        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), "-");
         //Print end time
-        theGUI.printToGui(RESULTS, endTime + ") ");
+        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), endTime + ") ");
 
         //Print description
-        theGUI.printToGui(RESULTS, description + "\n");               
+        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), description + "\n");               
     }
     
     

@@ -9,14 +9,10 @@ package calendars;
 
 import java.util.NoSuchElementException;
 
-// import calendars.Calendar;
-// import calendars.CalendarTreeNode;
+import db.MessageBoardOptions;
 import db.Gui;
 
 public class CalendarTree {
-    private static final int MESSAGE = 0, RESULTS = 1;
-    // MESSAGE: reference to the GUI's message board
-    // RESULTS: reference to the GUI's results board
         
     private CalendarTreeNode root;  //first node of the tree
     Gui theGUI;
@@ -229,7 +225,7 @@ public class CalendarTree {
             if (current == null) return;
             print(current.getLeft());               //L
             current.getDatum().printCalendar();     //N
-            theGUI.bufferToGui(RESULTS);
+            theGUI.bufferToGui(MessageBoardOptions.RESULTS.getOption());
             print(current.getRight());              //R 
     } 
     

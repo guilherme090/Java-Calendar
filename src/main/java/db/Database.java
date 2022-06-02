@@ -11,11 +11,10 @@ import javax.swing.JOptionPane;
 
 import appointments.Appointment;
 import appointments.AppointmentNode;
+
 import calendars.Calendar;
 import calendars.CalendarTree;
 import calendars.CalendarTreeNode;
-import db.Gui;
-
 
 /******************************************************************************/
 /* Guilherme Virgilio P. O. Simoes                                            */
@@ -27,9 +26,6 @@ import db.Gui;
 /******************************************************************************/
 
 public class Database {
-private static final int MESSAGE = 0, RESULTS = 1;
-// MESSAGE: reference to the GUI's message board
-// RESULTS: reference to the GUI's results board
 
 Gui thisGUI; //interface assigned to this database
 
@@ -119,10 +115,10 @@ Gui thisGUI; //interface assigned to this database
                 return true;
             }
             else{
-                thisGUI.printToGui(MESSAGE, "**** " + calendar.getCalendarName()
+                thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), "**** " + calendar.getCalendarName()
                     + "'s \n" +  "**** '" + temp.getDatum().getDescription() 
                     + "' not included!\n");
-                thisGUI.bufferToGui(MESSAGE);
+                thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());
                 return false;
             }
     }
@@ -165,9 +161,9 @@ Gui thisGUI; //interface assigned to this database
                           return true;
                        }         
         }
-        thisGUI.printToGui(MESSAGE, "None of the appointments match the "
+        thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), "None of the appointments match the "
                 + "description.");
-        thisGUI.bufferToGui(MESSAGE);
+        thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());
         return false;
     }   
    
@@ -231,17 +227,17 @@ DESCRIPTION:    user wants to look for a description among the appointments
             try{
                 count += calendarSet.search(lookedFor).getDatum().
                         printCalendar();
-                        thisGUI.bufferToGui(RESULTS);
+                        thisGUI.bufferToGui(MessageBoardOptions.RESULTS.getOption());
             }   catch(NoSuchElementException exc){
-                    thisGUI.printToGui(MESSAGE, "The requested calendar does "
+                    thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), "The requested calendar does "
                             + "not exist");
-                    thisGUI.bufferToGui(MESSAGE);
+                    thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());
                     break;
             }            
                 if (count == 0){
-                    thisGUI.printToGui(MESSAGE, "The requested calendar is "
+                    thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), "The requested calendar is "
                             + "empty.");
-                    thisGUI.bufferToGui(MESSAGE);
+                    thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());
                 }
             }break;
             
@@ -258,15 +254,15 @@ DESCRIPTION:    user wants to look for a description among the appointments
             //parseInt the string that represents the time
             //it will be used by the lookForTime method
             if (traverseTime(subDate, subTimeInt) == false){
-                thisGUI.printToGui(MESSAGE, "The requested time is not included "
+                thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), "The requested time is not included "
                         + "in any of the appointments.");
-                thisGUI.bufferToGui(MESSAGE);
+                thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());
             }
             //traverseTime(subDate, subTimeInt);
             }catch(StringIndexOutOfBoundsException exc){
-                thisGUI.printToGui(MESSAGE, "The requested time is not included "
+                thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), "The requested time is not included "
                         + "in any of the appointments.");
-                thisGUI.bufferToGui(MESSAGE);
+                thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());
             }
 
             }break;
@@ -278,9 +274,9 @@ DESCRIPTION:    user wants to look for a description among the appointments
                 results. It is NOT case sensitive. */
                                         
             if (traverseDescription(lookedFor) == false){
-                thisGUI.printToGui(MESSAGE, "The requested descrption was not "
+                thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), "The requested descrption was not "
                         + "found in any of the appointments.");
-                thisGUI.bufferToGui(MESSAGE);
+                thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());
             }
             }break;            
         }
@@ -322,7 +318,7 @@ DESCRIPTION:    user wants to look for a description among the appointments
 	traverseTime(current.getRight(), subDate, subTimeInt) == false)
             return false;
         else{
-            thisGUI.bufferToGui(RESULTS);
+            thisGUI.bufferToGui(MessageBoardOptions.RESULTS.getOption());
             return true;
         }
             
@@ -350,7 +346,7 @@ DESCRIPTION:    user wants to look for a description among the appointments
 	traverseDescription(current.getRight(), lookedFor) == false)
             return false;
         else{
-            thisGUI.bufferToGui(RESULTS);
+            thisGUI.bufferToGui(MessageBoardOptions.RESULTS.getOption());
             return true;
         }
     }
@@ -464,16 +460,16 @@ void addNewAppointment(String chosenCalendar,
     chosenCal.setCalendarName(chosenCalendar);
   
     if (getCalendarSet().search(chosenCal) == false){
-        thisGUI.printToGui(MESSAGE, ">>> Calendar '" + chosenCalendar
+        thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), ">>> Calendar '" + chosenCalendar
                           + "' not found in the list.");
-        thisGUI.bufferToGui(MESSAGE);
+        thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());
     }
     else{
         chosenCal = getCalendarSet().search(chosenCalendar).getDatum();
         if(addToCalendar(chosenCal, chosenDate, chosenSTime, chosenETime,
            chosenDescription)){
-        thisGUI.printToGui(MESSAGE,  "**** Appointment included.");
-        thisGUI.bufferToGui(MESSAGE);
+        thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(),  "**** Appointment included.");
+        thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());
         }                        
     }                   
 }
@@ -499,9 +495,9 @@ void delAppointment(String chosenCalendar,
     try{
         chosenCal = getCalendarSet().search(chosenCalendar).getDatum();
     }catch(NoSuchElementException exc){
-        thisGUI.printToGui(MESSAGE, ">>> Calendar '" + chosenCalendar
+        thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), ">>> Calendar '" + chosenCalendar
                           + "' not found in the list.");
-        thisGUI.bufferToGui(MESSAGE);
+        thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());
         return;
     }
     chosenCal.printCalendar();
@@ -618,9 +614,9 @@ void delCalendar(String chosenCalendar){
                           + "' not found in the list.");
         return;
     }
-    thisGUI.printToGui(MESSAGE, ">>> Chosen calendar: " + chosenCal.
+    thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), ">>> Chosen calendar: " + chosenCal.
                 getCalendarName()+ "\n\"");
-    thisGUI.bufferToGui(MESSAGE);
+    thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());
     //create string to store user choice
     String answer = "";
     while(answer.compareTo("Y") != 0 && answer.compareTo("N") != 0
