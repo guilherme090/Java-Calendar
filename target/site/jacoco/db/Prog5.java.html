@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Prog5.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JavaCalendar</a> &gt; <a href="index.source.html" class="el_package">db</a> &gt; <span class="el_source">Prog5.java</span></div><h1>Prog5.java</h1><pre class="source lang-java linenums">
+package db;
+
+/******************************************************************************/
+/* Guilherme Virgilio P. O. Simoes                                            */
+/* Login ID: pici7127                                                         */
+/* CS-102, Winter 2016                                                        */
+/* Programming Assignment 5                                                   */
+/* Appointment calendar: user interaction module (use of linked lists)        */
+/******************************************************************************/
+
+import javax.swing.JFrame;
+
+import db.Database;
+import db.Gui;
+
+<span class="nc" id="L17">public class Prog5 {</span>
+//List of available commands. The following are the user's options in the menu
+public static final int EVERYTHING = 1, CALENDAR = 2, TIME = 3, DESCRIPTION = 4,
+ADD_APPOINTMENT = 5, ADD_CAL_FILE = 6, DEL_APPOINTMENT = 7, DEL_CAL = 8,
+SAVE_DATABASE = 9, LOAD_DATABASE = 10;
+
+/*
+EVERYTHING :    user wants to print the whole calendar
+CALENDAR:       user wants to print a specific calendar
+TIME:           user wants to look for a particular time in the appointments
+DESCRIPTION:    user wants to look for a description among the appointments
+ADD_APPOINTMENT:user wants to add an appointment to an existent calendar
+ADD_CAL_FILE:   user wants to add a calendar file to the program
+DEL_APPOINTMENT:user wants to delete an appointment from the database
+DEL_CAL:        user wants to delete a whole calendar from the database
+SAVE_DATABASE:  user wants to write all data to the files in the disk
+LOAD_DATABASE:  user wants to restore all the contents saved in the disk
+*/
+
+/******************************************************************************/
+/* Method: main                                                               */
+/* Purpose: executes the main actions of the program. Load files in the       */
+/*          database, creates corresponding calendars, presents MENU to the   */
+/*          user                                                              */          
+/* Parameters:                                                                */
+/*  String[] args:    string of arguments given by command line               */
+/* Returns: void                                                              */
+/******************************************************************************/
+
+    public static void main(String[] args) {
+        
+<span class="nc" id="L48">        Gui calendarGUI = new Gui();</span>
+<span class="nc" id="L49">        calendarGUI.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );</span>
+        
+<span class="nc" id="L51">        int index = 0; //indexes the loop for opening all the files                                       </span>
+        
+//        if (args.length == 0){
+//            System.out.println(&quot;No files given as arguments to the program.&quot;);
+//            System.exit(2); 
+//        }
+        
+        // Create a database for the program.
+<span class="nc" id="L59">        Database agenda = new Database(); //will contain all appointments</span>
+<span class="nc" id="L60">        agenda.assignGUI(calendarGUI);</span>
+<span class="nc" id="L61">        calendarGUI.assignDatabase(agenda); //copies the agenda to the GUI</span>
+<span class="nc" id="L62">        agenda.calendarSet.assignGUI(calendarGUI); //copy to the GUI</span>
+        
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        for ( ; index &lt; args.length ; index++)</span>
+        {
+<span class="nc bnc" id="L66" title="All 2 branches missed.">            if (agenda.loadFile(args[index]) == false) //tries to </span>
+            //load the file pointed by index
+<span class="nc" id="L68">            System.exit(1);</span>
+        }    
+                 
+<span class="nc" id="L71">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

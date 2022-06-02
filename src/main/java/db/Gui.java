@@ -298,7 +298,7 @@ public class Gui extends JFrame{
 /* (SUB-CLASS)                                                                */
 /******************************************************************************/
     
-    private class OptionHandler implements ItemListener{
+    private class OptionHandler implements ItemListener {
         public void itemStateChanged( ItemEvent iEvent )
         {
             if (iEvent.getSource( ) == everything){
@@ -468,8 +468,7 @@ public class Gui extends JFrame{
                     agenda.readFromDisk();     
                 }
                 }
-            }
-            
+            } 
         }    
     }
     

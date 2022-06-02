@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Gui.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JavaCalendar</a> &gt; <a href="index.source.html" class="el_package">db</a> &gt; <span class="el_source">Gui.java</span></div><h1>Gui.java</h1><pre class="source lang-java linenums">
+package db;
+
+/******************************************************************************/
+/* Guilherme Virgilio P. O. Simoes                                            */
+/* Login ID: pici7127                                                         */
+/* CS-102, Winter 2016                                                        */
+/* Programming Assignment 5                                                   */
+/* Graphical User Interface for accessing the various methods of the CS-102   */
+/* calendar program                                                           */
+/******************************************************************************/
+
+import javax.swing.*;
+
+//import prog5.ButtonHandler;
+//import db.Database;
+//import prog5.OptionHandler;
+
+import java.awt.*;
+import java.awt.event.*;
+
+public class Gui extends JFrame{
+    // Available commands. The following are the user's options in the menu
+    public static final int EVERYTHING = 1, CALENDAR = 2, TIME = 3, 
+    DESCRIPTION = 4, ADD_APPOINTMENT = 5, ADD_CAL_FILE = 6, DEL_APPOINTMENT = 7,
+    DEL_CAL = 8, SAVE_DATABASE = 9, LOAD_DATABASE = 10;    
+    /*
+    EVERYTHING :    user wants to print the whole calendar
+    CALENDAR:       user wants to print a specific calendar
+    TIME:           user wants to look for a particular time in the appointments
+    DESCRIPTION:    user wants to look for a description among the appointments
+    ADD_APPOINTMENT:user wants to add an appointment to an existent calendar
+    ADD_CAL_FILE:   user wants to add a calendar file to the program
+    DEL_APPOINTMENT:user wants to delete an appointment from the database
+    DEL_CAL:        user wants to delete a whole calendar from the database
+    SAVE_DATABASE:  user wants to write all data to the files in the disk
+    LOAD_DATABASE:  user wants to restore all the contents saved in the disk
+    */
+    
+<span class="nc" id="L40">    private final int INPUT_OPTIONS = 18; // number of input options available</span>
+<span class="nc" id="L41">    private final int OUTPUT_OPTIONS = 2; // number of output options available</span>
+    
+    /*
+    List of GUI elements needed for the program. They are grouped by functions
+    in order to make them more readable.
+    */
+    private Container contentBox; //container that will store the GUI elements
+    /*
+    Radio buttons will store each of the user inputs and therefore will be named
+    in a similar fashion as the constants that have been used in the previous
+    versions of the program.
+    */
+    private JRadioButton everything, calendar, time, description,
+            add_appointment, add_cal_file, del_appointment, del_cal, 
+            save_database, load_database;
+<span class="nc" id="L56">    private int currentSelection = EVERYTHING; // will store the current option</span>
+    private ButtonGroup optionGroup; //group of options for radio buttons
+    private JButton go; // button for confirming user option
+    /*
+    Output texts will store:
+    messageBoard: erro messages / warnings / messages
+    resultsBoard: data selected from the calendars    
+    */
+    private JTextArea messageBoard, resultsBoard;
+    
+    // Scroll panes will make the text fit on the screen
+    private JScrollPane messageScrollPane, resultsScrollPane;
+    
+    /*
+    Text fields will serve for the user to provide information that will be used
+    as inputs for the calendar searches.
+    fileNameField: calendar file name in the disk
+    calNameField: calendar name in the database
+    s(attribute)Field: start time or date
+    e(attribute)Field: end time
+    descField: description attribute of an appointment
+    */
+    private JTextField fileNameField, calNameField, sYearField, sMonthField,
+            sDayField, sHourField, sMinuteField, eHourField, eMinuteField,
+            descField;
+    /*
+    Labels will store useful information for the user to know about the text
+    fields below them.
+    titleLabel: CS-102 CALENDAR PROGRAM text
+    sTimeLabel: Marks the start date and time for an appointment
+    eTimeLabel: Marks the end date and time for an appointment
+    */
+    private JLabel titleLabel, sTimeLabel, eTimeLabel;  
+    /*
+    The following labels will serve solely for the purpose of separating date
+    data in a more readable way
+    */
+    private JLabel slash1, slash2, trace1, colon1, colon2;
+    
+    /*
+    Panels will make the interface more readable.
+    inputs: will contain lines of inputs
+    outputs: will contain lines of outputs
+    startFlow: will contain a line of inputs for a single appointment (start)
+    endFlow: will contain a line of inputs for a single appointment (end)
+    */
+    
+    private JPanel inputs, outputs, startFlow, endFlow;
+    
+    private Database agenda; //will contain a reference to the created database
+    
+    private String mBuffer; //contains data to be showed on screen (message)
+    private String rBuffer; //contains data to be showed on screen (results)
+    
+    public Gui(){
+        // Open the frame
+<span class="nc" id="L112">        super (&quot;CS-102 Calendar Program&quot;);</span>
+<span class="nc" id="L113">        contentBox = getContentPane();</span>
+<span class="nc" id="L114">        contentBox.setLayout(new GridLayout(1,2));</span>
+        
+<span class="nc" id="L116">        mountInputs(); // add all the input fields</span>
+               
+<span class="nc" id="L118">        mountOutputs(); // add all the output fields </span>
+
+        // Create event handler for radio buttons
+<span class="nc" id="L121">        OptionHandler groupOfOptions = new OptionHandler( );</span>
+        // Set all fields initially to disabled (everything will be selected)
+<span class="nc" id="L123">        groupOfOptions.setParameters(false, false, &quot;Start time:&quot;, false, false, </span>
+<span class="nc" id="L124">                false, false, false, EVERYTHING);</span>
+        // Add appropriate listeners       
+<span class="nc" id="L126">        everything.addItemListener( groupOfOptions );</span>
+<span class="nc" id="L127">        calendar.addItemListener( groupOfOptions );</span>
+<span class="nc" id="L128">        time.addItemListener( groupOfOptions );</span>
+<span class="nc" id="L129">        description.addItemListener( groupOfOptions );</span>
+<span class="nc" id="L130">        add_appointment.addItemListener( groupOfOptions );</span>
+<span class="nc" id="L131">        add_cal_file.addItemListener( groupOfOptions );</span>
+<span class="nc" id="L132">        del_appointment.addItemListener( groupOfOptions );</span>
+<span class="nc" id="L133">        del_cal.addItemListener( groupOfOptions );</span>
+<span class="nc" id="L134">        save_database.addItemListener( groupOfOptions );</span>
+<span class="nc" id="L135">        load_database.addItemListener( groupOfOptions );</span>
+        
+        // Create event handler for &quot;go&quot; button
+<span class="nc" id="L138">        ButtonHandler buttonConfirm = new ButtonHandler();</span>
+        // Add appropriate listener
+<span class="nc" id="L140">        go.addActionListener(buttonConfirm);</span>
+        
+<span class="nc" id="L142">        setSize(800,800); // default size for the screen</span>
+<span class="nc" id="L143">        setVisible(true); // show GUI contents</span>
+<span class="nc" id="L144">    }</span>
+
+/******************************************************************************/
+/* Method: mountInputs                                                       */
+/* Purpose: creates all the input GUI elements and adds them to the          */
+/*          interface                                                         */
+/*                                                                            */          
+/* Parameters:                                                                */
+/*  void                                                                      */        
+/* Returns: void                                                              */
+/******************************************************************************/     
+    void mountInputs(){
+        // Add inputs to the big screen
+<span class="nc" id="L157">        inputs = new JPanel();</span>
+<span class="nc" id="L158">        inputs.setLayout(new GridLayout(INPUT_OPTIONS,1));</span>
+<span class="nc" id="L159">        contentBox.add(inputs);</span>
+        
+        // Fill inputs with data
+<span class="nc" id="L162">        everything = new JRadioButton(&quot;Print all records&quot;, true);</span>
+<span class="nc" id="L163">        calendar = new JRadioButton(&quot;Print one calendar&quot;);</span>
+<span class="nc" id="L164">        time = new JRadioButton(&quot;Search for a time&quot;);</span>
+<span class="nc" id="L165">        description = new JRadioButton(&quot;Search for a description&quot;);</span>
+<span class="nc" id="L166">        add_appointment = new JRadioButton(&quot;Add new appointment&quot;);</span>
+<span class="nc" id="L167">        add_cal_file = new JRadioButton(&quot;Add calendar file to program&quot;);</span>
+<span class="nc" id="L168">        del_appointment = new JRadioButton(&quot;Delete appointment&quot;);</span>
+<span class="nc" id="L169">        del_cal = new JRadioButton(&quot;Delete calendar file&quot;);</span>
+<span class="nc" id="L170">        save_database = new JRadioButton(&quot;Save from database to disk&quot;);</span>
+<span class="nc" id="L171">        load_database = new JRadioButton(&quot;Load from disk to database&quot;);</span>
+        
+        // Add inputs that were just created
+<span class="nc" id="L174">        inputs.add(everything);</span>
+<span class="nc" id="L175">        inputs.add(calendar);</span>
+<span class="nc" id="L176">        inputs.add(time);</span>
+<span class="nc" id="L177">        inputs.add(description);</span>
+<span class="nc" id="L178">        inputs.add(add_appointment);</span>
+<span class="nc" id="L179">        inputs.add(add_cal_file);</span>
+<span class="nc" id="L180">        inputs.add(del_appointment);</span>
+<span class="nc" id="L181">        inputs.add(del_cal);</span>
+<span class="nc" id="L182">        inputs.add(save_database);</span>
+<span class="nc" id="L183">        inputs.add(load_database);</span>
+        
+        // Make them all part of the same group
+<span class="nc" id="L186">        optionGroup = new ButtonGroup();</span>
+<span class="nc" id="L187">        optionGroup.add(everything);</span>
+<span class="nc" id="L188">        optionGroup.add(calendar);</span>
+<span class="nc" id="L189">        optionGroup.add(time);</span>
+<span class="nc" id="L190">        optionGroup.add(description);</span>
+<span class="nc" id="L191">        optionGroup.add(add_appointment);</span>
+<span class="nc" id="L192">        optionGroup.add(add_cal_file);</span>
+<span class="nc" id="L193">        optionGroup.add(del_appointment);</span>
+<span class="nc" id="L194">        optionGroup.add(del_cal);</span>
+<span class="nc" id="L195">        optionGroup.add(save_database);</span>
+<span class="nc" id="L196">        optionGroup.add(load_database);</span>
+        
+        // Add fields for file name and calendar name
+<span class="nc" id="L199">        fileNameField = new JTextField(&quot;File name&quot;);</span>
+<span class="nc" id="L200">        calNameField =  new JTextField(&quot;Calendar name&quot;);</span>
+<span class="nc" id="L201">        inputs.add(fileNameField);</span>
+<span class="nc" id="L202">        inputs.add(calNameField);</span>
+        
+        // Add label and fields for start time
+<span class="nc" id="L205">        sTimeLabel = new JLabel(&quot;Start time:&quot;);</span>
+<span class="nc" id="L206">        inputs.add(sTimeLabel);</span>
+<span class="nc" id="L207">        startFlow = new JPanel();</span>
+<span class="nc" id="L208">        startFlow.setLayout(new FlowLayout());</span>
+        // Add date and time 
+<span class="nc" id="L210">        sYearField = new JTextField(&quot;YYYY&quot;);</span>
+<span class="nc" id="L211">        slash1 = new JLabel(&quot;/&quot;);</span>
+<span class="nc" id="L212">        sMonthField = new JTextField(&quot;MM&quot;);</span>
+<span class="nc" id="L213">        slash2 = new JLabel(&quot;/&quot;);</span>
+<span class="nc" id="L214">        sDayField = new JTextField(&quot;DD&quot;);</span>
+<span class="nc" id="L215">        trace1 = new JLabel(&quot;-&quot;);</span>
+<span class="nc" id="L216">        sHourField = new JTextField(&quot;HH&quot;);</span>
+<span class="nc" id="L217">        colon1 = new JLabel(&quot;:&quot;);</span>
+<span class="nc" id="L218">        sMinuteField = new JTextField(&quot;MM&quot;);</span>
+<span class="nc" id="L219">        startFlow.add(sYearField);</span>
+<span class="nc" id="L220">        startFlow.add(slash1);</span>
+<span class="nc" id="L221">        startFlow.add(sMonthField);</span>
+<span class="nc" id="L222">        startFlow.add(slash2);</span>
+<span class="nc" id="L223">        startFlow.add(sDayField);</span>
+<span class="nc" id="L224">        startFlow.add(trace1);</span>
+<span class="nc" id="L225">        startFlow.add(sHourField);</span>
+<span class="nc" id="L226">        startFlow.add(colon1);</span>
+<span class="nc" id="L227">        startFlow.add(sMinuteField);</span>
+        // Add start flow to the inputs panel 
+<span class="nc" id="L229">        inputs.add(startFlow);</span>
+        
+        // Add label and fields for end time
+<span class="nc" id="L232">        eTimeLabel = new JLabel(&quot;End time:&quot;);</span>
+<span class="nc" id="L233">        inputs.add(eTimeLabel);</span>
+<span class="nc" id="L234">        endFlow = new JPanel();</span>
+<span class="nc" id="L235">        endFlow.setLayout(new FlowLayout());</span>
+        // Add time 
+<span class="nc" id="L237">        eHourField = new JTextField(&quot;HH&quot;);</span>
+<span class="nc" id="L238">        colon2 = new JLabel(&quot;:&quot;);</span>
+<span class="nc" id="L239">        eMinuteField = new JTextField(&quot;MM&quot;);</span>
+<span class="nc" id="L240">        endFlow.add(eHourField);</span>
+<span class="nc" id="L241">        endFlow.add(colon2);</span>
+<span class="nc" id="L242">        endFlow.add(eMinuteField);</span>
+        // Add end flow to the inputs panel 
+<span class="nc" id="L244">        inputs.add(endFlow);</span>
+        
+        // Add a field for appointment description
+<span class="nc" id="L247">        descField = new JTextField(&quot;Description&quot;);</span>
+<span class="nc" id="L248">        inputs.add(descField);</span>
+        
+        // Add the final button
+<span class="nc" id="L251">        go = new JButton(&quot;GO&quot;);</span>
+<span class="nc" id="L252">        inputs.add(go);</span>
+<span class="nc" id="L253">    }</span>
+    
+/******************************************************************************/
+/* Method: mountOutputs                                                       */
+/* Purpose: creates all the output GUI elements and adds them to the          */
+/*          interface                                                         */
+/*                                                                            */          
+/* Parameters:                                                                */
+/*  void                                                                      */        
+/* Returns: void                                                              */
+/******************************************************************************/    
+    void mountOutputs(){
+        // Add outputs to the content box
+<span class="nc" id="L266">        outputs = new JPanel();</span>
+<span class="nc" id="L267">        outputs.setLayout(new GridLayout(OUTPUT_OPTIONS,1));</span>
+<span class="nc" id="L268">        contentBox.add(outputs);</span>
+        
+        // Add the message board. It is not editable
+<span class="nc" id="L271">        messageBoard = new JTextArea(&quot;Welcome to the CS-102 Calendar Program.&quot;</span>
+                + &quot;\n&quot;);
+<span class="nc" id="L273">        outputs.add(messageBoard);</span>
+<span class="nc" id="L274">        messageBoard.setEditable(false);</span>
+        // Add a scoll pane for expanding text area
+<span class="nc" id="L276">        messageScrollPane = new JScrollPane(messageBoard);</span>
+<span class="nc" id="L277">        messageScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.</span>
+                VERTICAL_SCROLLBAR_ALWAYS);
+<span class="nc" id="L279">        outputs.add(messageScrollPane); </span>
+        
+        // Add the results board.  It is not editable
+<span class="nc" id="L282">        resultsBoard = new JTextArea(&quot;Results:\n&quot;);</span>
+<span class="nc" id="L283">        resultsBoard.setEditable(false);</span>
+<span class="nc" id="L284">        outputs.add(resultsBoard);  </span>
+        // Add a scoll pane for expanding text area
+<span class="nc" id="L286">        resultsScrollPane = new JScrollPane(resultsBoard);</span>
+<span class="nc" id="L287">        resultsScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.</span>
+                VERTICAL_SCROLLBAR_ALWAYS);
+<span class="nc" id="L289">        outputs.add(resultsScrollPane);</span>
+<span class="nc" id="L290">    }</span>
+    
+/******************************************************************************/
+/* Guilherme Virgilio P. O. Simoes                                            */
+/* Login ID: pici7127                                                         */
+/* CS-102, Winter 2016                                                        */
+/* Programming Assignment 5                                                   */
+/* Listener for radio buttons to administer the GUI                           */
+/* (SUB-CLASS)                                                                */
+/******************************************************************************/
+    
+<span class="nc" id="L301">    private class OptionHandler implements ItemListener {</span>
+        public void itemStateChanged( ItemEvent iEvent )
+        {
+<span class="nc bnc" id="L304" title="All 2 branches missed.">            if (iEvent.getSource( ) == everything){</span>
+            // no arguments to ask for
+<span class="nc" id="L306">            setParameters(false, false, &quot;Start time:&quot;, false, false, false, </span>
+<span class="nc" id="L307">                    false, false, EVERYTHING);</span>
+<span class="nc" id="L308">            }</span>
+            
+<span class="nc bnc" id="L310" title="All 2 branches missed.">            else if (iEvent.getSource( ) == calendar){</span>
+            // Ask for calendar name only
+<span class="nc" id="L312">            setParameters(false, true, &quot;Start time:&quot;, false, false, false,</span>
+<span class="nc" id="L313">                    false, false, CALENDAR);</span>
+<span class="nc" id="L314">            }</span>
+            
+<span class="nc bnc" id="L316" title="All 2 branches missed.">            else if (iEvent.getSource( ) == time){</span>
+            // Ask for date and time
+<span class="nc" id="L318">            setParameters(false, true, &quot;Desired time:&quot;, true, true, true, false, </span>
+<span class="nc" id="L319">                    false, TIME);</span>
+<span class="nc" id="L320">            }</span>
+            
+<span class="nc bnc" id="L322" title="All 2 branches missed.">            else if (iEvent.getSource( ) == description){</span>
+            // Ask for description only
+<span class="nc" id="L324">            setParameters(false, false, &quot;Start time:&quot;, false, false, false,</span>
+<span class="nc" id="L325">                    false, true, DESCRIPTION);</span>
+<span class="nc" id="L326">            }</span>
+            
+<span class="nc bnc" id="L328" title="All 2 branches missed.">            else if (iEvent.getSource( ) == add_appointment){</span>
+            // Ask for cal name, date, start and end time, description
+<span class="nc" id="L330">            setParameters(false, true, &quot;Start time:&quot;, true, true, true,</span>
+<span class="nc" id="L331">                    true, true, ADD_APPOINTMENT);</span>
+<span class="nc" id="L332">            }</span>
+            
+<span class="nc bnc" id="L334" title="All 2 branches missed.">            else if (iEvent.getSource( ) == add_cal_file){</span>
+            // Ask for calendar file only
+<span class="nc" id="L336">            setParameters(true, false, &quot;Start time:&quot;, false, false, false,</span>
+<span class="nc" id="L337">                    false, false, ADD_CAL_FILE);</span>
+<span class="nc" id="L338">            }</span>
+            
+<span class="nc bnc" id="L340" title="All 2 branches missed.">            else if (iEvent.getSource( ) == del_appointment){</span>
+            // Ask for everything except calendar file
+<span class="nc" id="L342">            setParameters(false, true, &quot;Start time:&quot;, true, true, true,</span>
+<span class="nc" id="L343">                    true, true, DEL_APPOINTMENT);</span>
+<span class="nc" id="L344">            }</span>
+            
+<span class="nc bnc" id="L346" title="All 2 branches missed.">            else if (iEvent.getSource( ) == del_cal){</span>
+            // Ask for calendar name only
+<span class="nc" id="L348">            setParameters(false, true, &quot;Start time:&quot;, false, false, false,</span>
+<span class="nc" id="L349">                    false, false, DEL_CAL);</span>
+<span class="nc" id="L350">            }</span>
+            
+<span class="nc bnc" id="L352" title="All 2 branches missed.">            else if (iEvent.getSource( ) == save_database){</span>
+            // no arguments to ask for
+<span class="nc" id="L354">            setParameters(false, false, &quot;Start time:&quot;, false, false, false, </span>
+<span class="nc" id="L355">                    false, false, SAVE_DATABASE);</span>
+<span class="nc" id="L356">            }</span>
+            
+<span class="nc bnc" id="L358" title="All 2 branches missed.">            else if (iEvent.getSource( ) == load_database){</span>
+            // no arguments to ask for
+<span class="nc" id="L360">            setParameters(false, false, &quot;Start time:&quot;, false, false, false, </span>
+<span class="nc" id="L361">                    false, false, LOAD_DATABASE);</span>
+            }     
+<span class="nc" id="L363">        }</span>
+        
+/******************************************************************************/
+/* Method: setParameters                                                      */
+/* Purpose: makes it easier to set the input boxes for the GUI. Activates,    */
+/*          de-activates, sets text according to parameters                   */
+/*                                                                            */          
+/* Parameters:                                                                */
+/*  boolean file:     file name(activate?)                                    */
+/*  boolean cal:      calendar name                                           */
+/*  String timeLabel: new Label for start time input(activate?)               */
+/*  boolean sTLabel:  start time label(activate?)                             */
+/*  boolean sDate:    start date(activate?)                                   */
+/*  boolean sTime:    start time(activate?)                                   */
+/*  boolean eTime:    end time(activate?)                                     */
+/*  boolean desc:     appointment description(activate?)                      */
+/*  int sel:          selected item                                           */        
+/* Returns: void                                                              */
+/******************************************************************************/
+        private void setParameters(boolean file, boolean cal, String timeLabel,
+                boolean sTLabel, boolean sDate, boolean sTime, boolean eTime,
+                boolean desc, int sel){
+<span class="nc" id="L385">            fileNameField.setEnabled(file);</span>
+<span class="nc" id="L386">            calNameField.setEnabled(cal);</span>
+<span class="nc" id="L387">            sTimeLabel.setText(timeLabel);</span>
+<span class="nc" id="L388">            sTimeLabel.setEnabled(sTLabel);</span>
+<span class="nc" id="L389">            sYearField.setEnabled(sDate);</span>
+<span class="nc" id="L390">            sMonthField.setEnabled(sDate);</span>
+<span class="nc" id="L391">            sDayField.setEnabled(sDate);</span>
+<span class="nc" id="L392">            sHourField.setEnabled(sTime);</span>
+<span class="nc" id="L393">            sMinuteField.setEnabled(sTime);</span>
+<span class="nc" id="L394">            eTimeLabel.setEnabled(eTime);</span>
+<span class="nc" id="L395">            eHourField.setEnabled(eTime);</span>
+<span class="nc" id="L396">            eMinuteField.setEnabled(eTime);</span>
+<span class="nc" id="L397">            descField.setEnabled(desc);</span>
+<span class="nc" id="L398">            currentSelection = sel;           </span>
+<span class="nc" id="L399">        }</span>
+    }
+    
+/******************************************************************************/
+/* Guilherme Virgilio P. O. Simoes                                            */
+/* Login ID: pici7127                                                         */
+/* CS-102, Winter 2016                                                        */
+/* Programming Assignment 5                                                   */
+/* Listener for the &quot;go&quot; button to confirm user input                         */
+/* (SUB-CLASS)                                                                */
+/******************************************************************************/
+    
+<span class="nc" id="L411">    private class ButtonHandler implements ActionListener{</span>
+        public void actionPerformed( ActionEvent aEvent )
+        {
+<span class="nc bnc" id="L414" title="All 2 branches missed.">            if (aEvent.getSource( ) == go){</span>
+<span class="nc" id="L415">                clearGui(MessageBoardOptions.MESSAGE.getOption());</span>
+<span class="nc" id="L416">                clearGui(MessageBoardOptions.RESULTS.getOption());</span>
+<span class="nc bnc" id="L417" title="All 11 branches missed.">                switch (currentSelection){</span>
+                case (EVERYTHING):{
+<span class="nc" id="L419">                    agenda.wholeDatabase(currentSelection, &quot;&quot;);</span>
+<span class="nc" id="L420">                } break;</span>
+                
+                case (CALENDAR):{
+<span class="nc" id="L423">                    agenda.printACalendar(currentSelection, </span>
+<span class="nc" id="L424">                        calNameField.getText());</span>
+<span class="nc" id="L425">                } break;</span>
+                
+                case (TIME):{
+<span class="nc" id="L428">                    agenda.lookForATime(currentSelection, </span>
+<span class="nc" id="L429">                            sYearField.getText() + sMonthField.getText() +</span>
+<span class="nc" id="L430">                            sDayField.getText(), sHourField.getText() +</span>
+<span class="nc" id="L431">                            sMinuteField.getText() );</span>
+<span class="nc" id="L432">                }break;</span>
+                
+                case (DESCRIPTION):{
+<span class="nc" id="L435">                    agenda.lookForADescription(currentSelection, </span>
+<span class="nc" id="L436">                            descField.getText());</span>
+<span class="nc" id="L437">                } break;</span>
+                
+                case (ADD_APPOINTMENT):{
+<span class="nc" id="L440">                    agenda.addNewAppointment(calNameField.getText(),</span>
+<span class="nc" id="L441">                            sYearField.getText() + sMonthField.getText() +</span>
+<span class="nc" id="L442">                            sDayField.getText(), sHourField.getText() +</span>
+<span class="nc" id="L443">                            sMinuteField.getText(),eHourField.getText() +</span>
+<span class="nc" id="L444">                            eMinuteField.getText(), descField.getText());</span>
+<span class="nc" id="L445">                }break;</span>
+                
+                case (ADD_CAL_FILE):{
+<span class="nc" id="L448">                    agenda.addNewCalendar(fileNameField.getText());     </span>
+<span class="nc" id="L449">                }break;</span>
+                
+                 case (DEL_APPOINTMENT):{
+<span class="nc" id="L452">                    agenda.delAppointment(calNameField.getText(),</span>
+<span class="nc" id="L453">                            sYearField.getText() + sMonthField.getText() +</span>
+<span class="nc" id="L454">                            sDayField.getText(), sHourField.getText() +</span>
+<span class="nc" id="L455">                            sMinuteField.getText(),eHourField.getText() +</span>
+<span class="nc" id="L456">                            eMinuteField.getText(), descField.getText());</span>
+<span class="nc" id="L457">                }break;</span>
+                
+                case (DEL_CAL):{
+<span class="nc" id="L460">                    agenda.delCalendar(calNameField.getText());     </span>
+<span class="nc" id="L461">                }break;</span>
+
+                case (SAVE_DATABASE):{
+<span class="nc" id="L464">                    agenda.writeToDisk();     </span>
+<span class="nc" id="L465">                }break;</span>
+
+                case (LOAD_DATABASE):{
+<span class="nc" id="L468">                    agenda.readFromDisk();     </span>
+                }
+                }
+            } 
+<span class="nc" id="L472">        }    </span>
+    }
+    
+/******************************************************************************/
+/* Method: assignDatabase                                                     */
+/* Purpose: copies a reference to a database and returns it so that it can be */
+/*          re-assigned to the GUI and seen from this class.                  */
+/*                                                                            */          
+/* Parameters:                                                                */
+/*  Database copying: reference to the database being copied to the GUI       */     
+/* Returns: void                                                              */
+/******************************************************************************/    
+    public void assignDatabase (Database copying){
+<span class="nc" id="L485">        agenda = copying;</span>
+<span class="nc" id="L486">    }</span>
+    
+/******************************************************************************/
+/* Method: printToGui                                                         */
+/* Purpose: prints to the boards of the interface                             */
+/*                          (prints to buffer)                                */          
+/* Parameters:                                                                */
+/*  int    boardID:    MESSAGE for writing to the message board               */ 
+/*                     RESULTS for writing to the results board               */     
+/*  String text:       text to be appended to the board's previous contents   */     
+/* Returns: void                                                              */
+/******************************************************************************/    
+    public void printToGui (int boardID, String text){
+<span class="nc bnc" id="L499" title="All 2 branches missed.">        if(boardID == MessageBoardOptions.MESSAGE.getOption())</span>
+<span class="nc" id="L500">            mBuffer += text;</span>
+<span class="nc bnc" id="L501" title="All 2 branches missed.">        else if (boardID == MessageBoardOptions.RESULTS.getOption())</span>
+<span class="nc" id="L502">            rBuffer += text;</span>
+<span class="nc" id="L503">    }</span>
+    
+/******************************************************************************/
+/* Method: bufferToGui                                                        */
+/* Purpose: prints to the boards of the interface                             */
+/*                (whatever is in the buffer)                                 */          
+/* Parameters:                                                                */
+/*  int    boardID:    MESSAGE for writing to the message board               */ 
+/*                     RESULTS for writing to the results board               */     
+/* Returns: void                                                              */
+/******************************************************************************/    
+    public void bufferToGui (int boardID){
+<span class="nc bnc" id="L515" title="All 2 branches missed.">        if(boardID == MessageBoardOptions.MESSAGE.getOption())</span>
+<span class="nc" id="L516">            messageBoard.setText(mBuffer);</span>
+<span class="nc bnc" id="L517" title="All 2 branches missed.">        else if (boardID == MessageBoardOptions.RESULTS.getOption())</span>
+<span class="nc" id="L518">            resultsBoard.setText(rBuffer);</span>
+<span class="nc" id="L519">    }    </span>
+    
+/******************************************************************************/
+/* Method: clearGui                                                           */
+/* Purpose: clear one of the boards of the interface                          */
+/*                                                                            */          
+/* Parameters:                                                                */
+/*  int    boardID:    MESSAGE for clearing the message board                 */ 
+/*                     RESULTS for clearing the results board                 */          
+/* Returns: void                                                              */
+/******************************************************************************/    
+    public void clearGui (int boardID){
+<span class="nc bnc" id="L531" title="All 2 branches missed.">        if(boardID == MessageBoardOptions.MESSAGE.getOption()){</span>
+<span class="nc" id="L532">            messageBoard.setText(&quot;Welcome to the CS-102 Calendar Program.\n&quot;);</span>
+<span class="nc" id="L533">            mBuffer = &quot;&quot;;</span>
+<span class="nc" id="L534">        }</span>
+<span class="nc bnc" id="L535" title="All 2 branches missed.">        else if (boardID == MessageBoardOptions.RESULTS.getOption()){</span>
+<span class="nc" id="L536">            resultsBoard.setText(&quot;Results:\n&quot;);</span>
+<span class="nc" id="L537">            rBuffer = &quot;&quot;;</span>
+        }    
+<span class="nc" id="L539">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

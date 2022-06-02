@@ -1,0 +1,69 @@
+Campeonato Mineiro 2016
+20160131/1700/1900/(Mineirao) Cruzeiro X URT
+20160305/1600/1800/(Fariao) Guarani-MG X URT
+20160306/1600/1800/(Independencia) Atletico-MG X Tombense
+20160306/1600/1800/(Municipal Juiz de Fora) Tupi-MG X Villa Nova-MG
+20160306/1600/1800/(Municipal de Varginha) Boa Esporte X Uberlandia
+20160306/1830/2030/(Ronaldao) Caldense X Cruzeiro
+20160327/1100/1300/(Elias Arbex) Tricordiano X Villa Nova-MG
+20160312/1700/1900/(Tombos) Tombense X Guarani-MG
+20160403/1830/2030/(Independencia) America-MG X Boa Esporte
+20160313/1600/1800/(Zama Maciel) URT X Tricordiano
+20160131/1700/1900/(Ronaldao) Caldense X Boa Esporte
+20160131/1700/1900/(Castor Cifuentes) Villa Nova-MG X Tombense
+20160131/1930/2130/(Independencia) America-MG X Tupi-MG
+20160221/1700/1900/(Parque do Sabia) Uberlandia X Villa Nova-MG
+20160131/1930/2130/(Parque do Sabia) Uberlandia X Atletico-MG
+20160204/1600/1800/(Fariao) Guarani-MG X America-MG
+20160209/2000/2200/(Elias Arbex) Tricordiano X Guarani-MG
+20160203/1930/2130/(Soares de Azevedo) Tombense X Cruzeiro
+20160206/1100/1300/(Municipal de Varginha) Boa Esporte X Tricordiano
+20160206/1700/1900/(Zama Maciel) URT X Villa Nova-MG
+20160206/1700/1900/(Municipal Juiz de Fora) Tupi-MG X Uberlandia
+20160210/2145/2345/(Independencia) Atletico-MG X Caldense
+20160213/1700/1900/(Fariao) Guarani-MG X Atletico-MG
+20160213/1700/1900/(Tombos) Tombense X Tricordiano
+20160327/1600/1800/(Zama Maciel) URT X Tupi-MG
+20160402/1600/1800/(Mineirao) Villa Nova-MG X Atletico-MG
+20160402/1900/2100/(Ronaldao) Caldense X Tombense
+20160403/1100/1300/(Elias Arbex) Tricordiano X Tupi-MG
+20160403/1600/1800/(Parque do Sabia) Uberlandia X URT
+20160220/1700/1900/(Independencia) America-MG X Caldense
+20160220/1930/2130/(Elias Arbex) Tricordiano X Cruzeiro
+20160221/1700/1900/(Zama Maciel) URT X Tombense
+20160410/1600/1800/(Independencia) Atletico-MG X Tricordiano
+20160410/1600/1800/(Ronaldao) Guarani-MG X Villa Nova-MG
+20160410/1600/1800/(Zama Maciel) URT X America-MG
+20160410/1600/1800/(Tombos) Tombense X Uberlandia
+20160410/1600/1800/(Municipal de Varginha) Boa Esporte X Cruzeiro
+20160410/1600/1800/(Municipal Juiz de Fora) Tupi-MG X Caldense
+20160221/1700/1900/(Independencia) Atletico-MG X Boa Esporte
+20160221/1700/1900/(Municipal Juiz de Fora) Tupi-MG X Guarani-MG
+20160227/1700/1900/(Zama Maciel) URT X Atletico-MG
+20160227/1700/1900/(Tombos) Tombense X Tupi-MG
+20160213/1900/2100/(Ronaldao) Caldense X Uberlandia
+20160214/1700/1900/(Mineirao) Cruzeiro X Tupi-MG
+20160214/1700/1900/(Municipal de Varginha) Boa Esporte X URT
+20160214/1930/2130/(Independencia) Villa Nova-MG X America-MG
+20160326/1600/1800/(Independencia) America-MG X Uberlandia
+20160326/1600/1800/(Fariao) Guarani-MG X Caldense
+20160327/1600/1800/(Independencia) Atletico-MG X Cruzeiro
+20160327/1600/1800/(Municipal de Varginha) Boa Esporte X Tombense
+20160227/1900/2100/(Ronaldao) Caldense X Tricordiano
+20160228/1700/1900/(Parque do Sabia) Uberlandia X Guarani-MG
+20160228/1700/1900/(Castor Cifuentes) Villa Nova-MG X Boa Esporte
+20160228/1700/1900/(Mineirao) Cruzeiro X America-MG
+20160305/1600/1800/(Elias Arbex) Tricordiano X America-MG
+20160313/1600/1800/(Castor Cifuentes) Villa Nova-MG X Caldense
+20160313/1600/1800/(Independencia) America-MG X Atletico-MG
+20160313/1600/1800/(Municipal de Varginha) Boa Esporte X Tupi-MG
+20160313/1830/2030/(Mineirao) Cruzeiro X Uberlandia
+20160319/1600/1800/(Fariao) Guarani-MG X Boa Esporte
+20160319/1600/1800/(Tombos) Tombense X America-MG
+20160319/1900/2100/(Ronaldao) Caldense X URT
+20160320/1600/1800/(Mineirao) Cruzeiro X Villa Nova-MG
+20160320/1600/1800/(Parque do Sabia) Uberlandia X Tricordiano
+20160320/1830/2030/(Municipal Juiz de Fora) Tupi-MG X Atletico-MG
+20160403/1600/1800/(Mineirao) Cruzeiro X Guarani-MG
+
+

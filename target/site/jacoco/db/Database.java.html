@@ -1,0 +1,752 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Database.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JavaCalendar</a> &gt; <a href="index.source.html" class="el_package">db</a> &gt; <span class="el_source">Database.java</span></div><h1>Database.java</h1><pre class="source lang-java linenums">package db;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+import javax.swing.JOptionPane;
+
+import appointments.Appointment;
+import appointments.AppointmentNode;
+
+import calendars.Calendar;
+import calendars.CalendarTree;
+import calendars.CalendarTreeNode;
+
+/******************************************************************************/
+/* Guilherme Virgilio P. O. Simoes                                            */
+/* Login ID: pici7127                                                         */
+/* CS-102, Winter 2016                                                        */
+/* Programming Assignment 5                                                   */
+/* Appointment calendar: collection of methods that manage the appointment    */
+/* objects. Collection of Calendar objects that store appointment instances   */
+/******************************************************************************/
+
+<span class="nc" id="L28">public class Database {</span>
+
+Gui thisGUI; //interface assigned to this database
+
+    // Make list of calendar objects that compose the database
+<span class="nc" id="L33">    public CalendarTree calendarSet = new CalendarTree();</span>
+
+/******************************************************************************/
+/* Method: assignGUI                                                          */
+/* Purpose: copies a reference to a database and returns it so that it can be */
+/*          re-assigned to the GUI and seen from this class.                  */
+/*                                                                            */          
+/* Parameters:                                                                */
+/*  Database copying: reference to the database being copied to the GUI       */     
+/* Returns: void                                                              */
+/******************************************************************************/    
+    public void assignGUI (Gui copying){
+<span class="nc" id="L45">        thisGUI = copying;</span>
+<span class="nc" id="L46">    }</span>
+    
+/******************************************************************************/
+/* Method: isEmpty                                                            */
+/* Purpose: tells if the list is empty (i.e.) if its number of elements is    */
+/*          zero                                                              */
+/* Parameters:                                                                */
+/*  void                                                                      */
+/* Returns: Boolean:    is the list empty?                                    */
+/******************************************************************************/
+    
+    public boolean isEmpty(){
+<span class="nc" id="L58">        return calendarSet.isEmpty();</span>
+    }
+
+/******************************************************************************/
+/* Method: size                                                               */
+/* Purpose: loops through the list and counts the number of elements          */
+/*                                                                            */
+/* Parameters:                                                                */
+/*  void                                                                      */
+/* Returns: int:        number of elements in the list                        */
+/******************************************************************************/    
+    
+    public int size(){
+<span class="nc" id="L71">        return calendarSet.size();</span>
+    }
+
+/******************************************************************************/
+/* Method: add                                                                */
+/* Purpose: adds a calendar instance to the list at the necessary             */
+/*          position so that it remains in sorted order                       */
+/* Parameters:                                                                */
+/*  Calendar item: item that needs to be included in the list                 */
+/* Returns: void                                                              */
+/******************************************************************************/ 
+    
+    void add(Calendar item){     
+<span class="nc" id="L84">        calendarSet.add(item);               </span>
+<span class="nc" id="L85">    }</span>
+
+/******************************************************************************/
+/* Method: addToCalendar                                                      */
+/* Purpose: adds an appointment instance to an existing calendar in the list  */
+/*                                                                            */
+/* Parameters:                                                                */
+/*  CalendarNode calendar:         the calendar object                        */
+/*  String date:                   date of the appointment                    */    
+/*  String startTIme:              start time of the appointment              */
+/*  String endTime:                end time of the appointment                */
+/*  String description:            given description to the appointment       */
+/*  Gui    userGUI:                interface to be printed on                 */    
+/* Returns: boolean:               Created and attached appointment?          */
+/******************************************************************************/
+    
+    boolean addToCalendar (Calendar calendar, String date, String startTime, 
+                           String endTime, String description){
+<span class="nc" id="L103">        AppointmentNode temp = new AppointmentNode (new Appointment()); </span>
+        //create temporary appointment 
+<span class="nc" id="L105">        boolean legit = false; //are appointment parameters legal?</span>
+<span class="nc" id="L106">            temp.getDatum().changeCalendarName(calendar.getCalendarName()); </span>
+            //set name
+<span class="nc" id="L108">            legit = temp.getDatum().setDate(date);</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">            if (legit == true)     //means it is a valid date</span>
+<span class="nc" id="L110">                legit = temp.getDatum().setTime(startTime, endTime);</span>
+<span class="nc" id="L111">            temp.getDatum().setDescription(description);</span>
+<span class="nc" id="L112">            temp.getDatum().setGUI(thisGUI);</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">            if (legit == true) {</span>
+<span class="nc" id="L114">                calendar.add(temp);</span>
+<span class="nc" id="L115">                return true;</span>
+            }
+            else{
+<span class="nc" id="L118">                thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), &quot;**** &quot; + calendar.getCalendarName()</span>
+<span class="nc" id="L119">                    + &quot;'s \n&quot; +  &quot;**** '&quot; + temp.getDatum().getDescription() </span>
+<span class="nc" id="L120">                    + &quot;' not included!\n&quot;);</span>
+<span class="nc" id="L121">                thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());</span>
+<span class="nc" id="L122">                return false;</span>
+            }
+    }
+    
+/******************************************************************************/
+/* Method: deleteFromCalendar                                                 */
+/* Purpose: deletes an appointment that exists in the provided list           */
+/*                                                                            */
+/* Parameters:                                                                */
+/*  CalendarNode calendar:         the calendar object                        */
+/*  String date:                   date of the appointment                    */    
+/*  String startTIme:              start time of the appointment              */
+/*  String endTime:                end time of the appointment                */
+/*  String description:            given description to the appointment       */   
+/* Returns: boolean:               Created and attached appointment?          */
+/******************************************************************************/
+    
+    boolean deleteFromCalendar (Calendar calendar, String date, String startTime 
+                           ,String endTime, String descr){
+        //Loop throught the list to find the desired appointment
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        for(int index = 0 ; index &lt; calendar.size(); index++){</span>
+<span class="nc" id="L143">            String answer = &quot;&quot;; //stores user answer</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">            if(calendar.get(index).getDate().equals(date))</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">               if(calendar.get(index).getStartTime().equals(startTime))</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">                   if(calendar.get(index).getEndTime().equals(endTime))</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">                       if(calendar.get(index).getDescription().contains(descr)){</span>
+<span class="nc" id="L148">                          calendar.get(index).print();</span>
+                            //keep prompting user until they answer correctly
+<span class="nc bnc" id="L150" title="All 2 branches missed.">                            while(answer.compareTo(&quot;Y&quot;) != 0 &amp;&amp; </span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">                                answer.compareTo(&quot;N&quot;) != 0 &amp;&amp; </span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">                                answer.compareTo(&quot;y&quot;) != 0 &amp;&amp; </span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">                                answer.compareTo(&quot;n&quot;) != 0){</span>
+<span class="nc" id="L154">                            answer = JOptionPane.showInputDialog(</span>
+<span class="nc" id="L155">                                    &quot;Are you sure you want to delete&quot;</span>
+                                  + &quot; the appointment above? Y = yes, N = no&quot;);                            
+                          }
+<span class="nc bnc" id="L158" title="All 2 branches missed.">                          if(answer.toLowerCase().compareTo(&quot;n&quot;) == 0)</span>
+<span class="nc" id="L159">                              return false;</span>
+<span class="nc" id="L160">                          calendar.remove(index);</span>
+<span class="nc" id="L161">                          return true;</span>
+                       }         
+        }
+<span class="nc" id="L164">        thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), &quot;None of the appointments match the &quot;</span>
+                + &quot;description.&quot;);
+<span class="nc" id="L166">        thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());</span>
+<span class="nc" id="L167">        return false;</span>
+    }   
+   
+    
+/******************************************************************************/
+/* Method: remove                                                             */
+/* Purpose: removes a calendar from the list                                  */
+/*                                                                            */
+/* Parameters:                                                                */
+/*  Calendar cal:    calendar to be removed from the list                     */
+/* Returns: void                                                              */
+/******************************************************************************/    
+
+    public void remove (Calendar cal){
+<span class="nc" id="L181">	calendarSet.remove(cal);</span>
+<span class="nc" id="L182">}</span>
+    
+/******************************************************************************/
+/* Method: removeAll                                                          */
+/* Purpose: removes all calendars from the tree                               */
+/*                                                                            */
+/* Parameters:                                                                */
+/*  void                                                                      */
+/* Returns: void                                                              */
+/******************************************************************************/ 
+
+public void removeAll(){
+<span class="nc" id="L194">	calendarSet.clear();</span>
+<span class="nc" id="L195">}</span>
+    
+/******************************************************************************/
+/* Method: search                                                             */
+/* Purpose: search in the list for a particular appointment or type of        */
+/* appointment and print all matches                                          */
+/* Parameters:                                                                */
+/* int: option    Decides the type of search (name, time, description...)     */
+/* String: value  Item that will be looked for in the search method           */
+/* Returns: int   Number of matches                                           */
+/******************************************************************************/
+//List of what the user can choose to look for in the calendar    
+public static final int EVERYTHING = 1, CALENDAR = 2, TIME = 3, DESCRIPTION = 4;
+/*
+EVERYTHING :    user wants to print all the calendars
+CALENDAR:       user wants to print a specific calendar
+TIME:           user wants to look for a particular time in the appointments
+DESCRIPTION:    user wants to look for a description among the appointments
+*/
+
+    public void search (int theOption, String lookedFor){
+<span class="nc" id="L216">        int count = 0; </span>
+<span class="nc bnc" id="L217" title="All 5 branches missed.">        switch (theOption){</span>
+            case EVERYTHING:{
+            /* The user wants to print all calendars. Loop through the database 
+            and print everything.  */
+<span class="nc" id="L221">            calendarSet.print();</span>
+            //calendarSet.collectPrint(thisGUI);
+<span class="nc" id="L223">            }break;</span>
+            
+            case CALENDAR:{
+            /* The user wants to print only one calendar. Look for it */   
+            try{
+<span class="nc" id="L228">                count += calendarSet.search(lookedFor).getDatum().</span>
+<span class="nc" id="L229">                        printCalendar();</span>
+<span class="nc" id="L230">                        thisGUI.bufferToGui(MessageBoardOptions.RESULTS.getOption());</span>
+<span class="nc" id="L231">            }   catch(NoSuchElementException exc){</span>
+<span class="nc" id="L232">                    thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), &quot;The requested calendar does &quot;</span>
+                            + &quot;not exist&quot;);
+<span class="nc" id="L234">                    thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());</span>
+<span class="nc" id="L235">                    break;</span>
+            }            
+<span class="nc bnc" id="L237" title="All 2 branches missed.">                if (count == 0){</span>
+<span class="nc" id="L238">                    thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), &quot;The requested calendar is &quot;</span>
+                            + &quot;empty.&quot;);
+<span class="nc" id="L240">                    thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());</span>
+                }
+<span class="nc" id="L242">            }break;</span>
+            
+            case TIME:{
+            /* The user wants to look for a specific time. Loop through the 
+            agenda and look for lesser start times with greater end times */
+            try{
+            //Create substrings representing date and time
+<span class="nc" id="L249">            String subDate = lookedFor.substring(0, 8);</span>
+            //part of the string that represents the date
+<span class="nc" id="L251">            String subTime = lookedFor.substring(8, 12);</span>
+            //part of the string that represents the time
+<span class="nc" id="L253">            int subTimeInt = Integer.parseInt(subTime);</span>
+            //parseInt the string that represents the time
+            //it will be used by the lookForTime method
+<span class="nc bnc" id="L256" title="All 2 branches missed.">            if (traverseTime(subDate, subTimeInt) == false){</span>
+<span class="nc" id="L257">                thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), &quot;The requested time is not included &quot;</span>
+                        + &quot;in any of the appointments.&quot;);
+<span class="nc" id="L259">                thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());</span>
+            }
+            //traverseTime(subDate, subTimeInt);
+<span class="nc" id="L262">            }catch(StringIndexOutOfBoundsException exc){</span>
+<span class="nc" id="L263">                thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), &quot;The requested time is not included &quot;</span>
+                        + &quot;in any of the appointments.&quot;);
+<span class="nc" id="L265">                thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());</span>
+            }
+
+<span class="nc" id="L268">            }break;</span>
+            
+            case DESCRIPTION:{
+            /*  Look for descriptions among the appointments. Similar to the 
+                case TIME. Here, an empty search means the entire list of 
+                appointments, such as an empty search box. It could also show no
+                results. It is NOT case sensitive. */
+                                        
+<span class="nc bnc" id="L276" title="All 2 branches missed.">            if (traverseDescription(lookedFor) == false){</span>
+<span class="nc" id="L277">                thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), &quot;The requested descrption was not &quot;</span>
+                        + &quot;found in any of the appointments.&quot;);
+<span class="nc" id="L279">                thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());</span>
+            }
+            }break;            
+        }
+<span class="nc" id="L283">    }   </span>
+
+/******************************************************************************/
+/* Method: getCalendarSet                                                     */
+/* Purpose: gets feature                                                      */
+/*                                                                            */
+/* Parameters:                                                                */
+/* void                                                                       */
+/* Returns: CalendarTree: the calendar tree                                   */
+/******************************************************************************/    
+    public CalendarTree getCalendarSet(){
+<span class="nc" id="L294">        return calendarSet;</span>
+    }
+    
+/******************************************************************************/
+/* Method: traverseTime                                                       */
+/* Purpose: traverses the tree and apply the method lookForTime in each of the*/
+/*          nodes.                                                            */
+/* Parameters:                                                                */
+/* String subDate:          substring for date                                */
+/* int    subTimeInt:       parsed substring for time                         */
+/*  CalendarTreeNode current:  the tree's root (helper method only)           */     
+/* Returns: boolean:    found value?                                          */
+/******************************************************************************/        
+    boolean traverseTime(String subDate, int subTimeInt){
+<span class="nc" id="L308">        return traverseTime(calendarSet.getRoot(), subDate, subTimeInt);</span>
+    } 
+    boolean traverseTime(CalendarTreeNode current, String subDate, 
+            int subTimeInt){
+<span class="nc bnc" id="L312" title="All 2 branches missed.">        if (current == null) return false;</span>
+        /* If left, middle and right functions return false, there is no element 
+        to be found */
+<span class="nc bnc" id="L315" title="All 2 branches missed.">	if(traverseTime(current.getLeft(), subDate, subTimeInt) == </span>
+                false &amp;&amp;            
+<span class="nc bnc" id="L317" title="All 2 branches missed.">	current.getDatum().lookForTime(subDate, subTimeInt) == 0 &amp;&amp;   </span>
+<span class="nc bnc" id="L318" title="All 2 branches missed.">	traverseTime(current.getRight(), subDate, subTimeInt) == false)</span>
+<span class="nc" id="L319">            return false;</span>
+        else{
+<span class="nc" id="L321">            thisGUI.bufferToGui(MessageBoardOptions.RESULTS.getOption());</span>
+<span class="nc" id="L322">            return true;</span>
+        }
+            
+    }
+       
+/******************************************************************************/
+/* Method: traverseDescription                                                */
+/* Purpose: traverses the tree and apply the method lookForTime in each of the*/
+/*          nodes.                                                            */
+/* Parameters:                                                                */
+/* String lookedFor:          substring for date                              */
+/*  CalendarTreeNode current:  the tree's root (helper method only)           */    
+/* Returns: boolean:    found value?                                          */
+/******************************************************************************/        
+    boolean traverseDescription(String lookedFor){
+<span class="nc" id="L337">        return traverseDescription (calendarSet.getRoot(), lookedFor);</span>
+    }
+    boolean traverseDescription(CalendarTreeNode current, String lookedFor){
+<span class="nc bnc" id="L340" title="All 2 branches missed.">        if (current == null) return false;</span>
+        /* If left, middle and right functions return false, there is no element
+        to be found */        
+<span class="nc bnc" id="L343" title="All 2 branches missed.">	if(traverseDescription(current.getLeft(), lookedFor) == </span>
+                false &amp;&amp;            
+<span class="nc bnc" id="L345" title="All 2 branches missed.">	current.getDatum().printBasedOnDescription(lookedFor) == 0 &amp;&amp;   </span>
+<span class="nc bnc" id="L346" title="All 2 branches missed.">	traverseDescription(current.getRight(), lookedFor) == false)</span>
+<span class="nc" id="L347">            return false;</span>
+        else{
+<span class="nc" id="L349">            thisGUI.bufferToGui(MessageBoardOptions.RESULTS.getOption());</span>
+<span class="nc" id="L350">            return true;</span>
+        }
+    }
+    
+/******************************************************************************/
+/* Method: wholeDatabase                                                      */
+/* Purpose: Prints everything that is in the database. All the appointments   */
+/*          of all the calendars.                                             */                                                                                      
+/* Parameters:                                                                */   
+/*  int      userChoseParsed   the user's option from the menu                */
+/*  String   userLooksFor      a string containing the information looked for */
+/*                             by the user. In this case, it is empty since   */
+/*                             the user wants everything.                     */    
+/* Returns: void                                                              */
+/******************************************************************************/  
+public void wholeDatabase(int userChoseParsed, String userLooksFor) {
+<span class="nc" id="L366">    search(userChoseParsed, userLooksFor);</span>
+<span class="nc" id="L367">}</span>
+
+/******************************************************************************/
+/* Method: printACalendar                                                     */
+/* Purpose: Looks for a specific calendar in the database and prints it       */
+/*                                                                            */                                                                                      
+/* Parameters:                                                                */   
+/*  int      userChoseParsed   the user's option from the menu                */
+/*  String   keyboard          the requested calendar's name                  */
+
+/* Returns: void                                                              */
+/******************************************************************************/
+public void printACalendar(int userChoseParsed, String keyboard){ 
+<span class="nc" id="L380">    search(userChoseParsed, keyboard);</span>
+<span class="nc" id="L381">}</span>
+
+/******************************************************************************/
+/* Method: lookForATime                                                       */
+/* Purpose: Looks for a specific time in the database and prints all matches  */
+/*                                                                            */                                                                                      
+/* Parameters:                                                                */    
+/*  int      userChoseParsed   the user's option from the menu                */
+/*  String   chosenDate        the required date                              */
+/*  String   chosenTime        the required time                              */
+/* Returns: void                                                              */
+/******************************************************************************/
+
+void lookForATime(int userChoseParsed, 
+            String chosenDate, String chosenTime){
+    /*create an empty appointment just to check validity of date and time */
+<span class="nc" id="L397">    Appointment checkVal = new Appointment();</span>
+    //avoid getting the user turn it into an invalid string.
+    
+    try{   
+<span class="nc bnc" id="L401" title="All 2 branches missed.">        while(! checkVal.isValid(Integer.parseInt(chosenDate))){</span>
+        //it can still be longer or shorter than it should YYYYMMDD
+<span class="nc bnc" id="L403" title="All 2 branches missed.">        if (chosenDate.length() != 8) </span>
+<span class="nc" id="L404">            chosenDate = &quot;0&quot;;</span>
+<span class="nc" id="L405">        Integer.parseInt(chosenDate); //try to force exc. catch</span>
+        }
+<span class="nc" id="L407">        } catch (NumberFormatException | StringIndexOutOfBoundsException exc){</span>
+<span class="nc" id="L408">            chosenDate = &quot;0&quot;;</span>
+        
+    }
+                    
+        /* in order to check time validity, treat the user time as the start 
+        time and choose 23:59 as the end time */
+        //avoid getting the user turn it into an invalid string.
+    
+        try{  
+<span class="nc bnc" id="L417" title="All 2 branches missed.">            while(! checkVal.isValid(Integer.parseInt(chosenTime), 2359)){</span>
+            //it can still be longer or shorter than it should HHMM
+<span class="nc bnc" id="L419" title="All 2 branches missed.">            if (chosenTime.length() != 4) </span>
+<span class="nc" id="L420">                chosenTime = &quot;2460&quot;;</span>
+<span class="nc" id="L421">            Integer.parseInt(chosenTime); //try to force exc catch</span>
+        }
+<span class="nc" id="L423">        }catch (NumberFormatException | StringIndexOutOfBoundsException exc){</span>
+<span class="nc" id="L424">            chosenTime = &quot;2460&quot;;</span>
+    }                    
+<span class="nc" id="L426">    search(userChoseParsed, chosenDate + chosenTime);</span>
+<span class="nc" id="L427">}</span>
+
+/******************************************************************************/
+/* Method: lookForADescription                                                */
+/* Purpose: Looks for a specific description in the database and prints all   */
+/*          matches                                                           */                                                                                      
+/* Parameters:                                                                */    
+/*  int      userChoseParsed   the user's option from the menu                */
+/*  String   keyboard          the description looked for                     */
+/* Returns: void                                                              */
+/******************************************************************************/
+
+void lookForADescription(int userChoseParsed, String keyboard){
+<span class="nc" id="L440">    search(userChoseParsed, keyboard);</span>
+<span class="nc" id="L441">}</span>
+
+/******************************************************************************/
+/* Method: addNewAppointment                                                  */
+/* Purpose: Creates a whole new appointment and adds it to an existing        */
+/*          calendar in the database                                          */                                                                                      
+/* Parameters:                                                                */   
+/*  String chosenCalendar      the calendar looked for                        */
+/*  String chosenDate          the date looked for                            */
+/*  String chosenSTime         the start time looked for                      */
+/*  String chosenETime         the end time looked for                        */
+/*  String chosenDescription   the description looked for                     */
+/* Returns: void                                                              */
+/******************************************************************************/
+void addNewAppointment(String chosenCalendar,
+        String chosenDate, String chosenSTime, String chosenETime,
+        String chosenDescription){                                                                          
+    //look for the specified calendar.
+<span class="nc" id="L459">    Calendar chosenCal = new Calendar();</span>
+<span class="nc" id="L460">    chosenCal.setCalendarName(chosenCalendar);</span>
+  
+<span class="nc bnc" id="L462" title="All 2 branches missed.">    if (getCalendarSet().search(chosenCal) == false){</span>
+<span class="nc" id="L463">        thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), &quot;&gt;&gt;&gt; Calendar '&quot; + chosenCalendar</span>
+<span class="nc" id="L464">                          + &quot;' not found in the list.&quot;);</span>
+<span class="nc" id="L465">        thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());</span>
+<span class="nc" id="L466">    }</span>
+    else{
+<span class="nc" id="L468">        chosenCal = getCalendarSet().search(chosenCalendar).getDatum();</span>
+<span class="nc" id="L469">        if(addToCalendar(chosenCal, chosenDate, chosenSTime, chosenETime,</span>
+<span class="nc bnc" id="L470" title="All 2 branches missed.">           chosenDescription)){</span>
+<span class="nc" id="L471">        thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(),  &quot;**** Appointment included.&quot;);</span>
+<span class="nc" id="L472">        thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());</span>
+        }                        
+    }                   
+<span class="nc" id="L475">}</span>
+
+/******************************************************************************/
+/* Method: delAppointment                                                     */
+/* Purpose: Deletes an appointment instance that currently exists in the      */
+/*          database                                                          */                                                                                      
+/* Parameters:                                                                */    
+/*  String chosenCalendar      the calendar looked for                        */
+/*  String chosenDate          the date looked for                            */
+/*  String chosenSTime         the start time looked for                      */
+/*  String chosenETime         the end time looked for                        */
+/*  String chosenDescription   the description looked for                     */
+/* Returns: void                                                              */
+/******************************************************************************/
+
+void delAppointment(String chosenCalendar,
+        String chosenDate, String chosenSTime, String chosenETime,
+        String chosenDescription){
+<span class="nc" id="L493">    Calendar chosenCal = null;  //node referring to the cal                    </span>
+    //look for the specified calendar.
+    try{
+<span class="nc" id="L496">        chosenCal = getCalendarSet().search(chosenCalendar).getDatum();</span>
+<span class="nc" id="L497">    }catch(NoSuchElementException exc){</span>
+<span class="nc" id="L498">        thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), &quot;&gt;&gt;&gt; Calendar '&quot; + chosenCalendar</span>
+<span class="nc" id="L499">                          + &quot;' not found in the list.&quot;);</span>
+<span class="nc" id="L500">        thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());</span>
+<span class="nc" id="L501">        return;</span>
+    }
+<span class="nc" id="L503">    chosenCal.printCalendar();</span>
+    try{
+<span class="nc" id="L505">        if(deleteFromCalendar(chosenCal, chosenDate, chosenSTime,</span>
+<span class="nc bnc" id="L506" title="All 2 branches missed.">           chosenETime, chosenDescription))</span>
+<span class="nc" id="L507">            JOptionPane.showMessageDialog(null, &quot;**** Appointment excluded.&quot;);</span>
+<span class="nc" id="L508">        else    System.out.println( &quot;**** Appointment not excluded.&quot;); </span>
+<span class="nc" id="L509">    }catch(IndexOutOfBoundsException exc){</span>
+<span class="nc" id="L510">        JOptionPane.showMessageDialog(null, &quot;Illegal parameters. No &quot;</span>
+                + &quot;appointments were excluded&quot;);
+    }                                               
+<span class="nc" id="L513">}</span>
+
+/******************************************************************************/
+/* Method: addNewCalendar                                                     */
+/* Purpose: Creates a whole new calendar to the program based on an existing  */
+/*          text file.                                                        */                                                                                      
+/* Parameters:                                                                */
+/*  String userLooksFor        the name of a calendar file to be added        */
+/* Returns: void                                                              */
+/******************************************************************************/
+
+void addNewCalendar(String userLooksFor){
+<span class="nc bnc" id="L525" title="All 2 branches missed.">    if(loadFile(userLooksFor) == true){</span>
+<span class="nc" id="L526">       JOptionPane.showMessageDialog(null, &quot;**** File added.&quot;);</span>
+    }   
+<span class="nc" id="L528">}</span>
+
+/******************************************************************************/
+/* Method: loadFile                                                           */
+/* Purpose: stores a file's contents in the agenda by creating all the stored */
+/*          appointments                                                      */
+/* Parameters:                                                                */
+/*  String fileName:      the name of the file to be added                    */
+/* Returns: boolean:      add successfull?                                    */
+/******************************************************************************/    
+    
+boolean loadFile(String fileName){
+<span class="nc" id="L540">    Scanner currentFile = null;     //will contain one file at a time</span>
+    try { 
+<span class="nc" id="L542">        currentFile = new Scanner(new File(fileName));</span>
+<span class="nc" id="L543">    }</span>
+<span class="nc" id="L544">    catch (ArrayIndexOutOfBoundsException exc) {</span>
+<span class="nc" id="L545">        JOptionPane.showMessageDialog(null, &quot;No arguments given to program.&quot;);</span>
+<span class="nc" id="L546">        return (false);</span>
+    } 
+<span class="nc" id="L548">    catch (FileNotFoundException exc) { </span>
+<span class="nc" id="L549">        JOptionPane.showMessageDialog(null, &quot;File ''&quot; + fileName + &quot;'' &quot;</span>
+<span class="nc" id="L550">                + &quot;could not be opened at&quot;);</span>
+<span class="nc" id="L551">        JOptionPane.showMessageDialog(null, System.getProperty(&quot;user.dir&quot;));</span>
+<span class="nc" id="L552">        return (false); </span>
+    } 
+
+<span class="nc bnc" id="L555" title="All 2 branches missed.">    if (currentFile.hasNext()){  //if there is data            </span>
+<span class="nc" id="L556">        String calendarName = currentFile.nextLine(); //get cal name</span>
+        /*Check if the file already exists in the database*/           
+<span class="nc" id="L558">        Calendar chosenCal = new Calendar();</span>
+<span class="nc" id="L559">        chosenCal.setCalendarName(calendarName);</span>
+
+<span class="nc bnc" id="L561" title="All 2 branches missed.">        if (getCalendarSet().search(chosenCal) == true){</span>
+<span class="nc" id="L562">            JOptionPane.showMessageDialog(null, &quot;**** File has already been &quot;</span>
+                    + &quot;loaded into the program.&quot;);
+<span class="nc" id="L564">            return(false);</span>
+        }             
+
+        //Create a calendar to store what is inside
+<span class="nc" id="L568">        Calendar newCal = new Calendar(); //create instance of calendar</span>
+<span class="nc" id="L569">        newCal.setCalendarName(calendarName);</span>
+<span class="nc" id="L570">        newCal.setfileName(fileName);</span>
+<span class="nc bnc" id="L571" title="All 2 branches missed.">        while (currentFile.hasNext()){  //keep filling up the calendar</span>
+        /*Create a variable to keep track of illegal data that might appear. The 
+        defective chunks of information will not be added to the agenda. */
+<span class="nc" id="L574">            String inputStartTime = null, inputEndTime = null;  //temp</span>
+            //input strings
+<span class="nc" id="L576">            String inputDay = null; //temp input string </span>
+<span class="nc" id="L577">            String description = null; //temp input string</span>
+<span class="nc" id="L578">            inputDay = currentFile.nextLine(); //get the next line</span>
+<span class="nc" id="L579">            Scanner pieces = new Scanner (inputDay); //break into pieces</span>
+<span class="nc" id="L580">            pieces.useDelimiter(&quot;/&quot;);</span>
+<span class="nc bnc" id="L581" title="All 2 branches missed.">            while (pieces.hasNext()){</span>
+<span class="nc" id="L582">                inputDay = pieces.next();</span>
+<span class="nc bnc" id="L583" title="All 2 branches missed.">                if(pieces.hasNext())inputStartTime = pieces.next(); </span>
+                //get start time
+<span class="nc bnc" id="L585" title="All 2 branches missed.">                if(pieces.hasNext())inputEndTime = pieces.next(); </span>
+                //get end time
+<span class="nc bnc" id="L587" title="All 2 branches missed.">                if(pieces.hasNext())description = pieces.next();</span>
+<span class="nc" id="L588">                addToCalendar(newCal, inputDay, inputStartTime,</span>
+<span class="nc" id="L589">                        inputEndTime, description);</span>
+            }
+        }
+<span class="nc" id="L592">        add(newCal); //add the calendar that was just created</span>
+    }    
+<span class="nc" id="L594">currentFile.close();</span>
+<span class="nc" id="L595">return true;</span>
+}
+
+/******************************************************************************/
+/* Method: delCalendar                                                        */
+/* Purpose: Deletes a calendar from the lsit                                  */
+/*                                                                            */                                                                                      
+/* Parameters:                                                                */
+/*  String chosenCalendar      the calendar to be deleted                     */        
+/* Returns: void                                                              */
+/******************************************************************************/
+void delCalendar(String chosenCalendar){
+    //Create string to store user input
+<span class="nc" id="L608">    Calendar chosenCal = null;  //node referring to the cal                     </span>
+    //look for the specified calendar.
+    try{
+<span class="nc" id="L611">        chosenCal = getCalendarSet().search(chosenCalendar).getDatum();</span>
+<span class="nc" id="L612">    }catch(NoSuchElementException exc){</span>
+<span class="nc" id="L613">        JOptionPane.showMessageDialog(null, &quot;&gt;&gt;&gt; Calendar '&quot; + chosenCalendar</span>
+<span class="nc" id="L614">                          + &quot;' not found in the list.&quot;);</span>
+<span class="nc" id="L615">        return;</span>
+    }
+<span class="nc" id="L617">    thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), &quot;&gt;&gt;&gt; Chosen calendar: &quot; + chosenCal.</span>
+<span class="nc" id="L618">                getCalendarName()+ &quot;\n\&quot;&quot;);</span>
+<span class="nc" id="L619">    thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());</span>
+    //create string to store user choice
+<span class="nc" id="L621">    String answer = &quot;&quot;;</span>
+<span class="nc bnc" id="L622" title="All 4 branches missed.">    while(answer.compareTo(&quot;Y&quot;) != 0 &amp;&amp; answer.compareTo(&quot;N&quot;) != 0</span>
+<span class="nc bnc" id="L623" title="All 4 branches missed.">          &amp;&amp; answer.compareTo(&quot;y&quot;) != 0  &amp;&amp; answer.compareTo(&quot;n&quot;) != 0){</span>
+<span class="nc" id="L624">            answer = JOptionPane.showInputDialog(&quot;Are you sure you want to &quot;</span>
+                    + &quot;delete&quot; + &quot; the calendar above? Y = yes, N = no&quot;);
+    }
+<span class="nc bnc" id="L627" title="All 2 branches missed.">    if(answer.toLowerCase().compareTo(&quot;n&quot;) == 0){</span>
+<span class="nc" id="L628">        JOptionPane.showMessageDialog(null,&quot;&gt;&gt;&gt; Calendar not deleted&quot;);</span>
+<span class="nc" id="L629">    }</span>
+    else{
+<span class="nc" id="L631">        remove(chosenCal);</span>
+<span class="nc" id="L632">        JOptionPane.showMessageDialog(null,&quot;&gt;&gt;&gt; Calendar deleted&quot;);</span>
+    }          
+<span class="nc" id="L634">}</span>
+
+/******************************************************************************/
+/* Method: writeToDisk                                                        */
+/* Purpose: saves all content from the calendars and stores them in the       */
+/*          original files in the disk                                        */
+/* Parameters:                                                                */
+/*  CalendarTreeNode current:  the tree's root (helper method only)           */
+/* Returns: void                                                              */
+/******************************************************************************/
+    public void writeToDisk(){
+        //Check if user really wants to save to the database
+<span class="nc" id="L646">        String answer = &quot;&quot;;</span>
+<span class="nc bnc" id="L647" title="All 2 branches missed.">        while(answer.toLowerCase().compareTo(&quot;y&quot;) != 0 &amp;&amp; </span>
+<span class="nc bnc" id="L648" title="All 2 branches missed.">        answer.toLowerCase().compareTo(&quot;n&quot;) != 0 ){</span>
+<span class="nc" id="L649">            answer = JOptionPane.showInputDialog(&quot;Are you sure you want to save&quot;</span>
+                    + &quot; all contents to the database? Y = yes, N = no&quot;);
+        }
+<span class="nc bnc" id="L652" title="All 2 branches missed.">        if(answer.toLowerCase().compareTo(&quot;y&quot;) == 0)</span>
+<span class="nc" id="L653">            writeToDisk(calendarSet.getRoot());</span>
+        else
+<span class="nc" id="L655">            JOptionPane.showMessageDialog(null,&quot;Database not modified.&quot;);</span>
+<span class="nc" id="L656">    }</span>
+    // Traverse the calendar tree, read from every calendar. Open the files
+    private void writeToDisk(CalendarTreeNode current){
+<span class="nc bnc" id="L659" title="All 2 branches missed.">        if (current == null) return;        </span>
+<span class="nc" id="L660">        writeToDisk(current.getLeft());</span>
+<span class="nc" id="L661">        writeToDisk(current.getRight());</span>
+    // Sends the calendar and the filename to perform the writing
+<span class="nc bnc" id="L663" title="All 2 branches missed.">        if(writeToDisk(current.getDatum()))</span>
+<span class="nc" id="L664">            JOptionPane.showMessageDialog(null,&quot;Calendar file ''&quot; + </span>
+<span class="nc" id="L665">                    current.getDatum().</span>
+<span class="nc" id="L666">            getfileName() + &quot;'' was successfully written.&quot;);</span>
+<span class="nc" id="L667">    }        </span>
+
+/******************************************************************************/
+/* Method: writeToDisk (with calendar only)                                   */
+/* Purpose: saves all content from the calendars and stores them in the       */
+/*          original files in the disk                                        */
+/* Parameters:                                                                */
+/*  Calendar currentCal   the calendar that will provide content to the file  */    
+/* Returns: boolean:      write successful?                                   */
+/******************************************************************************/
+    private boolean writeToDisk(Calendar currentCal){
+        try {
+            // Open file that will receive the calendar contents
+<span class="nc" id="L680">            File file = new File(currentCal.getfileName()); // current file</span>
+            // If file doesn't exist, create it.
+<span class="nc bnc" id="L682" title="All 2 branches missed.">            if (!file.exists()) {</span>
+<span class="nc" id="L683">                file.createNewFile();</span>
+            }
+            // File writer element
+<span class="nc" id="L686">            FileWriter fWritter = new FileWriter(file.getAbsoluteFile());</span>
+            // Buffered writer element
+<span class="nc" id="L688">            BufferedWriter bWritter = new BufferedWriter(fWritter);</span>
+<span class="nc" id="L689">            String currentLine = &quot;&quot;; // will contain data from the calendars</span>
+            // Print calendar title
+<span class="nc" id="L691">            bWritter.write(currentCal.getCalendarName());</span>
+<span class="nc" id="L692">            bWritter.newLine(); // move to the next line</span>
+            // Form lines with the calendar contents. Do this for all the 
+            // appointments
+<span class="nc" id="L695">            AppointmentNode auxApp = currentCal.getHead(); //index to the list</span>
+<span class="nc bnc" id="L696" title="All 2 branches missed.">            while (auxApp != null){     // look at the whole list</span>
+<span class="nc" id="L697">                currentLine = auxApp.getDatum().getDate() + &quot;/&quot; +</span>
+<span class="nc" id="L698">                auxApp.getDatum().getStartTime() + &quot;/&quot; +</span>
+<span class="nc" id="L699">                auxApp.getDatum().getEndTime() + &quot;/&quot; +</span>
+<span class="nc" id="L700">                auxApp.getDatum().getDescription();</span>
+                
+<span class="nc" id="L702">                bWritter.write(currentLine); //write formed line</span>
+<span class="nc" id="L703">                bWritter.newLine(); //move to the next line</span>
+                
+<span class="nc" id="L705">                auxApp = auxApp.getNext();  //move on to the next element</span>
+            }   
+<span class="nc" id="L707">            bWritter.close();   //close the buffer to flush it to disk.</span>
+<span class="nc" id="L708">        } catch (IOException exc) {</span>
+            //System.out.println(&quot;There was a mistake with input data.&quot;);
+<span class="nc" id="L710">            return false;</span>
+        }
+<span class="nc" id="L712">        return true;</span>
+     }
+
+/******************************************************************************/
+/* Method: readFromDisk                                                       */
+/* Purpose: restores the database by reloading all the files from all         */
+/*          calendars and saving contents to the data structures              */
+/* Parameters:                                                                */
+/*  CalendarTreeNode current:  the tree's root (helper method only)           */   
+/* Returns: void                                                              */
+/******************************************************************************/   
+    public void readFromDisk(){
+        //Check if user really wants to reload the database
+<span class="nc" id="L725">        String answer = &quot;&quot;;</span>
+<span class="nc bnc" id="L726" title="All 2 branches missed.">        while(answer.toLowerCase().compareTo(&quot;y&quot;) != 0 &amp;&amp; </span>
+<span class="nc bnc" id="L727" title="All 2 branches missed.">        answer.toLowerCase().compareTo(&quot;n&quot;) != 0 ){</span>
+<span class="nc" id="L728">            answer = JOptionPane.showInputDialog(&quot;Are you sure you want to &quot;</span>
+                    + &quot;reload the database? Y = yes, N = no&quot;);
+        }
+<span class="nc bnc" id="L731" title="All 2 branches missed.">        if(answer.toLowerCase().compareTo(&quot;y&quot;) == 0)</span>
+<span class="nc" id="L732">            readFromDisk(calendarSet.getRoot());</span>
+        else
+<span class="nc" id="L734">            JOptionPane.showMessageDialog(null,&quot;Database not reloaded.&quot;);</span>
+<span class="nc" id="L735">    }</span>
+    // Traverse the calendar tree, delete every calendar. Add them again.
+    private void readFromDisk(CalendarTreeNode current){
+<span class="nc bnc" id="L738" title="All 2 branches missed.">        if (current == null) return;</span>
+        // Since the traversal alters the tree, use LRN. Nodes altered lastly.        
+<span class="nc" id="L740">        readFromDisk(current.getLeft());</span>
+<span class="nc" id="L741">        readFromDisk(current.getRight());</span>
+        // Get file name in order to be able to find it again and reload it.
+<span class="nc" id="L743">        String toBeReloaded = current.getDatum().getfileName(); //file name</span>
+<span class="nc" id="L744">        remove(current.getDatum()); //remove calendar</span>
+<span class="nc bnc" id="L745" title="All 2 branches missed.">        if(loadFile(toBeReloaded)){ //load it again. Check for success</span>
+<span class="nc" id="L746">            JOptionPane.showMessageDialog(null,&quot;Calendar ''&quot; +</span>
+<span class="nc" id="L747">                    current.getDatum().</span>
+<span class="nc" id="L748">            getCalendarName() + &quot;'' reloaded.&quot;);</span>
+        }    
+<span class="nc" id="L750">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

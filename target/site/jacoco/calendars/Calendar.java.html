@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Calendar.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JavaCalendar</a> &gt; <a href="index.source.html" class="el_package">calendars</a> &gt; <span class="el_source">Calendar.java</span></div><h1>Calendar.java</h1><pre class="source lang-java linenums">package calendars;
+
+import appointments.Appointment;
+import appointments.AppointmentNode;
+import calendars.Calendar;
+import db.Gui;
+
+/******************************************************************************/
+/* Guilherme Virgilio P. O. Simoes                                            */
+/* Login ID: pici7127                                                         */
+/* CS-102, Winter 2016                                                        */
+/* Programming Assignment 5                                                   */
+/* Appointment calendar: Calendar instance with a reference to a linked list  */
+/* of related appointments                                                    */
+/******************************************************************************/
+
+<span class="nc" id="L17">public class Calendar implements Comparable &lt;Calendar&gt;{</span>
+<span class="nc" id="L18">    private String fileName = &quot;&quot;; //contains the path to the calendar's file</span>
+<span class="nc" id="L19">    private String calendarName = &quot;&quot;; //First line in the file</span>
+    private Gui theGUI;
+    private AppointmentNode head; //First appointment node of the list
+    
+/******************************************************************************/
+/* Method: isEmpty                                                            */
+/* Purpose: tells if the list is empty (i.e.) if its number of elements is    */
+/*          zero                                                              */
+/* Parameters:                                                                */
+/*  void                                                                      */
+/* Returns: Boolean:    is the list empty?                                    */
+/******************************************************************************/
+    
+    public boolean isEmpty(){
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        return (head == null);</span>
+    }
+
+/******************************************************************************/
+/* Method: size                                                               */
+/* Purpose: loops through the list and counts its number of elements          */
+/*                                                                            */
+/* Parameters:                                                                */
+/*  void                                                                      */
+/* Returns: int:        number of elements in the list                        */
+/******************************************************************************/    
+    
+    public int size(){
+<span class="nc" id="L46">        int count = 0; //counts the number of appointments in the list</span>
+<span class="nc" id="L47">        AppointmentNode current = head; //starts counting from the head</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">            while (current != null){</span>
+<span class="nc" id="L49">                count++;</span>
+<span class="nc" id="L50">                current = current.getNext();</span>
+            }
+<span class="nc" id="L52">        return count;</span>
+    }
+
+/******************************************************************************/
+/* Method: get                                                                */
+/* Purpose: retrieves an appointment stored at position specified by          */
+/*          parameter index in the list                                       */
+/* Parameters:                                                                */
+/*  int index:          position that holds the desired item                  */
+/* Returns: Appointment:   the desired item                                   */
+/******************************************************************************/ 
+    
+    public Appointment get (int index){
+<span class="nc" id="L65">	AppointmentNode current = head; //starts counting from the head		</span>
+
+<span class="nc bnc" id="L67" title="All 4 branches missed.">	while((current != null) &amp;&amp; (index != 0)){</span>
+<span class="nc" id="L68">	index--;</span>
+<span class="nc" id="L69">	current = current.getNext();</span>
+	}
+<span class="nc bnc" id="L71" title="All 2 branches missed.">	if (current == null)</span>
+<span class="nc" id="L72">            throw new IndexOutOfBoundsException();</span>
+	else
+<span class="nc" id="L74">            return current.getDatum();</span>
+    }
+
+/******************************************************************************/
+/* Method: add                                                                */
+/* Purpose: adds an appointment instance to the calendar at the necessary     */
+/*          position so that it remains in sorted order                       */
+/* Parameters:                                                                */
+/*  Appointment item: item that needs to be included in the list              */
+/* Returns: void                                                              */
+/******************************************************************************/ 
+    
+    public void add(AppointmentNode item){
+<span class="nc" id="L87">	AppointmentNode previous = null; //stores the previous item to check for</span>
+                                         //empty lists
+<span class="nc" id="L89">        AppointmentNode current = head; //starts counting from the head</span>
+	
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        while (current != null){</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">            if (item.getDatum().getYear() &gt; current.getDatum().getYear()){ </span>
+            //then item is further away in the list
+<span class="nc" id="L94">                previous = current;</span>
+<span class="nc" id="L95">                current = current.getNext();</span>
+<span class="nc" id="L96">                continue;</span>
+            }
+            //if year is the same, but not the month...
+<span class="nc bnc" id="L99" title="All 2 branches missed.">            if (item.getDatum().getYear() == current.getDatum().getYear())</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">            if (item.getDatum().getMonth() &gt; current.getDatum().getMonth()){</span>
+<span class="nc" id="L101">                previous = current;</span>
+<span class="nc" id="L102">                current = current.getNext();</span>
+<span class="nc" id="L103">                continue;</span>
+            }
+            //if month is the same, but not the day...
+<span class="nc bnc" id="L106" title="All 2 branches missed.">            if (item.getDatum().getMonth() == current.getDatum().getMonth())</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">            if (item.getDatum().getDay() &gt; current.getDatum().getDay()){</span>
+<span class="nc" id="L108">                previous = current;</span>
+<span class="nc" id="L109">                current = current.getNext();</span>
+<span class="nc" id="L110">                continue;</span>
+            }
+            //if day is the same, but not the start hour...
+<span class="nc bnc" id="L113" title="All 2 branches missed.">            if (item.getDatum().getDay() == current.getDatum().getDay())            </span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">            if (item.getDatum().getHourS() &gt; current.getDatum().getHourS()){</span>
+<span class="nc" id="L115">                previous = current;</span>
+<span class="nc" id="L116">                current = current.getNext();</span>
+<span class="nc" id="L117">                continue;</span>
+            }
+            //if start hour is the same, but not the start minute...
+<span class="nc bnc" id="L120" title="All 2 branches missed.">            if (item.getDatum().getHourS() == current.getDatum().getHourS())  </span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            if (item.getDatum().getMinuteS() &gt; current.getDatum().getMinuteS()){</span>
+<span class="nc" id="L122">                previous = current;</span>
+<span class="nc" id="L123">                current = current.getNext();</span>
+                continue;
+            }            
+            break;
+        }
+            //Now current points to an item that is bigger than the one to be
+            //added or it is null
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        if (previous == null){   //empty list</span>
+<span class="nc" id="L131">            head = item;</span>
+<span class="nc" id="L132">        }</span>
+        else {
+<span class="nc" id="L134">            previous.setNext(item);          </span>
+        }
+<span class="nc" id="L136">            item.setNext(current);                        </span>
+<span class="nc" id="L137">    }</span>
+    
+/******************************************************************************/
+/* Method: remove                                                             */
+/* Purpose: removes an appointment from the list                              */
+/*                                                                            */
+/* Parameters:                                                                */
+/*  int index:    index of the item to be removed from list                   */
+/* Returns: Appointment: item just removed                                    */
+/******************************************************************************/    
+
+    public AppointmentNode remove (int index){
+<span class="nc" id="L149">	AppointmentNode previous = null;   //check for empty lists</span>
+<span class="nc" id="L150">	AppointmentNode current = head;    //start counting from the head</span>
+<span class="nc bnc" id="L151" title="All 4 branches missed.">	while((current != null) &amp;&amp; (index != 0)){</span>
+<span class="nc" id="L152">		index--;</span>
+<span class="nc" id="L153">		previous = current;</span>
+<span class="nc" id="L154">		current = current.getNext();</span>
+	}
+        
+<span class="nc bnc" id="L157" title="All 2 branches missed.">	if (index != 0)</span>
+<span class="nc" id="L158">            throw new IndexOutOfBoundsException();</span>
+        
+<span class="nc bnc" id="L160" title="All 2 branches missed.">	if (previous == null){  //remove the first item. Head changes</span>
+<span class="nc" id="L161">            head = current.getNext();</span>
+<span class="nc" id="L162">	}</span>
+        else{
+<span class="nc" id="L164">            previous.setNext(current.getNext());  //rearrange the connections  </span>
+        }	
+<span class="nc" id="L166">	return current;	</span>
+}
+    
+/******************************************************************************/
+/* Method: removeAll                                                          */
+/* Purpose: removes all appointments from the list                            */
+/*                                                                            */
+/* Parameters:                                                                */
+/*  void                                                                      */
+/* Returns: void                                                              */
+/******************************************************************************/ 
+
+public void removeAll(){
+<span class="nc" id="L179">	head = null;</span>
+<span class="nc" id="L180">}</span>
+
+/******************************************************************************/
+/* Method: printCalendar / printCalendarToGui                                 */
+/* Purpose: prints all the calendar's contents                                */
+/*                   *toGui writes to the results board                       */
+/* Parameters:                                                                */
+/*  void                                                                      */
+/* Returns: int    number of printed items                                    */
+/******************************************************************************/
+
+public int printCalendar(){
+<span class="nc" id="L192">    AppointmentNode auxApp = head; //created as index to loop through the list</span>
+<span class="nc" id="L193">    int count = 0;      //counter for the number of items</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">    while (auxApp != null){</span>
+<span class="nc" id="L195">        auxApp.getDatum().print();</span>
+<span class="nc" id="L196">        auxApp = auxApp.getNext();</span>
+<span class="nc" id="L197">        count++;</span>
+    }
+<span class="nc" id="L199">    return count;</span>
+}
+
+/******************************************************************************/
+/* Method: assignGUI                                                          */
+/* Purpose: copies a reference to a database and returns it so that it can be */
+/*          re-assigned to the GUI and seen from this class.                  */
+/*                                                                            */          
+/* Parameters:                                                                */
+/*  Database copying: reference to the database being copied to the GUI       */     
+/* Returns: void                                                              */
+/******************************************************************************/    
+    public void assignGUI (Gui copying){
+<span class="nc" id="L212">        theGUI = copying;</span>
+<span class="nc" id="L213">    }</span>
+
+/******************************************************************************/
+/* Method: printBasedOnDescription                                            */
+/* Purpose: prints all the calendar's contents that contain the provided      */
+/*          description (supplied by the parameter)                           */
+/* Parameters:                                                                */
+/*  String description:    description we want to look for                    */
+/* Returns: int    number of printed items                                    */
+/******************************************************************************/
+
+public int printBasedOnDescription(String description){
+<span class="nc" id="L225">    AppointmentNode auxApp = head; //created as index to loop through the list</span>
+<span class="nc" id="L226">    int count = 0;      //counter for the number of items</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">    while (auxApp != null){</span>
+<span class="nc" id="L228">        if(auxApp.getDatum().getDescription().toLowerCase().contains(</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">                description.toLowerCase())){</span>
+<span class="nc" id="L230">            auxApp.getDatum().print();</span>
+<span class="nc" id="L231">            count++;</span>
+        }
+<span class="nc" id="L233">        auxApp = auxApp.getNext();</span>
+    }
+<span class="nc" id="L235">    return count;</span>
+}
+
+/******************************************************************************/
+/* Method: lookForTime                                                        */
+/* Purpose: Aid in the search of a period of time that contains one given     */
+/* value supplied by the user. Separate block for keeping the methods short   */
+/* Parameters:                                                                */
+/* String: Date  String representing the date yyyymmdd                        */
+/* int: time  the time hhmm                                                   */
+/*                                                                            */    
+/* Returns: int   Number of matches                                           */
+/******************************************************************************/
+    
+    public int lookForTime (String date, int time){
+<span class="nc" id="L250">        int count = 0;    //number of matches</span>
+<span class="nc" id="L251">        AppointmentNode auxApp = head; //created as index to loop </span>
+                                       //through the list
+
+<span class="nc bnc" id="L254" title="All 2 branches missed.">        while (auxApp != null){</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">            if(auxApp.getDatum().getDate().equals(date)){</span>
+            //arrange the time in a way that it is an int in the format hhmm
+<span class="nc" id="L257">                if(auxApp.getDatum().getHourS()*100 + auxApp.getDatum().</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">                getMinuteS() &lt;= time){</span>
+<span class="nc" id="L259">                    if(auxApp.getDatum().getHourE()*100 + auxApp.getDatum().</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">                    getMinuteE() &gt;= time){</span>
+<span class="nc" id="L261">                        auxApp.getDatum().print();</span>
+<span class="nc" id="L262">                        count++;</span>
+                    }
+                }
+            }
+<span class="nc" id="L266">            auxApp = auxApp.getNext();</span>
+        }
+<span class="nc" id="L268">        return count;</span>
+    }
+    
+    String collectLookForTime (String date, int time){
+<span class="nc" id="L272">        String returning = &quot;&quot;; //collect and return</span>
+<span class="nc" id="L273">        int count = 0;    //number of matches</span>
+<span class="nc" id="L274">        AppointmentNode auxApp = head; //created as index to loop </span>
+                                       //through the list
+
+<span class="nc bnc" id="L277" title="All 2 branches missed.">        while (auxApp != null){</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">            if(auxApp.getDatum().getDate().equals(date)){</span>
+            //arrange the time in a way that it is an int in the format hhmm
+<span class="nc" id="L280">                if(auxApp.getDatum().getHourS()*100 + auxApp.getDatum().</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">                getMinuteS() &lt;= time){</span>
+<span class="nc" id="L282">                    if(auxApp.getDatum().getHourE()*100 + auxApp.getDatum().</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">                    getMinuteE() &gt;= time){</span>
+<span class="nc" id="L284">                        returning += auxApp.getDatum().collectPrint();</span>
+<span class="nc" id="L285">                        count++;</span>
+                    }
+                }
+            }
+<span class="nc" id="L289">            auxApp = auxApp.getNext();</span>
+        }
+<span class="nc" id="L291">        return returning;</span>
+    }
+
+/******************************************************************************/
+/* Method: get&lt;FEATURE&gt;                                                       */
+/* Purpose: check the calendar's feature specified between &lt; &gt;                */
+/*                                                                            */
+/* Parameters:                                                                */
+/*  void                                                                      */
+/* Returns: string:       the calendar's feature                              */
+/******************************************************************************/    
+    
+    public String getfileName (){
+<span class="nc" id="L304">        return fileName;</span>
+    }
+
+    public String getCalendarName (){
+<span class="nc" id="L308">        return calendarName;</span>
+    }
+    
+    public AppointmentNode getHead() {
+<span class="nc" id="L312">    	return head;</span>
+    }    
+
+/******************************************************************************/
+/* Method: set&lt;FEATURE&gt;                                                       */
+/* Purpose: change the calendar's feature specified between &lt; &gt;               */
+/*                                                                            */
+/* Parameters:                                                                */
+/*  String  new&lt;FEATURE&gt;:   value to be added                                 */
+/* Returns: void                                                              */
+/******************************************************************************/    
+    
+    public void setfileName (String newName){
+<span class="nc" id="L325">        fileName = newName;</span>
+<span class="nc" id="L326">    }</span>
+
+    public void setCalendarName (String newName){
+<span class="nc" id="L329">        calendarName = newName;</span>
+<span class="nc" id="L330">    }    </span>
+
+/******************************************************************************/
+/* Method: compareTo                                                          */
+/* Purpose: performs the comparison by looking at the calendar names and      */
+/* checking the alphabetic order.                                             */
+/* Parameters:                                                                */
+/*  Calendar other:         Calendar to be compared with the current one.     */
+/* Returns: integer:        &lt; 0 current is less than other                    */
+/*                         == 0 current is equal to other                     */   
+/*                          &gt; 0 current is greater than other                 */ 
+/******************************************************************************/    
+@Override
+    public int compareTo(Calendar other) {
+<span class="nc" id="L344">        return this.getCalendarName().compareTo(other.getCalendarName());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
