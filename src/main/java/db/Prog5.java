@@ -14,6 +14,13 @@ import javax.swing.JFrame;
 import db.Database;
 import db.Gui;
 
+/**
+ * 
+ * @author Guilherme Virgilio P. O. Simoes 
+ * @version 1.1.0
+ * 
+ * Transformation of CS-102 project into a Maven project
+ */
 public class Prog5 {
 //List of available commands. The following are the user's options in the menu
 public static final int EVERYTHING = 1, CALENDAR = 2, TIME = 3, DESCRIPTION = 4,

@@ -19,6 +19,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * 
+ * @author Guilherme Virgilio P. O. Simoes 
+ * @version 1.1.0
+ * 
+ * Transformation of CS-102 project into a Maven project
+ */
 public class Gui extends JFrame{
     // Available commands. The following are the user's options in the menu
     public static final int EVERYTHING = 1, CALENDAR = 2, TIME = 3, 

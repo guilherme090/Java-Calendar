@@ -1,5 +1,12 @@
 package db;
 
+/**
+ * 
+ * @author Guilherme Virgilio P. O. Simoes 
+ * @version 1.1.0
+ * 
+ * Transformation of CS-102 project into a Maven project
+ */
 public enum MessageBoardOptions {
 	MESSAGE(0), RESULTS(1);
     // MESSAGE: reference to the GUI's message board

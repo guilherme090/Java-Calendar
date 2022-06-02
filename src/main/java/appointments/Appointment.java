@@ -12,6 +12,13 @@ import db.MessageBoardOptions;
 /* (one appointment per instance)                                             */
 /******************************************************************************/
 
+/**
+ * 
+ * @author Guilherme Virgilio P. O. Simoes 
+ * @version 1.1.0
+ * 
+ * Transformation of CS-102 project into a Maven project
+ */
 public class Appointment {    
     private String calendarName = null; //will contain the calendar it refers to
     private String date;        //YYYYMMDD day format for the appointments

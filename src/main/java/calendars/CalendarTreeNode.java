@@ -8,6 +8,13 @@ package calendars;
 /* CalendarTreeNode: Nodes for the Calendar binary tree.                      */
 /******************************************************************************/
 
+/**
+ * 
+ * @author Guilherme Virgilio P. O. Simoes 
+ * @version 1.1.0
+ * 
+ * Transformation of CS-102 project into a Maven project
+ */
 public class CalendarTreeNode {
     private Calendar datum;     //calendar stored here
     private CalendarTreeNode left;      //first child

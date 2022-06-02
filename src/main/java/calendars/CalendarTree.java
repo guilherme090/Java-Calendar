@@ -12,6 +12,13 @@ import java.util.NoSuchElementException;
 import db.MessageBoardOptions;
 import db.Gui;
 
+/**
+ * 
+ * @author Guilherme Virgilio P. O. Simoes 
+ * @version 1.1.0
+ * 
+ * Transformation of CS-102 project into a Maven project
+ */
 public class CalendarTree {
         
     private CalendarTreeNode root;  //first node of the tree

@@ -14,6 +14,13 @@ import db.Gui;
 /* of related appointments                                                    */
 /******************************************************************************/
 
+/**
+ * 
+ * @author Guilherme Virgilio P. O. Simoes 
+ * @version 1.1.0
+ * 
+ * Transformation of CS-102 project into a Maven project
+ */
 public class Calendar implements Comparable <Calendar>{
     private String fileName = ""; //contains the path to the calendar's file
     private String calendarName = ""; //First line in the file
