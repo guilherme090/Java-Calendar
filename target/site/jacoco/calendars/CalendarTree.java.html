@@ -12,6 +12,13 @@ import java.util.NoSuchElementException;
 import db.MessageBoardOptions;
 import db.Gui;
 
+/**
+ * 
+ * @author Guilherme Virgilio P. O. Simoes 
+ * @version 1.1.0
+ * 
+ * Transformation of CS-102 project into a Maven project
+ */
 public class CalendarTree {
         
     private CalendarTreeNode root;  //first node of the tree
@@ -24,9 +31,9 @@ public class CalendarTree {
 /*  void                                                                      */
 /* Returns: void                                                              */
 /******************************************************************************/    
-<span class="nc" id="L27">    public CalendarTree(){</span>
-<span class="nc" id="L28">        root = null;</span>
-<span class="nc" id="L29">    }</span>
+<span class="nc" id="L34">    public CalendarTree(){</span>
+<span class="nc" id="L35">        root = null;</span>
+<span class="nc" id="L36">    }</span>
 
 /******************************************************************************/
 /* Method: assignGUI                                                          */
@@ -38,8 +45,8 @@ public class CalendarTree {
 /* Returns: void                                                              */
 /******************************************************************************/    
     public void assignGUI (Gui copying){
-<span class="nc" id="L41">        theGUI = copying;</span>
-<span class="nc" id="L42">    }    </span>
+<span class="nc" id="L48">        theGUI = copying;</span>
+<span class="nc" id="L49">    }    </span>
     
 /******************************************************************************/
 /* Method: isEmpty                                                            */
@@ -51,7 +58,7 @@ public class CalendarTree {
 /******************************************************************************/
     
     public boolean isEmpty(){
-<span class="nc bnc" id="L54" title="All 2 branches missed.">        return (root == null);</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        return (root == null);</span>
     }
     
 /******************************************************************************/
@@ -64,15 +71,15 @@ public class CalendarTree {
 /******************************************************************************/    
     
     public int size(){
-<span class="nc" id="L67">        return size(root);</span>
+<span class="nc" id="L74">        return size(root);</span>
     }
 
     private int size(CalendarTreeNode current){
     // Define the size recursively
-<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (current == null) return 0;</span>
-<span class="nc bnc" id="L73" title="All 4 branches missed.">        if (current.getLeft() == null &amp;&amp; current.getRight() == null) return 1;</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        if (current == null) return 0;</span>
+<span class="nc bnc" id="L80" title="All 4 branches missed.">        if (current.getLeft() == null &amp;&amp; current.getRight() == null) return 1;</span>
     // Size of the left tree + right tree
-<span class="nc" id="L75">        return (size(current.getLeft()) + size(current.getRight()));					//R </span>
+<span class="nc" id="L82">        return (size(current.getLeft()) + size(current.getRight()));					//R </span>
     }
 
 /******************************************************************************/
@@ -84,8 +91,8 @@ public class CalendarTree {
 /* Returns: void                                                              */
 /******************************************************************************/
     public void clear(){
-<span class="nc" id="L87">        root = null;</span>
-<span class="nc" id="L88">    }</span>
+<span class="nc" id="L94">        root = null;</span>
+<span class="nc" id="L95">    }</span>
     
 /******************************************************************************/
 /* Method: search                                                             */
@@ -97,16 +104,16 @@ public class CalendarTree {
 /* Returns: boolean:        item found?                                       */
 /******************************************************************************/    
     public boolean search(Calendar item){
-<span class="nc" id="L100">        return search(item, root);</span>
+<span class="nc" id="L107">        return search(item, root);</span>
     }
     
     private boolean search(Calendar item, CalendarTreeNode current){
-<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (current == null) return false;</span>
-<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (current.getDatum().compareTo(item) == 0) return true;</span>
-<span class="nc bnc" id="L106" title="All 2 branches missed.">        if (current.getDatum().compareTo(item) &lt; 0) //item on the right</span>
-<span class="nc" id="L107">            return search(item, current.getRight());</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        if (current == null) return false;</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        if (current.getDatum().compareTo(item) == 0) return true;</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (current.getDatum().compareTo(item) &lt; 0) //item on the right</span>
+<span class="nc" id="L114">            return search(item, current.getRight());</span>
         else
-<span class="nc" id="L109">            return search(item, current.getLeft()); //item on the left</span>
+<span class="nc" id="L116">            return search(item, current.getLeft()); //item on the left</span>
     }
     
 /******************************************************************************/
@@ -121,17 +128,17 @@ public class CalendarTree {
 
     // This method acts in a similar way to the above search
     public CalendarTreeNode search(String name){
-<span class="nc" id="L124">        return search(name, root);</span>
+<span class="nc" id="L131">        return search(name, root);</span>
     }
     
     private CalendarTreeNode search(String name, CalendarTreeNode current){
-<span class="nc bnc" id="L128" title="All 2 branches missed.">        if (current == null) throw new NoSuchElementException();</span>
-<span class="nc bnc" id="L129" title="All 2 branches missed.">        if (current.getDatum().getCalendarName().compareTo(name) == 0) </span>
-<span class="nc" id="L130">            return current;</span>
-<span class="nc bnc" id="L131" title="All 2 branches missed.">        if (current.getDatum().getCalendarName().compareTo(name) &lt; 0)</span>
-<span class="nc" id="L132">            return search(name, current.getRight());</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">        if (current == null) throw new NoSuchElementException();</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if (current.getDatum().getCalendarName().compareTo(name) == 0) </span>
+<span class="nc" id="L137">            return current;</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">        if (current.getDatum().getCalendarName().compareTo(name) &lt; 0)</span>
+<span class="nc" id="L139">            return search(name, current.getRight());</span>
         else
-<span class="nc" id="L134">            return search(name, current.getLeft());</span>
+<span class="nc" id="L141">            return search(name, current.getLeft());</span>
     }    
     
 /******************************************************************************/
@@ -144,22 +151,22 @@ public class CalendarTree {
 /* Returns: void                                                              */
 /******************************************************************************/ 
     public void add (Calendar item){
-<span class="nc" id="L147">        root = add(item, root);</span>
-<span class="nc" id="L148">    }</span>
+<span class="nc" id="L154">        root = add(item, root);</span>
+<span class="nc" id="L155">    }</span>
     
     private CalendarTreeNode add (Calendar item, CalendarTreeNode current){
-<span class="nc bnc" id="L151" title="All 2 branches missed.">        if(current == null){</span>
-<span class="nc" id="L152">            CalendarTreeNode leaf = new CalendarTreeNode();</span>
-<span class="nc" id="L153">            leaf.setDatum(item);</span>
-<span class="nc" id="L154">            leaf.setLeft(null);</span>
-<span class="nc" id="L155">            leaf.setRight(null);</span>
-<span class="nc" id="L156">            return(leaf);</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">        if(current == null){</span>
+<span class="nc" id="L159">            CalendarTreeNode leaf = new CalendarTreeNode();</span>
+<span class="nc" id="L160">            leaf.setDatum(item);</span>
+<span class="nc" id="L161">            leaf.setLeft(null);</span>
+<span class="nc" id="L162">            leaf.setRight(null);</span>
+<span class="nc" id="L163">            return(leaf);</span>
         }
-<span class="nc bnc" id="L158" title="All 2 branches missed.">        if(current.getDatum().compareTo(item) &lt; 0)</span>
-<span class="nc" id="L159">            current.setRight(add(item, current.getRight())); //item on the right</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        if(current.getDatum().compareTo(item) &lt; 0)</span>
+<span class="nc" id="L166">            current.setRight(add(item, current.getRight())); //item on the right</span>
         else
-<span class="nc" id="L161">            current.setLeft(add(item, current.getLeft())); //item on the left</span>
-<span class="nc" id="L162">        return current;</span>
+<span class="nc" id="L168">            current.setLeft(add(item, current.getLeft())); //item on the left</span>
+<span class="nc" id="L169">        return current;</span>
     }
     
 /******************************************************************************/
@@ -172,39 +179,39 @@ public class CalendarTree {
 /* Returns: void                                                              */
 /******************************************************************************/
     public void remove(Calendar item){
-<span class="nc" id="L175">        root = remove(item, root);</span>
-<span class="nc" id="L176">    }</span>
+<span class="nc" id="L182">        root = remove(item, root);</span>
+<span class="nc" id="L183">    }</span>
     
     private CalendarTreeNode remove (Calendar item, CalendarTreeNode current){
-<span class="nc bnc" id="L179" title="All 2 branches missed.">        if(current == null)</span>
-<span class="nc" id="L180">            throw new NoSuchElementException();</span>
-<span class="nc bnc" id="L181" title="All 2 branches missed.">        if(current.getDatum().compareTo(item) &lt; 0){</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">        if(current == null)</span>
+<span class="nc" id="L187">            throw new NoSuchElementException();</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">        if(current.getDatum().compareTo(item) &lt; 0){</span>
         // Search to the right
-<span class="nc" id="L183">            current.setRight(remove(item, current.getRight()));</span>
-<span class="nc" id="L184">            return current;</span>
+<span class="nc" id="L190">            current.setRight(remove(item, current.getRight()));</span>
+<span class="nc" id="L191">            return current;</span>
         }
-<span class="nc bnc" id="L186" title="All 2 branches missed.">        if(current.getDatum().compareTo(item) &gt; 0){</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        if(current.getDatum().compareTo(item) &gt; 0){</span>
         // Search to the left
-<span class="nc" id="L188">            current.setLeft(remove(item, current.getLeft()));</span>
-<span class="nc" id="L189">            return current;</span>
+<span class="nc" id="L195">            current.setLeft(remove(item, current.getLeft()));</span>
+<span class="nc" id="L196">            return current;</span>
         }
         // Found the item.
-<span class="nc bnc" id="L192" title="All 2 branches missed.">        if (current.getLeft() == null)</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">        if (current.getLeft() == null)</span>
         /* No left children. Whatever is on the right will take the place of the 
         item that was discarded */
-<span class="nc" id="L195">            return current.getRight();</span>
-<span class="nc bnc" id="L196" title="All 2 branches missed.">        if (current.getRight() == null)</span>
+<span class="nc" id="L202">            return current.getRight();</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">        if (current.getRight() == null)</span>
         /* No right children. Whatever is on the left will take the place of the 
         item that was discarded */            
-<span class="nc" id="L199">            return current.getLeft();</span>
+<span class="nc" id="L206">            return current.getLeft();</span>
         /* Item has both left and right children. Look for heir. Take the
         highest of the lower values */
-<span class="nc" id="L202">        CalendarTreeNode heir = current.getLeft();</span>
-<span class="nc bnc" id="L203" title="All 2 branches missed.">        while(heir.getRight() != null)</span>
-<span class="nc" id="L204">            heir = heir.getRight();</span>
-<span class="nc" id="L205">        current.setDatum(heir.getDatum());</span>
-<span class="nc" id="L206">        current.setLeft(remove(heir.getDatum(), current.getLeft()));</span>
-<span class="nc" id="L207">        return current;</span>
+<span class="nc" id="L209">        CalendarTreeNode heir = current.getLeft();</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">        while(heir.getRight() != null)</span>
+<span class="nc" id="L211">            heir = heir.getRight();</span>
+<span class="nc" id="L212">        current.setDatum(heir.getDatum());</span>
+<span class="nc" id="L213">        current.setLeft(remove(heir.getDatum(), current.getLeft()));</span>
+<span class="nc" id="L214">        return current;</span>
     }
 
 /******************************************************************************/
@@ -218,16 +225,16 @@ public class CalendarTree {
 /******************************************************************************/
     
     public void print(){
-<span class="nc" id="L221">	print(root);</span>
-<span class="nc" id="L222">    }</span>
+<span class="nc" id="L228">	print(root);</span>
+<span class="nc" id="L229">    }</span>
 
     private void print(CalendarTreeNode current){
-<span class="nc bnc" id="L225" title="All 2 branches missed.">            if (current == null) return;</span>
-<span class="nc" id="L226">            print(current.getLeft());               //L</span>
-<span class="nc" id="L227">            current.getDatum().printCalendar();     //N</span>
-<span class="nc" id="L228">            theGUI.bufferToGui(MessageBoardOptions.RESULTS.getOption());</span>
-<span class="nc" id="L229">            print(current.getRight());              //R </span>
-<span class="nc" id="L230">    } </span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">            if (current == null) return;</span>
+<span class="nc" id="L233">            print(current.getLeft());               //L</span>
+<span class="nc" id="L234">            current.getDatum().printCalendar();     //N</span>
+<span class="nc" id="L235">            theGUI.bufferToGui(MessageBoardOptions.RESULTS.getOption());</span>
+<span class="nc" id="L236">            print(current.getRight());              //R </span>
+<span class="nc" id="L237">    } </span>
     
 /******************************************************************************/
 /* Method: getRoot                                                            */
@@ -238,7 +245,7 @@ public class CalendarTree {
 /******************************************************************************/    
 
     public CalendarTreeNode getRoot() {
-<span class="nc" id="L241">    	return root;</span>
+<span class="nc" id="L248">    	return root;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

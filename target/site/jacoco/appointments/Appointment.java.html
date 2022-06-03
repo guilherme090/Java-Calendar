@@ -12,13 +12,20 @@ import db.MessageBoardOptions;
 /* (one appointment per instance)                                             */
 /******************************************************************************/
 
-<span class="fc" id="L15">public class Appointment {    </span>
-<span class="fc" id="L16">    private String calendarName = null; //will contain the calendar it refers to</span>
+/**
+ * 
+ * @author Guilherme Virgilio P. O. Simoes 
+ * @version 1.1.0
+ * 
+ * Transformation of CS-102 project into a Maven project
+ */
+<span class="fc" id="L22">public class Appointment {    </span>
+<span class="fc" id="L23">    private String calendarName = null; //will contain the calendar it refers to</span>
     private String date;        //YYYYMMDD day format for the appointments
     private String startTime;   //when the appointment begins
     private String endTime;     //when the appointment ends (must not be
                                 // less than startTime 
-<span class="fc" id="L21">    private String description = null; //will contain txt info about appointment</span>
+<span class="fc" id="L28">    private String description = null; //will contain txt info about appointment</span>
     
     private Gui theGUI; //reference to the GUI
     
@@ -36,8 +43,8 @@ import db.MessageBoardOptions;
     private int minuteE;        //Part of endTime that represents the minutes
         
     public void changeCalendarName (String newName){
-<span class="nc" id="L39">        this.calendarName = newName;</span>
-<span class="nc" id="L40">    }</span>
+<span class="nc" id="L46">        this.calendarName = newName;</span>
+<span class="nc" id="L47">    }</span>
 
 /******************************************************************************/
 /* Method: setDate                                                            */
@@ -50,25 +57,25 @@ import db.MessageBoardOptions;
     
     public boolean setDate (String newDate){
         try{
-<span class="pc bpc" id="L53" title="1 of 2 branches missed.">            if(isValid (Integer.parseInt(newDate))){</span>
-<span class="fc" id="L54">                this.date = newDate;</span>
-<span class="fc" id="L55">                    this.year = Integer.parseInt(newDate.substring(0, 4));</span>
-<span class="fc" id="L56">                    this.month = Integer.parseInt(newDate.substring(4, 6));</span>
-<span class="fc" id="L57">                    this.day = Integer.parseInt(newDate.substring(6, 8));        </span>
-<span class="fc" id="L58">                return (true);</span>
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">            if(isValid (Integer.parseInt(newDate))){</span>
+<span class="fc" id="L61">                this.date = newDate;</span>
+<span class="fc" id="L62">                    this.year = Integer.parseInt(newDate.substring(0, 4));</span>
+<span class="fc" id="L63">                    this.month = Integer.parseInt(newDate.substring(4, 6));</span>
+<span class="fc" id="L64">                    this.day = Integer.parseInt(newDate.substring(6, 8));        </span>
+<span class="fc" id="L65">                return (true);</span>
             }
             
             else{
-<span class="nc" id="L62">                return(false);</span>
+<span class="nc" id="L69">                return(false);</span>
             }
                 
         }
-<span class="nc" id="L66">        catch (NumberFormatException exc){</span>
-<span class="nc" id="L67">            theGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), newDate + &quot; is not a valid format for &quot;</span>
-<span class="nc" id="L68">                    + &quot;dates. &quot;</span>
-<span class="nc" id="L69">                    + &quot;It was not set.&quot;);</span>
-<span class="nc" id="L70">            theGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());</span>
-<span class="nc" id="L71">            return (false); //added so that the program can continue without</span>
+<span class="nc" id="L73">        catch (NumberFormatException exc){</span>
+<span class="nc" id="L74">            theGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), newDate + &quot; is not a valid format for &quot;</span>
+<span class="nc" id="L75">                    + &quot;dates. &quot;</span>
+<span class="nc" id="L76">                    + &quot;It was not set.&quot;);</span>
+<span class="nc" id="L77">            theGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());</span>
+<span class="nc" id="L78">            return (false); //added so that the program can continue without</span>
             //breaking
             //System.exit(3);
         }
@@ -84,33 +91,33 @@ import db.MessageBoardOptions;
 /******************************************************************************/
     
     public boolean isValid (int date){
-<span class="fc" id="L87">        int copyOfDate = date;  //used to keep track of calculations on &quot;date&quot;</span>
+<span class="fc" id="L94">        int copyOfDate = date;  //used to keep track of calculations on &quot;date&quot;</span>
     // without changing its value
-<span class="fc" id="L89">        int lastDay = 31;    //last day of the month (depends on the month)</span>
-<span class="fc" id="L90">        copyOfDate %= 10000; //Takes the year out of the number</span>
+<span class="fc" id="L96">        int lastDay = 31;    //last day of the month (depends on the month)</span>
+<span class="fc" id="L97">        copyOfDate %= 10000; //Takes the year out of the number</span>
         
-<span class="pc bpc" id="L92" title="3 of 4 branches missed.">        switch (copyOfDate / 100){  //gets the month, only. Takes the day out.</span>
+<span class="pc bpc" id="L99" title="3 of 4 branches missed.">        switch (copyOfDate / 100){  //gets the month, only. Takes the day out.</span>
             case (1): case (3): case (5): case (7): case (8): case (10):
             case (12): //31 days month
                        //does not enter DEFAULT. Does not change lastDay.
-<span class="fc" id="L96">                  break;         </span>
+<span class="fc" id="L103">                  break;         </span>
             case (4): case (6): case (9): case (11): //30 days month
-<span class="nc" id="L98">                lastDay = 30;</span>
-<span class="nc" id="L99">                  break;</span>
+<span class="nc" id="L105">                lastDay = 30;</span>
+<span class="nc" id="L106">                  break;</span>
             case (2):{
-<span class="nc bnc" id="L101" title="All 2 branches missed.">                if (isLeapYear(date/1000)){</span>
-<span class="nc" id="L102">                    lastDay = 29;</span>
-<span class="nc" id="L103">                }</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">                if (isLeapYear(date/1000)){</span>
+<span class="nc" id="L109">                    lastDay = 29;</span>
+<span class="nc" id="L110">                }</span>
                 else
-<span class="nc" id="L105">                    lastDay = 28;</span>
-<span class="nc" id="L106">            } break;</span>
+<span class="nc" id="L112">                    lastDay = 28;</span>
+<span class="nc" id="L113">            } break;</span>
             
             default:
-<span class="nc" id="L109">                return false;</span>
+<span class="nc" id="L116">                return false;</span>
         }
                         
     // True will be returned if the day is within the limits of the month
-<span class="pc bpc" id="L113" title="2 of 4 branches missed.">        return !((copyOfDate % 100  &lt; 1) || (copyOfDate % 100  &gt; lastDay));</span>
+<span class="pc bpc" id="L120" title="2 of 4 branches missed.">        return !((copyOfDate % 100  &lt; 1) || (copyOfDate % 100  &gt; lastDay));</span>
     } 
     
 /******************************************************************************/
@@ -123,18 +130,18 @@ import db.MessageBoardOptions;
 /******************************************************************************/
     
     public boolean isLeapYear (int year){
-<span class="nc" id="L126">    boolean leapyear = false;   //initially assume it is not a leap year</span>
+<span class="nc" id="L133">    boolean leapyear = false;   //initially assume it is not a leap year</span>
     //Check if divisible by 4
-<span class="nc bnc" id="L128" title="All 2 branches missed.">    if (year%4 == 0)</span>
-<span class="nc" id="L129">        leapyear = true;</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">    if (year%4 == 0)</span>
+<span class="nc" id="L136">        leapyear = true;</span>
     //Do additional checks (year might not be leap even if divisible by 4)
-<span class="nc bnc" id="L131" title="All 2 branches missed.">    if (year % 100 == 0)</span>
-<span class="nc" id="L132">        leapyear = false;</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">    if (year % 100 == 0)</span>
+<span class="nc" id="L139">        leapyear = false;</span>
 
-<span class="nc bnc" id="L134" title="All 2 branches missed.">    if (year% 400 == 0)</span>
-<span class="nc" id="L135">        leapyear = true;</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">    if (year% 400 == 0)</span>
+<span class="nc" id="L142">        leapyear = true;</span>
     
-<span class="nc" id="L137">    return leapyear;</span>
+<span class="nc" id="L144">    return leapyear;</span>
     }
 
 /******************************************************************************/
@@ -149,25 +156,25 @@ import db.MessageBoardOptions;
     
     public boolean setTime (String startTime, String endTime){
         try{
-<span class="fc" id="L152">            if(isValid (Integer.parseInt(startTime), </span>
-<span class="pc bpc" id="L153" title="1 of 2 branches missed.">                        Integer.parseInt(endTime))){</span>
-<span class="fc" id="L154">                this.startTime = startTime;</span>
-<span class="fc" id="L155">                    this.hourS = Integer.parseInt(startTime.substring(0, 2));</span>
-<span class="fc" id="L156">                    this.minuteS = Integer.parseInt(startTime.substring(2, 4));</span>
-<span class="fc" id="L157">                this.endTime = endTime;</span>
-<span class="fc" id="L158">                    this.hourE = Integer.parseInt(endTime.substring(0, 2));</span>
-<span class="fc" id="L159">                    this.minuteE = Integer.parseInt(endTime.substring(2, 4));</span>
-<span class="fc" id="L160">                return (true);</span>
+<span class="fc" id="L159">            if(isValid (Integer.parseInt(startTime), </span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">                        Integer.parseInt(endTime))){</span>
+<span class="fc" id="L161">                this.startTime = startTime;</span>
+<span class="fc" id="L162">                    this.hourS = Integer.parseInt(startTime.substring(0, 2));</span>
+<span class="fc" id="L163">                    this.minuteS = Integer.parseInt(startTime.substring(2, 4));</span>
+<span class="fc" id="L164">                this.endTime = endTime;</span>
+<span class="fc" id="L165">                    this.hourE = Integer.parseInt(endTime.substring(0, 2));</span>
+<span class="fc" id="L166">                    this.minuteE = Integer.parseInt(endTime.substring(2, 4));</span>
+<span class="fc" id="L167">                return (true);</span>
             }           
             else{
-<span class="nc" id="L163">                return (false);</span>
+<span class="nc" id="L170">                return (false);</span>
             }
         }
-<span class="nc" id="L166">        catch (NumberFormatException exc){</span>
-<span class="nc" id="L167">            theGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), startTime + &quot;/&quot; + endTime + &quot; is not a &quot;</span>
-<span class="nc" id="L168">                    + &quot;valid format for times.&quot;);</span>
-<span class="nc" id="L169">            theGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());</span>
-<span class="nc" id="L170">                return (false); //added so that the program will not crash</span>
+<span class="nc" id="L173">        catch (NumberFormatException exc){</span>
+<span class="nc" id="L174">            theGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), startTime + &quot;/&quot; + endTime + &quot; is not a &quot;</span>
+<span class="nc" id="L175">                    + &quot;valid format for times.&quot;);</span>
+<span class="nc" id="L176">            theGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());</span>
+<span class="nc" id="L177">                return (false); //added so that the program will not crash</span>
                 //will not include the invalid time either
                 //System.exit(4);            
         }      
@@ -185,18 +192,18 @@ import db.MessageBoardOptions;
     
     public boolean isValid (int start, int end){
         //check if hours or minutes fall out of range
-<span class="pc bpc" id="L188" title="4 of 8 branches missed.">        if (start/100 &lt; 0 || start/100 &gt; 23 || start%100 &lt; 0 || start%100 &gt; 59)</span>
-<span class="nc" id="L189">                return false;</span>
-<span class="pc bpc" id="L190" title="4 of 8 branches missed.">        if (end/100 &lt; 0 || end/100 &gt; 23 || end%100 &lt; 0 || end%100 &gt; 59)</span>
-<span class="nc" id="L191">                return false;</span>
+<span class="pc bpc" id="L195" title="4 of 8 branches missed.">        if (start/100 &lt; 0 || start/100 &gt; 23 || start%100 &lt; 0 || start%100 &gt; 59)</span>
+<span class="nc" id="L196">                return false;</span>
+<span class="pc bpc" id="L197" title="4 of 8 branches missed.">        if (end/100 &lt; 0 || end/100 &gt; 23 || end%100 &lt; 0 || end%100 &gt; 59)</span>
+<span class="nc" id="L198">                return false;</span>
         //check if start time is greater than end time (this should be false)
-<span class="pc bpc" id="L193" title="1 of 2 branches missed.">        if (start/100 &gt; end/100)</span>
-<span class="nc" id="L194">                return false;</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">        if (start/100 &gt; end/100)</span>
+<span class="nc" id="L201">                return false;</span>
         //however, hours can be equal with different minutes.
-<span class="pc bpc" id="L196" title="1 of 4 branches missed.">        if ((start/100 == end/100) &amp;&amp; (start/100 &gt; end/100))</span>
-<span class="nc" id="L197">                return false;</span>
+<span class="pc bpc" id="L203" title="1 of 4 branches missed.">        if ((start/100 == end/100) &amp;&amp; (start/100 &gt; end/100))</span>
+<span class="nc" id="L204">                return false;</span>
         //if it doesn't fail those conditions, it is true
-<span class="fc" id="L199">        return true;</span>
+<span class="fc" id="L206">        return true;</span>
     }
  
 /******************************************************************************/
@@ -209,12 +216,12 @@ import db.MessageBoardOptions;
 /******************************************************************************/    
 
     public void setDescription (String newDescription){
-<span class="fc" id="L212">        this.description = newDescription;</span>
-<span class="fc" id="L213">    }</span>
+<span class="fc" id="L219">        this.description = newDescription;</span>
+<span class="fc" id="L220">    }</span>
     
     public void setGUI (Gui GUI){
-<span class="nc" id="L216">        this.theGUI = GUI;</span>
-<span class="nc" id="L217">    }</span>
+<span class="nc" id="L223">        this.theGUI = GUI;</span>
+<span class="nc" id="L224">    }</span>
 
 
 /******************************************************************************/
@@ -227,23 +234,23 @@ import db.MessageBoardOptions;
 /******************************************************************************/
     
     public String getCalendarName (){
-<span class="nc" id="L230">        return calendarName;</span>
+<span class="nc" id="L237">        return calendarName;</span>
     }
     
     public String getDate (){
-<span class="fc" id="L234">        return date;</span>
+<span class="fc" id="L241">        return date;</span>
     }
     
     public String getDescription (){
-<span class="nc" id="L238">        return description;</span>
+<span class="nc" id="L245">        return description;</span>
     }
     
     public String getEndTime (){
-<span class="fc" id="L242">        return endTime;</span>
+<span class="fc" id="L249">        return endTime;</span>
     }
     
     public String getStartTime (){
-<span class="fc" id="L246">        return startTime;</span>
+<span class="fc" id="L253">        return startTime;</span>
     }
 
 /******************************************************************************/
@@ -256,31 +263,31 @@ import db.MessageBoardOptions;
 /******************************************************************************/    
     
     public int getDay (){
-<span class="nc" id="L259">        return day;</span>
+<span class="nc" id="L266">        return day;</span>
     }    
     
     public int getMonth (){
-<span class="nc" id="L263">        return month;</span>
+<span class="nc" id="L270">        return month;</span>
     }    
     
     public int getYear (){
-<span class="nc" id="L267">        return year;</span>
+<span class="nc" id="L274">        return year;</span>
     }    
     
     public int getHourS (){
-<span class="nc" id="L271">        return hourS;</span>
+<span class="nc" id="L278">        return hourS;</span>
     } 
 
     public int getMinuteS (){
-<span class="nc" id="L275">        return minuteS;</span>
+<span class="nc" id="L282">        return minuteS;</span>
     }    
 
     public int getHourE (){
-<span class="nc" id="L279">        return hourE;</span>
+<span class="nc" id="L286">        return hourE;</span>
     } 
 
     public int getMinuteE (){
-<span class="nc" id="L283">        return minuteE;</span>
+<span class="nc" id="L290">        return minuteE;</span>
     }  
     
 /******************************************************************************/
@@ -295,52 +302,52 @@ import db.MessageBoardOptions;
 
     public void print (){
         //Print calendar name
-<span class="nc" id="L298">        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), calendarName + &quot;\n&quot;);</span>
+<span class="nc" id="L305">        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), calendarName + &quot;\n&quot;);</span>
         //Print some space to indent
-<span class="nc" id="L300">        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), &quot;   &quot;);</span>
+<span class="nc" id="L307">        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), &quot;   &quot;);</span>
         //Print year
-<span class="nc" id="L302">        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), year + &quot;-&quot;);</span>
+<span class="nc" id="L309">        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), year + &quot;-&quot;);</span>
         //Print month
-<span class="nc" id="L304">        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), month + &quot;-&quot;);</span>
+<span class="nc" id="L311">        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), month + &quot;-&quot;);</span>
         //Print day
-<span class="nc" id="L306">        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), day + &quot; &quot;);</span>
+<span class="nc" id="L313">        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), day + &quot; &quot;);</span>
 
         //Print times
         //Print start time
-<span class="nc" id="L310">        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), &quot;(&quot; + startTime);</span>
-<span class="nc" id="L311">        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), &quot;-&quot;);</span>
+<span class="nc" id="L317">        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), &quot;(&quot; + startTime);</span>
+<span class="nc" id="L318">        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), &quot;-&quot;);</span>
         //Print end time
-<span class="nc" id="L313">        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), endTime + &quot;) &quot;);</span>
+<span class="nc" id="L320">        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), endTime + &quot;) &quot;);</span>
 
         //Print description
-<span class="nc" id="L316">        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), description + &quot;\n&quot;);               </span>
-<span class="nc" id="L317">    }</span>
+<span class="nc" id="L323">        theGUI.printToGui(MessageBoardOptions.RESULTS.getOption(), description + &quot;\n&quot;);               </span>
+<span class="nc" id="L324">    }</span>
     
     
     public String collectPrint (){
-<span class="nc" id="L321">        String toBeReturned = &quot;&quot;; //collect data and return</span>
+<span class="nc" id="L328">        String toBeReturned = &quot;&quot;; //collect data and return</span>
         //Print calendar name
-<span class="nc" id="L323">        toBeReturned += calendarName + &quot;\n&quot;;</span>
+<span class="nc" id="L330">        toBeReturned += calendarName + &quot;\n&quot;;</span>
         //Print some space to indent
-<span class="nc" id="L325">        toBeReturned += &quot;   &quot;;</span>
+<span class="nc" id="L332">        toBeReturned += &quot;   &quot;;</span>
         //Print year
-<span class="nc" id="L327">        toBeReturned += year + &quot;-&quot;;</span>
+<span class="nc" id="L334">        toBeReturned += year + &quot;-&quot;;</span>
         //Print month
-<span class="nc" id="L329">        toBeReturned += month + &quot;-&quot;;</span>
+<span class="nc" id="L336">        toBeReturned += month + &quot;-&quot;;</span>
         //Print day
-<span class="nc" id="L331">        toBeReturned += day + &quot; &quot;;</span>
+<span class="nc" id="L338">        toBeReturned += day + &quot; &quot;;</span>
 
         //Print times
         //Print start time
-<span class="nc" id="L335">        toBeReturned += &quot;(&quot; + startTime;</span>
-<span class="nc" id="L336">        toBeReturned += &quot;-&quot;;</span>
+<span class="nc" id="L342">        toBeReturned += &quot;(&quot; + startTime;</span>
+<span class="nc" id="L343">        toBeReturned += &quot;-&quot;;</span>
         //Print end time
-<span class="nc" id="L338">        toBeReturned += endTime + &quot;) &quot;;</span>
+<span class="nc" id="L345">        toBeReturned += endTime + &quot;) &quot;;</span>
 
         //Print description
-<span class="nc" id="L341">        toBeReturned += description + &quot;\n&quot;; </span>
+<span class="nc" id="L348">        toBeReturned += description + &quot;\n&quot;; </span>
         
-<span class="nc" id="L343">        return toBeReturned;</span>
+<span class="nc" id="L350">        return toBeReturned;</span>
     }        
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

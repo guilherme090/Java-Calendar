@@ -65,3 +65,4 @@ Campeonato Mineiro 2016
 20160410/1600/1800/(Tombos) Tombense X Uberlandia
 20160410/1600/1800/(Municipal de Varginha) Boa Esporte X Cruzeiro
 20160410/1600/1800/(Municipal Juiz de Fora) Tupi-MG X Caldense
+20220603/1200/1300/Meu jogo teste.

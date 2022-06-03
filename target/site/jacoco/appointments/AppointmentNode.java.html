@@ -8,6 +8,13 @@
 /*                                                                            */
 /******************************************************************************/
 
+/**
+ * 
+ * @author Guilherme Virgilio P. O. Simoes 
+ * @version 1.1.0
+ * 
+ * Transformation of CS-102 project into a Maven project
+ */
 public class AppointmentNode{
     private Appointment datum;          //link to an appointment object
     private AppointmentNode next;       //next object in the list
@@ -21,10 +28,10 @@ public class AppointmentNode{
 /* Returns: void                                                              */
 /******************************************************************************/
     
-<span class="nc" id="L24">    public AppointmentNode(Appointment newApp){</span>
-<span class="nc" id="L25">        datum = newApp;</span>
-<span class="nc" id="L26">        next = null;</span>
-<span class="nc" id="L27">    }</span>
+<span class="nc" id="L31">    public AppointmentNode(Appointment newApp){</span>
+<span class="nc" id="L32">        datum = newApp;</span>
+<span class="nc" id="L33">        next = null;</span>
+<span class="nc" id="L34">    }</span>
 
 /******************************************************************************/
 /* Method: get&lt;FEATURE&gt;                                                       */
@@ -36,11 +43,11 @@ public class AppointmentNode{
 /******************************************************************************/
     
     public Appointment getDatum(){
-<span class="nc" id="L39">        return datum;</span>
+<span class="nc" id="L46">        return datum;</span>
     }
     
     public AppointmentNode getNext(){
-<span class="nc" id="L43">        return next;</span>
+<span class="nc" id="L50">        return next;</span>
     }
  
 /******************************************************************************/
@@ -53,11 +60,11 @@ public class AppointmentNode{
 /******************************************************************************/    
   
     public void setDatum (Appointment datum){
-<span class="nc" id="L56">        this.datum = datum;</span>
-<span class="nc" id="L57">    }</span>
+<span class="nc" id="L63">        this.datum = datum;</span>
+<span class="nc" id="L64">    }</span>
     
     public void setNext(AppointmentNode next){
-<span class="nc" id="L60">        this.next = next;</span>
-<span class="nc" id="L61">    }</span>
+<span class="nc" id="L67">        this.next = next;</span>
+<span class="nc" id="L68">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

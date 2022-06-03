@@ -1,7 +1,8 @@
 package calendars;
 
+import java.util.LinkedList;
+
 import appointments.Appointment;
-import appointments.AppointmentNode;
 import calendars.Calendar;
 import db.Gui;
 
@@ -25,186 +26,78 @@ public class Calendar implements Comparable <Calendar>{
     private String fileName = ""; //contains the path to the calendar's file
     private String calendarName = ""; //First line in the file
     private Gui theGUI;
-    private AppointmentNode head; //First appointment node of the list
+    private LinkedList<Appointment> listOfAppointments = new LinkedList<Appointment>();
     
-/******************************************************************************/
-/* Method: isEmpty                                                            */
-/* Purpose: tells if the list is empty (i.e.) if its number of elements is    */
-/*          zero                                                              */
-/* Parameters:                                                                */
-/*  void                                                                      */
-/* Returns: Boolean:    is the list empty?                                    */
-/******************************************************************************/
-    
+    /**
+     * Checks if no appointments were added to the calendar.
+     * 
+     * @return true, if the list is empty.
+     */
     public boolean isEmpty(){
-        return (head == null);
+    	return listOfAppointments.size() == 0;
     }
 
-/******************************************************************************/
-/* Method: size                                                               */
-/* Purpose: loops through the list and counts its number of elements          */
-/*                                                                            */
-/* Parameters:                                                                */
-/*  void                                                                      */
-/* Returns: int:        number of elements in the list                        */
-/******************************************************************************/    
-    
+    /**
+     * Gets the number of appointments of the current calendar,
+     * not the whole database's.
+     * 
+     * @return number of appointments.
+     */
     public int size(){
-        int count = 0; //counts the number of appointments in the list
-        AppointmentNode current = head; //starts counting from the head
-            while (current != null){
-                count++;
-                current = current.getNext();
-            }
-        return count;
+    	return listOfAppointments.size();
     }
-
-/******************************************************************************/
-/* Method: get                                                                */
-/* Purpose: retrieves an appointment stored at position specified by          */
-/*          parameter index in the list                                       */
-/* Parameters:                                                                */
-/*  int index:          position that holds the desired item                  */
-/* Returns: Appointment:   the desired item                                   */
-/******************************************************************************/ 
     
+    /**
+     * Gets a single appointment from the list.
+     * 
+     * @param index
+     * @return the appointment (if found).
+     * @throws IndexOutOfBoundException
+     */
     public Appointment get (int index){
-	AppointmentNode current = head; //starts counting from the head		
-
-	while((current != null) && (index != 0)){
-	index--;
-	current = current.getNext();
-	}
-	if (current == null)
-            throw new IndexOutOfBoundsException();
-	else
-            return current.getDatum();
+    	return listOfAppointments.get(index);
     }
-
-/******************************************************************************/
-/* Method: add                                                                */
-/* Purpose: adds an appointment instance to the calendar at the necessary     */
-/*          position so that it remains in sorted order                       */
-/* Parameters:                                                                */
-/*  Appointment item: item that needs to be included in the list              */
-/* Returns: void                                                              */
-/******************************************************************************/ 
-    
-    public void add(AppointmentNode item){
-	AppointmentNode previous = null; //stores the previous item to check for
-                                         //empty lists
-        AppointmentNode current = head; //starts counting from the head
-	
-        while (current != null){
-            if (item.getDatum().getYear() > current.getDatum().getYear()){ 
-            //then item is further away in the list
-                previous = current;
-                current = current.getNext();
-                continue;
-            }
-            //if year is the same, but not the month...
-            if (item.getDatum().getYear() == current.getDatum().getYear())
-            if (item.getDatum().getMonth() > current.getDatum().getMonth()){
-                previous = current;
-                current = current.getNext();
-                continue;
-            }
-            //if month is the same, but not the day...
-            if (item.getDatum().getMonth() == current.getDatum().getMonth())
-            if (item.getDatum().getDay() > current.getDatum().getDay()){
-                previous = current;
-                current = current.getNext();
-                continue;
-            }
-            //if day is the same, but not the start hour...
-            if (item.getDatum().getDay() == current.getDatum().getDay())            
-            if (item.getDatum().getHourS() > current.getDatum().getHourS()){
-                previous = current;
-                current = current.getNext();
-                continue;
-            }
-            //if start hour is the same, but not the start minute...
-            if (item.getDatum().getHourS() == current.getDatum().getHourS())  
-            if (item.getDatum().getMinuteS() > current.getDatum().getMinuteS()){
-                previous = current;
-                current = current.getNext();
-                continue;
-            }            
-            break;
-        }
-            //Now current points to an item that is bigger than the one to be
-            //added or it is null
-        if (previous == null){   //empty list
-            head = item;
-        }
-        else {
-            previous.setNext(item);          
-        }
-            item.setNext(current);                        
+ 
+    /**
+     * Adds an appointment to the list without ordering it.
+     * 
+     * @param item Appointment to be added to the list
+     */
+    public void add(Appointment item){
+	    listOfAppointments.add(item);                  
     }
     
-/******************************************************************************/
-/* Method: remove                                                             */
-/* Purpose: removes an appointment from the list                              */
-/*                                                                            */
-/* Parameters:                                                                */
-/*  int index:    index of the item to be removed from list                   */
-/* Returns: Appointment: item just removed                                    */
-/******************************************************************************/    
-
-    public AppointmentNode remove (int index){
-	AppointmentNode previous = null;   //check for empty lists
-	AppointmentNode current = head;    //start counting from the head
-	while((current != null) && (index != 0)){
-		index--;
-		previous = current;
-		current = current.getNext();
-	}
-        
-	if (index != 0)
-            throw new IndexOutOfBoundsException();
-        
-	if (previous == null){  //remove the first item. Head changes
-            head = current.getNext();
-	}
-        else{
-            previous.setNext(current.getNext());  //rearrange the connections  
-        }	
-	return current;	
-}
-    
-/******************************************************************************/
-/* Method: removeAll                                                          */
-/* Purpose: removes all appointments from the list                            */
-/*                                                                            */
-/* Parameters:                                                                */
-/*  void                                                                      */
-/* Returns: void                                                              */
-/******************************************************************************/ 
-
-public void removeAll(){
-	head = null;
-}
-
-/******************************************************************************/
-/* Method: printCalendar / printCalendarToGui                                 */
-/* Purpose: prints all the calendar's contents                                */
-/*                   *toGui writes to the results board                       */
-/* Parameters:                                                                */
-/*  void                                                                      */
-/* Returns: int    number of printed items                                    */
-/******************************************************************************/
-
-public int printCalendar(){
-    AppointmentNode auxApp = head; //created as index to loop through the list
-    int count = 0;      //counter for the number of items
-    while (auxApp != null){
-        auxApp.getDatum().print();
-        auxApp = auxApp.getNext();
-        count++;
+    /**
+     * Removes a single appointment from the list.
+     * 
+     * @param index
+     * @return the appointment (if removed).
+     * @throws IndexOutOfBoundException
+     */
+    public Appointment remove (int index){
+	return listOfAppointments.remove(index);	
     }
-    return count;
-}
+     
+    /**
+     * Clears the list
+     */
+	public void removeAll(){
+		listOfAppointments.clear();
+	}
+
+	/**
+	 * Prints all appointments in the calendar instance.
+	 * 
+	 * @return number of appointments.
+	 */
+	public int printCalendar(){
+		int count = 0;
+	    for(Appointment appointment : listOfAppointments) {
+	    	appointment.print();
+	    	count ++;
+	    }
+	    return count;
+	}
 
 /******************************************************************************/
 /* Method: assignGUI                                                          */
@@ -219,83 +112,41 @@ public int printCalendar(){
         theGUI = copying;
     }
 
-/******************************************************************************/
-/* Method: printBasedOnDescription                                            */
-/* Purpose: prints all the calendar's contents that contain the provided      */
-/*          description (supplied by the parameter)                           */
-/* Parameters:                                                                */
-/*  String description:    description we want to look for                    */
-/* Returns: int    number of printed items                                    */
-/******************************************************************************/
+    /**
+     * Prints only the items that contain the provided description.
+     * @param description
+     * @return number of matching items.
+     */
+	public int printBasedOnDescription(String description){
+	    int count = 0;      //counter for the number of items
+	    for(Appointment appointment : listOfAppointments) {
+	    	if(appointment.getDescription().toLowerCase()
+	    			.contains(description.toLowerCase())) {
+	    		appointment.print();
+	    		count++;
+	    	}
+	    }
+	    return count;
+	}
 
-public int printBasedOnDescription(String description){
-    AppointmentNode auxApp = head; //created as index to loop through the list
-    int count = 0;      //counter for the number of items
-    while (auxApp != null){
-        if(auxApp.getDatum().getDescription().toLowerCase().contains(
-                description.toLowerCase())){
-            auxApp.getDatum().print();
-            count++;
-        }
-        auxApp = auxApp.getNext();
-    }
-    return count;
-}
-
-/******************************************************************************/
-/* Method: lookForTime                                                        */
-/* Purpose: Aid in the search of a period of time that contains one given     */
-/* value supplied by the user. Separate block for keeping the methods short   */
-/* Parameters:                                                                */
-/* String: Date  String representing the date yyyymmdd                        */
-/* int: time  the time hhmm                                                   */
-/*                                                                            */    
-/* Returns: int   Number of matches                                           */
-/******************************************************************************/
-    
+    /**
+     * Looks for appointments in a given time window.
+     * 
+     * @param date
+     * @param time
+     * @return number of matches.
+     */
     public int lookForTime (String date, int time){
         int count = 0;    //number of matches
-        AppointmentNode auxApp = head; //created as index to loop 
-                                       //through the list
-
-        while (auxApp != null){
-            if(auxApp.getDatum().getDate().equals(date)){
-            //arrange the time in a way that it is an int in the format hhmm
-                if(auxApp.getDatum().getHourS()*100 + auxApp.getDatum().
-                getMinuteS() <= time){
-                    if(auxApp.getDatum().getHourE()*100 + auxApp.getDatum().
-                    getMinuteE() >= time){
-                        auxApp.getDatum().print();
-                        count++;
-                    }
-                }
-            }
-            auxApp = auxApp.getNext();
-        }
+        for(Appointment appointment : listOfAppointments) {
+        	if(	appointment.getDate().equals(date) && 
+        		appointment.getHourS() * 100 + appointment.getMinuteS() <= time &&
+        		appointment.getHourE() * 100 + appointment.getMinuteE() >= time) {
+        			appointment.print();
+        			count++;
+        	}
+        }  
         return count;
-    }
-    
-    String collectLookForTime (String date, int time){
-        String returning = ""; //collect and return
-        int count = 0;    //number of matches
-        AppointmentNode auxApp = head; //created as index to loop 
-                                       //through the list
-
-        while (auxApp != null){
-            if(auxApp.getDatum().getDate().equals(date)){
-            //arrange the time in a way that it is an int in the format hhmm
-                if(auxApp.getDatum().getHourS()*100 + auxApp.getDatum().
-                getMinuteS() <= time){
-                    if(auxApp.getDatum().getHourE()*100 + auxApp.getDatum().
-                    getMinuteE() >= time){
-                        returning += auxApp.getDatum().collectPrint();
-                        count++;
-                    }
-                }
-            }
-            auxApp = auxApp.getNext();
-        }
-        return returning;
     }
 
 /******************************************************************************/
@@ -315,9 +166,9 @@ public int printBasedOnDescription(String description){
         return calendarName;
     }
     
-    public AppointmentNode getHead() {
-    	return head;
-    }    
+    public LinkedList<Appointment> getList() {
+    	return listOfAppointments;
+    }
 
 /******************************************************************************/
 /* Method: set<FEATURE>                                                       */

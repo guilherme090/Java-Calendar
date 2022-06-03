@@ -5,12 +5,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 import appointments.Appointment;
-import appointments.AppointmentNode;
 
 import calendars.Calendar;
 import calendars.CalendarTree;
@@ -107,23 +107,23 @@ Gui thisGUI; //interface assigned to this database
     
     boolean addToCalendar (Calendar calendar, String date, String startTime, 
                            String endTime, String description){
-        AppointmentNode temp = new AppointmentNode (new Appointment()); 
+        Appointment temp = new Appointment(); 
         //create temporary appointment 
         boolean legit = false; //are appointment parameters legal?
-            temp.getDatum().changeCalendarName(calendar.getCalendarName()); 
+            temp.changeCalendarName(calendar.getCalendarName()); 
             //set name
-            legit = temp.getDatum().setDate(date);
+            legit = temp.setDate(date);
             if (legit == true)     //means it is a valid date
-                legit = temp.getDatum().setTime(startTime, endTime);
-            temp.getDatum().setDescription(description);
-            temp.getDatum().setGUI(thisGUI);
+                legit = temp.setTime(startTime, endTime);
+            temp.setDescription(description);
+            temp.setGUI(thisGUI);
             if (legit == true) {
                 calendar.add(temp);
                 return true;
             }
             else{
                 thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), "**** " + calendar.getCalendarName()
-                    + "'s \n" +  "**** '" + temp.getDatum().getDescription() 
+                    + "'s \n" +  "**** '" + temp.getDescription() 
                     + "' not included!\n");
                 thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());
                 return false;
@@ -699,17 +699,16 @@ void delCalendar(String chosenCalendar){
             bWritter.newLine(); // move to the next line
             // Form lines with the calendar contents. Do this for all the 
             // appointments
-            AppointmentNode auxApp = currentCal.getHead(); //index to the list
-            while (auxApp != null){     // look at the whole list
-                currentLine = auxApp.getDatum().getDate() + "/" +
-                auxApp.getDatum().getStartTime() + "/" +
-                auxApp.getDatum().getEndTime() + "/" +
-                auxApp.getDatum().getDescription();
-                
-                bWritter.write(currentLine); //write formed line
+            LinkedList <Appointment> listOfAppointments = currentCal.getList();
+            for(Appointment appointment: listOfAppointments) {
+            	currentLine = 	appointment.getDate() + "/" +
+            					appointment.getStartTime() + "/" +
+            					appointment.getEndTime() + "/" +
+            					appointment.getDescription();
+            	
+            	bWritter.write(currentLine); //write formed line
                 bWritter.newLine(); //move to the next line
-                
-                auxApp = auxApp.getNext();  //move on to the next element
+            	
             }   
             bWritter.close();   //close the buffer to flush it to disk.
         } catch (IOException exc) {
