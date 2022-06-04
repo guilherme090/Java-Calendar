@@ -1,12 +1,11 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-JavaCalendar,appointments,AppointmentNode,23,0,0,0,10,0,5,0,5,0
 JavaCalendar,appointments,Appointment,356,180,25,17,67,34,35,10,14,9
-JavaCalendar,calendars,CalendarTree,274,0,38,0,66,0,36,0,17,0
-JavaCalendar,calendars,Calendar,217,0,24,0,55,0,30,0,18,0
-JavaCalendar,calendars,CalendarTreeNode,24,0,0,0,10,0,7,0,7,0
+JavaCalendar,appointments,AppointmentsComparator,33,0,0,0,8,0,2,0,2,0
+JavaCalendar,calendars,Calendar,172,0,16,0,45,0,26,0,18,0
+JavaCalendar,calendars,CalendarSet,92,0,8,0,23,0,15,0,11,0
 JavaCalendar,db,Prog5,41,0,4,0,12,0,4,0,2,0
 JavaCalendar,db,Gui.OptionHandler,256,0,20,0,56,0,13,0,3,0
 JavaCalendar,db,MessageBoardOptions,37,0,0,0,6,0,3,0,3,0
-JavaCalendar,db,Database,989,0,115,0,258,0,88,0,29,0
+JavaCalendar,db,Database,980,0,107,0,251,0,84,0,29,0
 JavaCalendar,db,Gui,715,0,12,0,139,0,13,0,7,0
 JavaCalendar,db,Gui.ButtonHandler,248,0,13,0,38,0,13,0,2,0

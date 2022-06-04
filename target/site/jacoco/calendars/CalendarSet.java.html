@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CalendarSet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JavaCalendar</a> &gt; <a href="index.source.html" class="el_package">calendars</a> &gt; <span class="el_source">CalendarSet.java</span></div><h1>CalendarSet.java</h1><pre class="source lang-java linenums">package calendars;
+/******************************************************************************/
+/* Guilherme Virgilio P. O. Simoes                                            */
+/* Login ID: pici7127                                                         */
+/* CS-102, Winter 2016                                                        */
+/* Programming Assignment 5                                                   */
+/* Calendar Tree: A binary tree with Calendar instances                       */
+/******************************************************************************/
+
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
+
+import db.Gui;
+
+/**
+ * 
+ * @author Guilherme Virgilio P. O. Simoes 
+ * @version 1.1.0
+ * 
+ * Transformation of CS-102 project into a Maven project
+ */
+public class CalendarSet {
+    private LinkedList&lt;Calendar&gt; set;    
+    Gui theGUI;
+
+/******************************************************************************/
+/* Method: CalendarTree (constructor)                                         */
+/* Purpose: sets root to null                                                 */
+/* Parameters:                                                                */
+/*  void                                                                      */
+/* Returns: void                                                              */
+/******************************************************************************/    
+<span class="nc" id="L33">    public CalendarSet(){</span>
+<span class="nc" id="L34">        set = new LinkedList&lt;Calendar&gt;();</span>
+<span class="nc" id="L35">    }</span>
+
+/******************************************************************************/
+/* Method: assignGUI                                                          */
+/* Purpose: copies a reference to a database and returns it so that it can be */
+/*          re-assigned to the GUI and seen from this class.                  */
+/*                                                                            */          
+/* Parameters:                                                                */
+/*  Database copying: reference to the database being copied to the GUI       */     
+/* Returns: void                                                              */
+/******************************************************************************/    
+    public void assignGUI (Gui copying){
+<span class="nc" id="L47">        theGUI = copying;</span>
+<span class="nc" id="L48">    }    </span>
+    
+/******************************************************************************/
+/* Method: isEmpty                                                            */
+/* Purpose: tells if the list is empty (i.e.) if its number of elements is    */
+/*          zero                                                              */
+/* Parameters:                                                                */
+/*  void                                                                      */
+/* Returns: Boolean:    is the list empty?                                    */
+/******************************************************************************/
+    
+    public boolean isEmpty(){
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        return set.size() == 0;</span>
+    }
+    
+/******************************************************************************/
+/* Method: size                                                               */
+/* Purpose: traverses the list and counts the number of elements              */
+/*                                                                            */
+/* Parameters:                                                                */
+/*  CalendarTreeNode current:  the tree's root (helper method only)           */ 
+/* Returns: int:        number of elements in the list                        */
+/******************************************************************************/    
+    public int size(){
+<span class="nc" id="L72">    	return set.size();</span>
+    }
+
+/******************************************************************************/
+/* Method: clear                                                              */
+/* Purpose: removes all calendars from the tree                               */
+/*                                                                            */
+/* Parameters:                                                                */
+/*  void                                                                      */
+/* Returns: void                                                              */
+/******************************************************************************/
+    public void clear(){
+<span class="nc" id="L84">        set.clear();</span>
+<span class="nc" id="L85">    }</span>
+    
+/******************************************************************************/
+/* Method: search                                                             */
+/* Purpose: checks the tree to look for a specific calendar.                  */
+/*                                                                            */
+/* Parameters:                                                                */
+/*  Calendar item:          calendar to be looked for                         */
+/*  CalendarTreeNode current:  the tree's root (helper method only)           */    
+/* Returns: boolean:        item found?                                       */
+/******************************************************************************/    
+    public boolean search(Calendar item){
+<span class="nc" id="L97">        return set.contains(item);</span>
+    }
+    
+    /**
+     * Returns a calendar based on its name.
+     * 
+     * @param name
+     * @return requested calendar, if found.
+     * @throws NoSuchElementException
+     */
+    public Calendar search(String name){
+<span class="nc bnc" id="L108" title="All 2 branches missed.">       for(Calendar calendar: set) {</span>
+<span class="nc" id="L109">    	   if (calendar.getCalendarName().toLowerCase().</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">    			   contains(name.toLowerCase())) {</span>
+<span class="nc" id="L111">    		   return calendar;</span>
+    	   }
+       }
+<span class="nc" id="L114">       throw new NoSuchElementException();</span>
+    }  
+    
+/******************************************************************************/
+/* Method: add                                                                */
+/* Purpose: adds a node to the tree.                                          */
+/*                                                                            */
+/* Parameters:                                                                */
+/*  Calendar item:  value to be added                                         */
+/*  CalendarTreeNode root:  the tree's root (helper method only)              */     
+/* Returns: void                                                              */
+/******************************************************************************/ 
+    public void add (Calendar item){
+<span class="nc" id="L127">        set.add(item);</span>
+<span class="nc" id="L128">    }</span>
+    
+/******************************************************************************/
+/* Method: remove                                                             */
+/* Purpose: removes a node from the tree. Keeps the tree shape.               */
+/*                                                                            */
+/* Parameters:                                                                */
+/*  Calendar item:  value to be removed from the tree                         */
+/*  CalendarTreeNode root:  the tree's root (helper method only)              */     
+/* Returns: void                                                              */
+/******************************************************************************/
+    public void remove(Calendar item){
+<span class="nc" id="L140">        set.remove(item);</span>
+<span class="nc" id="L141">    }</span>
+
+    /**
+     * Prints all found calendars
+     */
+    public void print(){
+<span class="nc bnc" id="L147" title="All 2 branches missed.">    	for(Calendar calendar: set) {</span>
+<span class="nc" id="L148">     	   calendar.printCalendar();</span>
+        }
+<span class="nc" id="L150">    }</span>
+    
+    public Calendar getCalendar(int index) {
+<span class="nc" id="L153">    	return set.get(index);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

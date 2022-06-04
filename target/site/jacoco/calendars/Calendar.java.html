@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Calendar.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JavaCalendar</a> &gt; <a href="index.source.html" class="el_package">calendars</a> &gt; <span class="el_source">Calendar.java</span></div><h1>Calendar.java</h1><pre class="source lang-java linenums">package calendars;
 
+import java.util.Collections;
 import java.util.LinkedList;
 
 import appointments.Appointment;
-import appointments.AppointmentNode;
+import appointments.AppointmentsComparator;
 import calendars.Calendar;
 import db.Gui;
 
@@ -23,11 +24,10 @@ import db.Gui;
  * 
  * Transformation of CS-102 project into a Maven project
  */
-<span class="nc" id="L26">public class Calendar implements Comparable &lt;Calendar&gt;{</span>
-<span class="nc" id="L27">    private String fileName = &quot;&quot;; //contains the path to the calendar's file</span>
-<span class="nc" id="L28">    private String calendarName = &quot;&quot;; //First line in the file</span>
+<span class="nc" id="L27">public class Calendar implements Comparable &lt;Calendar&gt;{</span>
+<span class="nc" id="L28">    private String fileName = &quot;&quot;; //contains the path to the calendar's file</span>
+<span class="nc" id="L29">    private String calendarName = &quot;&quot;; //First line in the file</span>
     private Gui theGUI;
-    private AppointmentNode head; //First appointment node of the list
 <span class="nc" id="L31">    private LinkedList&lt;Appointment&gt; listOfAppointments = new LinkedList&lt;Appointment&gt;();</span>
     
     /**
@@ -66,7 +66,7 @@ import db.Gui;
      * @param item Appointment to be added to the list
      */
     public void add(Appointment item){
-<span class="nc" id="L69">	    listOfAppointments.add(item);                  </span>
+<span class="nc" id="L69">	    listOfAppointments.add(item);</span>
 <span class="nc" id="L70">    }</span>
     
     /**
@@ -88,17 +88,26 @@ import db.Gui;
 <span class="nc" id="L88">	}</span>
 
 	/**
+	 * Sorts the calendar in reverse order.
+	 * To be used after altering a calendar instance.
+	 */
+	public void sortCalendar() {
+<span class="nc" id="L95">		Collections.sort(listOfAppointments, new AppointmentsComparator());</span>
+<span class="nc" id="L96">		Collections.reverse(listOfAppointments);</span>
+<span class="nc" id="L97">	}</span>
+	
+	/**
 	 * Prints all appointments in the calendar instance.
 	 * 
 	 * @return number of appointments.
 	 */
 	public int printCalendar(){
-<span class="nc" id="L96">		int count = 0;</span>
-<span class="nc bnc" id="L97" title="All 2 branches missed.">	    for(Appointment appointment : listOfAppointments) {</span>
-<span class="nc" id="L98">	    	appointment.print();</span>
-<span class="nc" id="L99">	    	count ++;</span>
+<span class="nc" id="L105">		int count = 0;</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">	    for(Appointment appointment : listOfAppointments) {</span>
+<span class="nc" id="L107">	    	appointment.print();</span>
+<span class="nc" id="L108">	    	count ++;</span>
 	    }
-<span class="nc" id="L101">	    return count;</span>
+<span class="nc" id="L110">	    return count;</span>
 	}
 
 /******************************************************************************/
@@ -111,8 +120,8 @@ import db.Gui;
 /* Returns: void                                                              */
 /******************************************************************************/    
     public void assignGUI (Gui copying){
-<span class="nc" id="L114">        theGUI = copying;</span>
-<span class="nc" id="L115">    }</span>
+<span class="nc" id="L123">        theGUI = copying;</span>
+<span class="nc" id="L124">    }</span>
 
     /**
      * Prints only the items that contain the provided description.
@@ -120,15 +129,15 @@ import db.Gui;
      * @return number of matching items.
      */
 	public int printBasedOnDescription(String description){
-<span class="nc" id="L123">	    int count = 0;      //counter for the number of items</span>
-<span class="nc bnc" id="L124" title="All 2 branches missed.">	    for(Appointment appointment : listOfAppointments) {</span>
-<span class="nc" id="L125">	    	if(appointment.getDescription().toLowerCase()</span>
-<span class="nc bnc" id="L126" title="All 2 branches missed.">	    			.contains(description.toLowerCase())) {</span>
-<span class="nc" id="L127">	    		appointment.print();</span>
-<span class="nc" id="L128">	    		count++;</span>
+<span class="nc" id="L132">	    int count = 0;      //counter for the number of items</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">	    for(Appointment appointment : listOfAppointments) {</span>
+<span class="nc" id="L134">	    	if(appointment.getDescription().toLowerCase()</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">	    			.contains(description.toLowerCase())) {</span>
+<span class="nc" id="L136">	    		appointment.print();</span>
+<span class="nc" id="L137">	    		count++;</span>
 	    	}
 	    }
-<span class="nc" id="L131">	    return count;</span>
+<span class="nc" id="L140">	    return count;</span>
 	}
 
     /**
@@ -139,39 +148,16 @@ import db.Gui;
      * @return number of matches.
      */
     public int lookForTime (String date, int time){
-<span class="nc" id="L142">        int count = 0;    //number of matches</span>
-<span class="nc bnc" id="L143" title="All 2 branches missed.">        for(Appointment appointment : listOfAppointments) {</span>
-<span class="nc bnc" id="L144" title="All 2 branches missed.">        	if(	appointment.getDate().equals(date) &amp;&amp; </span>
-<span class="nc bnc" id="L145" title="All 2 branches missed.">        		appointment.getHourS() * 100 + appointment.getMinuteS() &lt;= time &amp;&amp;</span>
-<span class="nc bnc" id="L146" title="All 2 branches missed.">        		appointment.getHourE() * 100 + appointment.getMinuteE() &gt;= time) {</span>
-<span class="nc" id="L147">        			appointment.print();</span>
-<span class="nc" id="L148">        			count++;</span>
+<span class="nc" id="L151">        int count = 0;    //number of matches</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        for(Appointment appointment : listOfAppointments) {</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">        	if(	appointment.getDate().equals(date) &amp;&amp; </span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        		appointment.getHourS() * 100 + appointment.getMinuteS() &lt;= time &amp;&amp;</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">        		appointment.getHourE() * 100 + appointment.getMinuteE() &gt;= time) {</span>
+<span class="nc" id="L156">        			appointment.print();</span>
+<span class="nc" id="L157">        			count++;</span>
         	}
         }  
-<span class="nc" id="L151">        return count;</span>
-    }
-    
-    String collectLookForTime (String date, int time){
-<span class="nc" id="L155">        String returning = &quot;&quot;; //collect and return</span>
-<span class="nc" id="L156">        int count = 0;    //number of matches</span>
-<span class="nc" id="L157">        AppointmentNode auxApp = head; //created as index to loop </span>
-                                       //through the list
-
-<span class="nc bnc" id="L160" title="All 2 branches missed.">        while (auxApp != null){</span>
-<span class="nc bnc" id="L161" title="All 2 branches missed.">            if(auxApp.getDatum().getDate().equals(date)){</span>
-            //arrange the time in a way that it is an int in the format hhmm
-<span class="nc" id="L163">                if(auxApp.getDatum().getHourS()*100 + auxApp.getDatum().</span>
-<span class="nc bnc" id="L164" title="All 2 branches missed.">                getMinuteS() &lt;= time){</span>
-<span class="nc" id="L165">                    if(auxApp.getDatum().getHourE()*100 + auxApp.getDatum().</span>
-<span class="nc bnc" id="L166" title="All 2 branches missed.">                    getMinuteE() &gt;= time){</span>
-<span class="nc" id="L167">                        returning += auxApp.getDatum().collectPrint();</span>
-<span class="nc" id="L168">                        count++;</span>
-                    }
-                }
-            }
-<span class="nc" id="L172">            auxApp = auxApp.getNext();</span>
-        }
-<span class="nc" id="L174">        return returning;</span>
+<span class="nc" id="L160">        return count;</span>
     }
 
 /******************************************************************************/
@@ -184,16 +170,16 @@ import db.Gui;
 /******************************************************************************/    
     
     public String getfileName (){
-<span class="nc" id="L187">        return fileName;</span>
+<span class="nc" id="L173">        return fileName;</span>
     }
 
     public String getCalendarName (){
-<span class="nc" id="L191">        return calendarName;</span>
+<span class="nc" id="L177">        return calendarName;</span>
     }
     
-    public AppointmentNode getHead() {
-<span class="nc" id="L195">    	return head;</span>
-    }    
+    public LinkedList&lt;Appointment&gt; getList() {
+<span class="nc" id="L181">    	return listOfAppointments;</span>
+    }
 
 /******************************************************************************/
 /* Method: set&lt;FEATURE&gt;                                                       */
@@ -205,12 +191,12 @@ import db.Gui;
 /******************************************************************************/    
     
     public void setfileName (String newName){
-<span class="nc" id="L208">        fileName = newName;</span>
-<span class="nc" id="L209">    }</span>
+<span class="nc" id="L194">        fileName = newName;</span>
+<span class="nc" id="L195">    }</span>
 
     public void setCalendarName (String newName){
-<span class="nc" id="L212">        calendarName = newName;</span>
-<span class="nc" id="L213">    }    </span>
+<span class="nc" id="L198">        calendarName = newName;</span>
+<span class="nc" id="L199">    }    </span>
 
 /******************************************************************************/
 /* Method: compareTo                                                          */
@@ -222,9 +208,9 @@ import db.Gui;
 /*                         == 0 current is equal to other                     */   
 /*                          &gt; 0 current is greater than other                 */ 
 /******************************************************************************/    
-@Override
+    @Override
     public int compareTo(Calendar other) {
-<span class="nc" id="L227">        return this.getCalendarName().compareTo(other.getCalendarName());</span>
+<span class="nc" id="L213">        return this.getCalendarName().compareTo(other.getCalendarName());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

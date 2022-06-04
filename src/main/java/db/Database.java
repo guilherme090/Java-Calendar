@@ -13,8 +13,7 @@ import javax.swing.JOptionPane;
 import appointments.Appointment;
 
 import calendars.Calendar;
-import calendars.CalendarTree;
-import calendars.CalendarTreeNode;
+import calendars.CalendarSet;
 
 /******************************************************************************/
 /* Guilherme Virgilio P. O. Simoes                                            */
@@ -37,7 +36,7 @@ public class Database {
 Gui thisGUI; //interface assigned to this database
 
     // Make list of calendar objects that compose the database
-    public CalendarTree calendarSet = new CalendarTree();
+    public CalendarSet calendarSet = new CalendarSet();
 
 /******************************************************************************/
 /* Method: assignGUI                                                          */
@@ -223,16 +222,17 @@ DESCRIPTION:    user wants to look for a description among the appointments
         int count = 0; 
         switch (theOption){
             case EVERYTHING:{
-            /* The user wants to print all calendars. Loop through the database 
-            and print everything.  */
-            calendarSet.print();
-            //calendarSet.collectPrint(thisGUI);
+	            /* The user wants to print all calendars. Loop through the database 
+	            and print everything.  */
+	            calendarSet.print();
+	            thisGUI.bufferToGui(MessageBoardOptions.RESULTS.getOption());
+	            //calendarSet.collectPrint(thisGUI);
             }break;
             
             case CALENDAR:{
             /* The user wants to print only one calendar. Look for it */   
             try{
-                count += calendarSet.search(lookedFor).getDatum().
+                count += calendarSet.search(lookedFor).
                         printCalendar();
                         thisGUI.bufferToGui(MessageBoardOptions.RESULTS.getOption());
             }   catch(NoSuchElementException exc){
@@ -288,18 +288,6 @@ DESCRIPTION:    user wants to look for a description among the appointments
             }break;            
         }
     }   
-
-/******************************************************************************/
-/* Method: getCalendarSet                                                     */
-/* Purpose: gets feature                                                      */
-/*                                                                            */
-/* Parameters:                                                                */
-/* void                                                                       */
-/* Returns: CalendarTree: the calendar tree                                   */
-/******************************************************************************/    
-    public CalendarTree getCalendarSet(){
-        return calendarSet;
-    }
     
 /******************************************************************************/
 /* Method: traverseTime                                                       */
@@ -312,23 +300,15 @@ DESCRIPTION:    user wants to look for a description among the appointments
 /* Returns: boolean:    found value?                                          */
 /******************************************************************************/        
     boolean traverseTime(String subDate, int subTimeInt){
-        return traverseTime(calendarSet.getRoot(), subDate, subTimeInt);
+        return traverseTime(calendarSet, subDate, subTimeInt);
     } 
-    boolean traverseTime(CalendarTreeNode current, String subDate, 
-            int subTimeInt){
-        if (current == null) return false;
-        /* If left, middle and right functions return false, there is no element 
-        to be found */
-	if(traverseTime(current.getLeft(), subDate, subTimeInt) == 
-                false &&            
-	current.getDatum().lookForTime(subDate, subTimeInt) == 0 &&   
-	traverseTime(current.getRight(), subDate, subTimeInt) == false)
-            return false;
-        else{
-            thisGUI.bufferToGui(MessageBoardOptions.RESULTS.getOption());
-            return true;
-        }
-            
+    boolean traverseTime(CalendarSet set, String subDate, int subTimeInt){
+    	int matches = 0;
+    	for (int i=0; i<set.size(); i++) {
+    		matches += set.getCalendar(i).lookForTime(subDate, subTimeInt);
+    	}
+    	thisGUI.bufferToGui(MessageBoardOptions.RESULTS.getOption());
+        return matches > 0;    
     }
        
 /******************************************************************************/
@@ -341,21 +321,15 @@ DESCRIPTION:    user wants to look for a description among the appointments
 /* Returns: boolean:    found value?                                          */
 /******************************************************************************/        
     boolean traverseDescription(String lookedFor){
-        return traverseDescription (calendarSet.getRoot(), lookedFor);
+        return traverseDescription (calendarSet, lookedFor);
     }
-    boolean traverseDescription(CalendarTreeNode current, String lookedFor){
-        if (current == null) return false;
-        /* If left, middle and right functions return false, there is no element
-        to be found */        
-	if(traverseDescription(current.getLeft(), lookedFor) == 
-                false &&            
-	current.getDatum().printBasedOnDescription(lookedFor) == 0 &&   
-	traverseDescription(current.getRight(), lookedFor) == false)
-            return false;
-        else{
-            thisGUI.bufferToGui(MessageBoardOptions.RESULTS.getOption());
-            return true;
-        }
+    boolean traverseDescription(CalendarSet set, String lookedFor){
+    	int matches = 0;
+    	for (int i=0; i<set.size(); i++) {
+    		matches += set.getCalendar(i).printBasedOnDescription(lookedFor);
+    	}
+    	thisGUI.bufferToGui(MessageBoardOptions.RESULTS.getOption());
+        return matches > 0; 
     }
     
 /******************************************************************************/
@@ -466,13 +440,13 @@ void addNewAppointment(String chosenCalendar,
     Calendar chosenCal = new Calendar();
     chosenCal.setCalendarName(chosenCalendar);
   
-    if (getCalendarSet().search(chosenCal) == false){
+    if (calendarSet.existsCalendar(chosenCal) == false){
         thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), ">>> Calendar '" + chosenCalendar
                           + "' not found in the list.");
         thisGUI.bufferToGui(MessageBoardOptions.MESSAGE.getOption());
     }
     else{
-        chosenCal = getCalendarSet().search(chosenCalendar).getDatum();
+        chosenCal = calendarSet.search(chosenCalendar);
         if(addToCalendar(chosenCal, chosenDate, chosenSTime, chosenETime,
            chosenDescription)){
         thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(),  "**** Appointment included.");
@@ -500,7 +474,7 @@ void delAppointment(String chosenCalendar,
     Calendar chosenCal = null;  //node referring to the cal                    
     //look for the specified calendar.
     try{
-        chosenCal = getCalendarSet().search(chosenCalendar).getDatum();
+        chosenCal = calendarSet.search(chosenCalendar);
     }catch(NoSuchElementException exc){
         thisGUI.printToGui(MessageBoardOptions.MESSAGE.getOption(), ">>> Calendar '" + chosenCalendar
                           + "' not found in the list.");
@@ -565,7 +539,7 @@ boolean loadFile(String fileName){
         Calendar chosenCal = new Calendar();
         chosenCal.setCalendarName(calendarName);
 
-        if (getCalendarSet().search(chosenCal) == true){
+        if (calendarSet.existsCalendar(chosenCal) == true){
             JOptionPane.showMessageDialog(null, "**** File has already been "
                     + "loaded into the program.");
             return(false);
@@ -615,7 +589,7 @@ void delCalendar(String chosenCalendar){
     Calendar chosenCal = null;  //node referring to the cal                     
     //look for the specified calendar.
     try{
-        chosenCal = getCalendarSet().search(chosenCalendar).getDatum();
+        chosenCal = calendarSet.search(chosenCalendar);
     }catch(NoSuchElementException exc){
         JOptionPane.showMessageDialog(null, ">>> Calendar '" + chosenCalendar
                           + "' not found in the list.");
@@ -657,20 +631,19 @@ void delCalendar(String chosenCalendar){
                     + " all contents to the database? Y = yes, N = no");
         }
         if(answer.toLowerCase().compareTo("y") == 0)
-            writeToDisk(calendarSet.getRoot());
+            writeToDisk(calendarSet);
         else
             JOptionPane.showMessageDialog(null,"Database not modified.");
     }
     // Traverse the calendar tree, read from every calendar. Open the files
-    private void writeToDisk(CalendarTreeNode current){
-        if (current == null) return;        
-        writeToDisk(current.getLeft());
-        writeToDisk(current.getRight());
-    // Sends the calendar and the filename to perform the writing
-        if(writeToDisk(current.getDatum()))
-            JOptionPane.showMessageDialog(null,"Calendar file ''" + 
-                    current.getDatum().
-            getfileName() + "'' was successfully written.");
+    private void writeToDisk(CalendarSet set){
+    	for (int i=0; i<set.size(); i++) {
+    		Calendar current = set.getCalendar(i); 
+    		if(writeToDisk(current))
+    			JOptionPane.showMessageDialog(null,"Calendar file ''" + 
+    					current.
+    					getfileName() + "'' was successfully written.");    		
+    	}
     }        
 
 /******************************************************************************/
@@ -735,23 +708,20 @@ void delCalendar(String chosenCalendar){
                     + "reload the database? Y = yes, N = no");
         }
         if(answer.toLowerCase().compareTo("y") == 0)
-            readFromDisk(calendarSet.getRoot());
+            readFromDisk(calendarSet);
         else
             JOptionPane.showMessageDialog(null,"Database not reloaded.");
     }
     // Traverse the calendar tree, delete every calendar. Add them again.
-    private void readFromDisk(CalendarTreeNode current){
-        if (current == null) return;
-        // Since the traversal alters the tree, use LRN. Nodes altered lastly.        
-        readFromDisk(current.getLeft());
-        readFromDisk(current.getRight());
-        // Get file name in order to be able to find it again and reload it.
-        String toBeReloaded = current.getDatum().getfileName(); //file name
-        remove(current.getDatum()); //remove calendar
-        if(loadFile(toBeReloaded)){ //load it again. Check for success
-            JOptionPane.showMessageDialog(null,"Calendar ''" +
-                    current.getDatum().
-            getCalendarName() + "'' reloaded.");
-        }    
+    private void readFromDisk(CalendarSet set){
+        for(int i=0; i<set.size(); i++) {
+        	Calendar current = set.getCalendar(i);
+        	String toBeReloaded = current.getfileName(); //file name
+        	remove(current); //remove calendar
+        	if(loadFile(toBeReloaded)){ //load it again. Check for success
+        		JOptionPane.showMessageDialog(null,"Calendar ''" +
+        				current.getCalendarName() + "'' reloaded.");
+        	}    
+        }
     }
 }

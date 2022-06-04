@@ -7,9 +7,9 @@ package calendars;
 /* Calendar Tree: A binary tree with Calendar instances                       */
 /******************************************************************************/
 
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
-import db.MessageBoardOptions;
 import db.Gui;
 
 /**
@@ -19,9 +19,8 @@ import db.Gui;
  * 
  * Transformation of CS-102 project into a Maven project
  */
-public class CalendarTree {
-        
-    private CalendarTreeNode root;  //first node of the tree
+public class CalendarSet {
+    private LinkedList<Calendar> set;    
     Gui theGUI;
 
 /******************************************************************************/
@@ -31,8 +30,8 @@ public class CalendarTree {
 /*  void                                                                      */
 /* Returns: void                                                              */
 /******************************************************************************/    
-    public CalendarTree(){
-        root = null;
+    public CalendarSet(){
+        set = new LinkedList<Calendar>();
     }
 
 /******************************************************************************/
@@ -58,7 +57,7 @@ public class CalendarTree {
 /******************************************************************************/
     
     public boolean isEmpty(){
-        return (root == null);
+        return set.size() == 0;
     }
     
 /******************************************************************************/
@@ -69,17 +68,8 @@ public class CalendarTree {
 /*  CalendarTreeNode current:  the tree's root (helper method only)           */ 
 /* Returns: int:        number of elements in the list                        */
 /******************************************************************************/    
-    
     public int size(){
-        return size(root);
-    }
-
-    private int size(CalendarTreeNode current){
-    // Define the size recursively
-        if (current == null) return 0;
-        if (current.getLeft() == null && current.getRight() == null) return 1;
-    // Size of the left tree + right tree
-        return (size(current.getLeft()) + size(current.getRight()));					//R 
+    	return set.size();
     }
 
 /******************************************************************************/
@@ -91,7 +81,7 @@ public class CalendarTree {
 /* Returns: void                                                              */
 /******************************************************************************/
     public void clear(){
-        root = null;
+        set.clear();
     }
     
 /******************************************************************************/
@@ -103,43 +93,38 @@ public class CalendarTree {
 /*  CalendarTreeNode current:  the tree's root (helper method only)           */    
 /* Returns: boolean:        item found?                                       */
 /******************************************************************************/    
-    public boolean search(Calendar item){
-        return search(item, root);
-    }
+    /**
+     * Returns whether a calendar with the given name exists.
+     * 
+     * @param name
+     * @return boolean
+     */
+    public boolean existsCalendar(Calendar cal){
+        for(Calendar calendar: set) {
+     	   if (calendar.getCalendarName().toLowerCase().
+     			   equals(cal.getCalendarName().toLowerCase())) {
+     		   return true;
+     	   }
+        }
+        return false;
+     } 
     
-    private boolean search(Calendar item, CalendarTreeNode current){
-        if (current == null) return false;
-        if (current.getDatum().compareTo(item) == 0) return true;
-        if (current.getDatum().compareTo(item) < 0) //item on the right
-            return search(item, current.getRight());
-        else
-            return search(item, current.getLeft()); //item on the left
-    }
-    
-/******************************************************************************/
-/* Method: search                                                             */
-/* Purpose: checks the tree to look for a specific calendar.                  */
-/*                                                                            */
-/* Parameters:                                                                */
-/*  String name:            calendar to be looked for                         */
-/*  CalendarTreeNode current:  the tree's root (helper method only)           */    
-/* Returns: Calendar        calendar with the name as requested               */
-/******************************************************************************/    
-
-    // This method acts in a similar way to the above search
-    public CalendarTreeNode search(String name){
-        return search(name, root);
-    }
-    
-    private CalendarTreeNode search(String name, CalendarTreeNode current){
-        if (current == null) throw new NoSuchElementException();
-        if (current.getDatum().getCalendarName().compareTo(name) == 0) 
-            return current;
-        if (current.getDatum().getCalendarName().compareTo(name) < 0)
-            return search(name, current.getRight());
-        else
-            return search(name, current.getLeft());
-    }    
+    /**
+     * Returns a calendar based on its name.
+     * 
+     * @param name
+     * @return requested calendar, if found.
+     * @throws NoSuchElementException
+     */
+    public Calendar search(String name){
+       for(Calendar calendar: set) {
+    	   if (calendar.getCalendarName().toLowerCase().
+    			   contains(name.toLowerCase())) {
+    		   return calendar;
+    	   }
+       }
+       throw new NoSuchElementException();
+    }  
     
 /******************************************************************************/
 /* Method: add                                                                */
@@ -151,22 +136,7 @@ public class CalendarTree {
 /* Returns: void                                                              */
 /******************************************************************************/ 
     public void add (Calendar item){
-        root = add(item, root);
-    }
-    
-    private CalendarTreeNode add (Calendar item, CalendarTreeNode current){
-        if(current == null){
-            CalendarTreeNode leaf = new CalendarTreeNode();
-            leaf.setDatum(item);
-            leaf.setLeft(null);
-            leaf.setRight(null);
-            return(leaf);
-        }
-        if(current.getDatum().compareTo(item) < 0)
-            current.setRight(add(item, current.getRight())); //item on the right
-        else
-            current.setLeft(add(item, current.getLeft())); //item on the left
-        return current;
+        set.add(item);
     }
     
 /******************************************************************************/
@@ -179,72 +149,19 @@ public class CalendarTree {
 /* Returns: void                                                              */
 /******************************************************************************/
     public void remove(Calendar item){
-        root = remove(item, root);
-    }
-    
-    private CalendarTreeNode remove (Calendar item, CalendarTreeNode current){
-        if(current == null)
-            throw new NoSuchElementException();
-        if(current.getDatum().compareTo(item) < 0){
-        // Search to the right
-            current.setRight(remove(item, current.getRight()));
-            return current;
-        }
-        if(current.getDatum().compareTo(item) > 0){
-        // Search to the left
-            current.setLeft(remove(item, current.getLeft()));
-            return current;
-        }
-        // Found the item.
-        if (current.getLeft() == null)
-        /* No left children. Whatever is on the right will take the place of the 
-        item that was discarded */
-            return current.getRight();
-        if (current.getRight() == null)
-        /* No right children. Whatever is on the left will take the place of the 
-        item that was discarded */            
-            return current.getLeft();
-        /* Item has both left and right children. Look for heir. Take the
-        highest of the lower values */
-        CalendarTreeNode heir = current.getLeft();
-        while(heir.getRight() != null)
-            heir = heir.getRight();
-        current.setDatum(heir.getDatum());
-        current.setLeft(remove(heir.getDatum(), current.getLeft()));
-        return current;
+        set.remove(item);
     }
 
-/******************************************************************************/
-/* Method: print                                                              */
-/* Purpose: Traverses the tree and prints calendars                           */
-/*          (use the LNR method so it prints in order)                        */
-/* Parameters:                                                                */
-/*  void                                                                      */
-/*  CalendarTreeNode root:  the tree's root (helper method only)              */     
-/* Returns: void                                                              */
-/******************************************************************************/
-    
+    /**
+     * Prints all found calendars
+     */
     public void print(){
-	print(root);
+    	for(Calendar calendar: set) {
+     	   calendar.printCalendar();
+        }
     }
-
-    private void print(CalendarTreeNode current){
-            if (current == null) return;
-            print(current.getLeft());               //L
-            current.getDatum().printCalendar();     //N
-            theGUI.bufferToGui(MessageBoardOptions.RESULTS.getOption());
-            print(current.getRight());              //R 
-    } 
     
-/******************************************************************************/
-/* Method: getRoot                                                            */
-/* Purpose: Returns the root tree node                                        */
-/* Parameters:                                                                */
-/*  void                                                                      */ 
-/* Returns: CalendarTreeNode root                                             */
-/******************************************************************************/    
-
-    public CalendarTreeNode getRoot() {
-    	return root;
+    public Calendar getCalendar(int index) {
+    	return set.get(index);
     }
 }

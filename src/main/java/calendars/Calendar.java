@@ -1,8 +1,10 @@
 package calendars;
 
+import java.util.Collections;
 import java.util.LinkedList;
 
 import appointments.Appointment;
+import appointments.AppointmentsComparator;
 import calendars.Calendar;
 import db.Gui;
 
@@ -64,7 +66,7 @@ public class Calendar implements Comparable <Calendar>{
      * @param item Appointment to be added to the list
      */
     public void add(Appointment item){
-	    listOfAppointments.add(item);                  
+	    listOfAppointments.add(item);
     }
     
     /**
@@ -85,6 +87,15 @@ public class Calendar implements Comparable <Calendar>{
 		listOfAppointments.clear();
 	}
 
+	/**
+	 * Sorts the calendar in reverse order.
+	 * To be used after altering a calendar instance.
+	 */
+	public void sortCalendar() {
+		Collections.sort(listOfAppointments, new AppointmentsComparator());
+		Collections.reverse(listOfAppointments);
+	}
+	
 	/**
 	 * Prints all appointments in the calendar instance.
 	 * 
@@ -197,7 +208,7 @@ public class Calendar implements Comparable <Calendar>{
 /*                         == 0 current is equal to other                     */   
 /*                          > 0 current is greater than other                 */ 
 /******************************************************************************/    
-@Override
+    @Override
     public int compareTo(Calendar other) {
         return this.getCalendarName().compareTo(other.getCalendarName());
     }

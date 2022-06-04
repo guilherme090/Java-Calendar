@@ -11,9 +11,6 @@ package db;
 
 import javax.swing.JFrame;
 
-import db.Database;
-import db.Gui;
-
 /**
  * 
  * @author Guilherme Virgilio P. O. Simoes 
