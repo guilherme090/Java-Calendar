@@ -12,10 +12,6 @@ package db;
 
 import javax.swing.*;
 
-//import prog5.ButtonHandler;
-//import db.Database;
-//import prog5.OptionHandler;
-
 import java.awt.*;
 import java.awt.event.*;
 

@@ -11,9 +11,6 @@ package db;
 
 import javax.swing.JFrame;
 
-import db.Database;
-import db.Gui;
-
 /**
  * 
  * @author Guilherme Virgilio P. O. Simoes 
@@ -21,7 +18,7 @@ import db.Gui;
  * 
  * Transformation of CS-102 project into a Maven project
  */
-<span class="nc" id="L24">public class Prog5 {</span>
+<span class="nc" id="L21">public class Prog5 {</span>
 //List of available commands. The following are the user's options in the menu
 public static final int EVERYTHING = 1, CALENDAR = 2, TIME = 3, DESCRIPTION = 4,
 ADD_APPOINTMENT = 5, ADD_CAL_FILE = 6, DEL_APPOINTMENT = 7, DEL_CAL = 8,
@@ -52,10 +49,10 @@ LOAD_DATABASE:  user wants to restore all the contents saved in the disk
 
     public static void main(String[] args) {
         
-<span class="nc" id="L55">        Gui calendarGUI = new Gui();</span>
-<span class="nc" id="L56">        calendarGUI.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );</span>
+<span class="nc" id="L52">        Gui calendarGUI = new Gui();</span>
+<span class="nc" id="L53">        calendarGUI.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );</span>
         
-<span class="nc" id="L58">        int index = 0; //indexes the loop for opening all the files                                       </span>
+<span class="nc" id="L55">        int index = 0; //indexes the loop for opening all the files                                       </span>
         
 //        if (args.length == 0){
 //            System.out.println(&quot;No files given as arguments to the program.&quot;);
@@ -63,18 +60,18 @@ LOAD_DATABASE:  user wants to restore all the contents saved in the disk
 //        }
         
         // Create a database for the program.
-<span class="nc" id="L66">        Database agenda = new Database(); //will contain all appointments</span>
-<span class="nc" id="L67">        agenda.assignGUI(calendarGUI);</span>
-<span class="nc" id="L68">        calendarGUI.assignDatabase(agenda); //copies the agenda to the GUI</span>
-<span class="nc" id="L69">        agenda.calendarSet.assignGUI(calendarGUI); //copy to the GUI</span>
+<span class="nc" id="L63">        Database agenda = new Database(); //will contain all appointments</span>
+<span class="nc" id="L64">        agenda.assignGUI(calendarGUI);</span>
+<span class="nc" id="L65">        calendarGUI.assignDatabase(agenda); //copies the agenda to the GUI</span>
+<span class="nc" id="L66">        agenda.calendarSet.assignGUI(calendarGUI); //copy to the GUI</span>
         
-<span class="nc bnc" id="L71" title="All 2 branches missed.">        for ( ; index &lt; args.length ; index++)</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        for ( ; index &lt; args.length ; index++)</span>
         {
-<span class="nc bnc" id="L73" title="All 2 branches missed.">            if (agenda.loadFile(args[index]) == false) //tries to </span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">            if (agenda.loadFile(args[index]) == false) //tries to </span>
             //load the file pointed by index
-<span class="nc" id="L75">            System.exit(1);</span>
+<span class="nc" id="L72">            System.exit(1);</span>
         }    
                  
-<span class="nc" id="L78">    }</span>
+<span class="nc" id="L75">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

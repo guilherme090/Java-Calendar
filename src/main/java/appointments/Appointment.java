@@ -1,5 +1,8 @@
 package appointments;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import db.Gui;
 import db.MessageBoardOptions;
 
@@ -21,7 +24,7 @@ import db.MessageBoardOptions;
  */
 public class Appointment {    
     private String calendarName = null; //will contain the calendar it refers to
-    private String date;        //YYYYMMDD day format for the appointments
+    private String date;        
     private String startTime;   //when the appointment begins
     private String endTime;     //when the appointment ends (must not be
                                 // less than startTime 
@@ -58,10 +61,10 @@ public class Appointment {
     public boolean setDate (String newDate){
         try{
             if(isValid (Integer.parseInt(newDate))){
-                this.date = newDate;
-                    this.year = Integer.parseInt(newDate.substring(0, 4));
-                    this.month = Integer.parseInt(newDate.substring(4, 6));
-                    this.day = Integer.parseInt(newDate.substring(6, 8));        
+            	this.date = newDate;
+                this.year = Integer.parseInt(newDate.substring(0, 4));
+                this.month = Integer.parseInt(newDate.substring(4, 6));
+                this.day = Integer.parseInt(newDate.substring(6, 8));         
                 return (true);
             }
             
