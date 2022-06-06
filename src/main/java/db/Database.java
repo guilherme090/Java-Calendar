@@ -144,7 +144,7 @@ Gui thisGUI; //interface assigned to this database
     
     boolean deleteFromCalendar (Calendar calendar, String date, String startTime 
                            ,String endTime, String descr){
-        //Loop throught the list to find the desired appointment
+        //Loop through the list to find the desired appointment
         for(int index = 0 ; index < calendar.size(); index++){
             String answer = ""; //stores user answer
             if(calendar.get(index).getDate().equals(date))

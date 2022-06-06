@@ -100,13 +100,14 @@ public class CalendarSet {
      * @return boolean
      */
     public boolean existsCalendar(Calendar cal){
-        for(Calendar calendar: set) {
-     	   if (calendar.getCalendarName().toLowerCase().
-     			   equals(cal.getCalendarName().toLowerCase())) {
-     		   return true;
-     	   }
-        }
-        return false;
+    	return set.contains(cal);
+//        for(Calendar calendar: set) {
+//     	   if (calendar.getCalendarName().toLowerCase().
+//     			   equals(cal.getCalendarName().toLowerCase())) {
+//     		   return true;
+//     	   }
+//        }
+//        return false;
      } 
     
     /**

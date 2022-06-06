@@ -212,4 +212,10 @@ public class Calendar implements Comparable <Calendar>{
     public int compareTo(Calendar other) {
         return this.getCalendarName().compareTo(other.getCalendarName());
     }
+    
+    @Override
+    public boolean equals(Object ref) {
+    	Calendar second = (Calendar) ref;
+    	return compareTo(second) == 0;
+    }
 }
