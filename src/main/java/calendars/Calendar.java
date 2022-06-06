@@ -218,4 +218,11 @@ public class Calendar implements Comparable <Calendar>{
     	Calendar second = (Calendar) ref;
     	return compareTo(second) == 0;
     }
+    
+    @Override
+    public String toString() {
+    	return
+    			this.getCalendarName() + '\n' +
+    			this.getfileName();
+    }
 }

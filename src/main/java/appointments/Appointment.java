@@ -366,4 +366,13 @@ public class Appointment {
     	}
     	return false;
     }
+    
+    @Override
+    public String toString() {
+    	return
+    			this.getCalendarName() + '\n' +
+    			this.getDate() + '\n' +
+    			this.getStartTime() + '\n' +
+    			this.getEndTime();
+    }
 }
