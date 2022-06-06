@@ -351,5 +351,19 @@ public class Appointment {
         toBeReturned += description + "\n"; 
         
         return toBeReturned;
-    }        
+    }
+    
+    @Override
+    public boolean equals(Object ref) {
+    	Appointment second = (Appointment) ref;
+    	if(
+    		this.getDate() == second.getDate() &&
+    		this.getStartTime() == second.getStartTime() &&
+    		this.getEndTime() == second.getEndTime() &&
+    		this.getDescription() == second.getDescription()
+    			) {
+    		return true;
+    	}
+    	return false;
+    }
 }
